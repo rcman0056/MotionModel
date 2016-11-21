@@ -12,7 +12,7 @@ import org.knowm.xchart.BitmapEncoder
 /**
  *  An example which plots the pinson-block propagated error from different initial INS errors.
  */
-object FMatrixPropagation {
+object  FMatrixPropagation {
     private var block: Pinson15NEDBlock = Pinson15NEDBlock(label = "pinson15", imuModel = getImuModelHG1700())
     private var solution = NavSolution(pose = Pose(rotMat = eye(3),
                                                    pos = Vector3(45.0 * PI / 180.0, 0.0, 0.0),

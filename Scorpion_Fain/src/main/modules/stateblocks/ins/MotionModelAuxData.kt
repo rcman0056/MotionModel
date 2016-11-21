@@ -10,10 +10,13 @@ import golem.matrix.*
  * @param navSolution the current solution from the INS mechanization
  */
 data class MotionModelAuxData(var airspeed: Double,
+                              var airspeed_time: Double,
                               var pitchrate: Double,
                               var yawrate: Double,
+                              var yaw_pitch_rate_time: Double,
                               var roll: Double,
-                              var pitch: Double){
+                              var pitch :Double,
+                              var roll_pitch_time: Double){
 
 
 

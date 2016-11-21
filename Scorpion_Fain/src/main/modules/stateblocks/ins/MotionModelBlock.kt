@@ -55,7 +55,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
 
         val dt = timeTo.time - timeFrom.time
 
-        val F = generateFMotionModel(airspeed = airspeed, //Need to input aux data and current states
+        val F = generateFMotionModel(airspeed = airspeed,
                 pitchrate = pitchrate,
                 yawrate = yawrate,
                 roll = roll,
@@ -77,13 +77,11 @@ class MotionModelBlock(override var label: String) : StateBlock {
     fun generateQMotionModel(tau_vv: Double, sigma_vv: Double): Matrix<Double> {
 
         var q = zeros(1, 9)
+        q[0..7,0..7]=eye(8)*.01    //add noise to states for now need to figureout how to calculate input noise
         q[0, 0..8] = zeros(1, 9)
-        q[0, 8] = 2*pow(sigma_vv,2)/tau_vv
+        q[8, 8] = 2*pow(sigma_vv,2)/tau_vv
 
         //add q for all states
-
-
-
         return q
         //return fill(rows = 15, cols = 15) { row, col -> if (row == col) pow(q[row], 2) else 0.0 }
     }
@@ -101,13 +99,18 @@ class MotionModelBlock(override var label: String) : StateBlock {
      * @param pitch in rads
      */
     fun generateFMotionModel(airspeed: Double,
-                          pitchrate: Double,
-                          yawrate: Double,
-                          roll: Double,
-                          pitch: Double,
-                             tau_vv: Double): Matrix<Double> {  //Is Tau_vv A double????????????????????????? Declared line 54
+                             pitchrate: Double,
+                             yawrate: Double,
+                             roll: Double,
+                             pitch: Double,
+                             tau_vv: Double): Matrix<Double> {
 
 
+
+
+        xhat[2]= Vg /// How to include current states for propagation????????????????????????
+        xhat[3]= chi
+        f
 
 
         // Fain Motion model Below
