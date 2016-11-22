@@ -60,7 +60,8 @@ class MotionModelBlock(override var label: String) : StateBlock {
                 yawrate = yawrate,
                 roll = roll,
                 pitch = pitch,
-                tau_vv = tau_vv)
+                tau_vv = tau_vv,
+                xhat = xhat)
         val Q = generateQMotionModel(tau_vv = tau_vv, sigma_vv = sigma_vv)
         var Phi = expm(F * dt)
         var f = { x: Matrix<Double> -> Phi * x }
@@ -103,14 +104,26 @@ class MotionModelBlock(override var label: String) : StateBlock {
                              yawrate: Double,
                              roll: Double,
                              pitch: Double,
-                             tau_vv: Double): Matrix<Double> {
+                             tau_vv: Double,
+                             xhat: Matrix<Double>): Matrix<Double> {
 
+        //Current states
+        //var Pn  = xhat[0]
+        //var Pe  = xhat[1]
+        var Vg  = xhat[2]
+        var chi = xhat[3]
+        var Wn  = xhat[4]
+        var We  = xhat[5]
+        var psi = xhat[6]
 
+        val g       = 9.81 //Gravity m/s
+       //Inputs
+        var Va = airspeed
+        var q = pitchrate
+        var r = yawrate
+        var phi = roll
+        var theta = pitch
 
-
-        xhat[2]= Vg /// How to include current states for propagation????????????????????????
-        xhat[3]= chi
-        f
 
 
         // Fain Motion model Below
@@ -118,7 +131,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         val F = zeros(8, 8)
         var psi_dot = q*sin(phi)/cos(theta)+r*cos(phi)/cos(theta)
         var Vg_dot = (Va*cos(phi)+Wn)*(-Va*psi_dot*sin(psi)+Va*sin(phi)+We)*(Va*psi_dot*cos(psi))/Vg
-        var tau_vv = 2.0
+
 
 
         F[0..1,2..3] = mat[cos(chi), -Vg*sin(chi) end
