@@ -67,7 +67,7 @@ object FAIN_Main {
 }
 
 //Subscriber
-class FAIN_Subscribe(var filter:StandardSensorEKF, airspeed_time ): LCMSubscriber {
+class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream){
