@@ -73,7 +73,7 @@ class FAIN_Subscribe(var filter:StandardSensorEKF, airspeed_time ): LCMSubscribe
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream){
         var pixhawk2 = (pixhawk(p2))
 
-        var pixhawk2_lcm_message = MotionModelAuxData(pixhawk2.airspeed[1],
+        var pixhawk2_lcm_message_aux = MotionModelAuxData(pixhawk2.airspeed[1],
                                      pixhawk2.airspeed[0],
                                      pixhawk2.raw_rate[3],
                                      pixhawk2.raw_rate[4],
@@ -81,50 +81,69 @@ class FAIN_Subscribe(var filter:StandardSensorEKF, airspeed_time ): LCMSubscribe
                                      pixhawk2.attitude[1],
                                      pixhawk2.attitude[2],
                                      pixhawk2.attitude[0])
-
+        /*
+             var airspeed: Double,
+             var airspeed_time: Double,
+             var pitchrate: Double,
+             var yawrate: Double,
+             var yaw_pitch_rate_time: Double,
+             var roll: Double,
+             var pitch :Double,
+             var roll_pitch_time: Double
+              */
 
         //Check to see if individual time stamps have updated
 
         //If incoming message time is greater then stored time
             //Set time to new time
             //Set flag to high
-        if (pixhawk2_lcm_message.airspeed_time > Input_LCM_Time.airspeed_time) {
-            Input_LCM_Time.airspeed_time = pixhawk2_lcm_message.airspeed_time
+        if (pixhawk2_lcm_message_aux.airspeed_time > Input_LCM_Time.airspeed_time) {
+            Input_LCM_Time.airspeed_time = pixhawk2_lcm_message_aux.airspeed_time
             Input_LCM_Time.airspeed_time_flag = true
         }
-        if (pixhawk2_lcm_message.yaw_pitch_rate_time > Input_LCM_Time.raw_rate_time) {
-            Input_LCM_Time.raw_rate_time = pixhawk2_lcm_message.yaw_pitch_rate_time
+        if (pixhawk2_lcm_message_aux.yaw_pitch_rate_time > Input_LCM_Time.raw_rate_time) {
+            Input_LCM_Time.raw_rate_time = pixhawk2_lcm_message_aux.yaw_pitch_rate_time
             Input_LCM_Time.raw_rate_time_flag = true
         }
-        if (pixhawk2_lcm_message.roll_pitch_time > Input_LCM_Time.attitude_time) {
-            Input_LCM_Time.attitude_time = pixhawk2_lcm_message.roll_pitch_time
+        if (pixhawk2_lcm_message_aux.roll_pitch_time > Input_LCM_Time.attitude_time) {
+            Input_LCM_Time.attitude_time = pixhawk2_lcm_message_aux.roll_pitch_time
             Input_LCM_Time.attitude_time_flag = true
         }
 
-        var time = time choosen
+        if (Input_LCM_Time.airspeed_time_flag == true && Input_LCM_Time.raw_rate_time_flag == true && Input_LCM_Time.attitude_time_flag == true) {
 
-          filter.giveStateBlockAuxData("motionmodel", aux)
-
-        filter.propagate(Time(time))
-        filter.curTime
-        filter.getStateBlockEstimate("motionmodel")
-        filter.getStateBlockCovariance("motionmodel").diag()
+            //set flags to false to reset time check
+            Input_LCM_Time.airspeed_time_flag = false
+            Input_LCM_Time.raw_rate_time_flag = false
+            Input_LCM_Time.attitude_time_flag = false
 
 
 
+
+            filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
+
+            filter.propagate(Time(Input_LCM_Time.attitude_time))
+
+
+            var time_filter = filter.curTime
+            var X = filter.getStateBlockEstimate("motionmodel")
+            var P = filter.getStateBlockCovariance("motionmodel").diag()
+            println(time_filter.toString() + '\n' +
+                    X[0].toString() + '\t' + P[0].toString() + '\n' +
+                    X[1].toString() + '\t' + P[1].toString() + '\n' +
+                    X[2].toString() + '\t' + P[2].toString() + '\n' +
+                    X[3].toString() + '\t' + P[3].toString() + '\n' +
+                    X[4].toString() + '\t' + P[4].toString() + '\n' +
+                    X[5].toString() + '\t' + P[5].toString() + '\n' +
+                    X[6].toString() + '\t' + P[6].toString() + '\n' +
+                    X[7].toString() + '\t' + P[7].toString() + '\n' +
+                    X[8].toString() + '\t' + P[8].toString() + '\n')
+
+        }
 
 
         //flags for aux update. take time of last flag. make sure to update and not propogate past on an old time. skip aux data for that time?
-        /*
-       var airspeed: Double,
-       var airspeed_time: Double,
-       var pitchrate: Double,
-       var yawrate: Double,
-       var yaw_pitch_rate_time: Double,
-       var roll: Double,
-       var pitch :Double,
-       var roll_pitch_time: Double
-        */
+
 
      //println(pixhawk1.airspeed[1].toString()+ '\t' + pixhawk1.airspeed[0].toString())
         }
