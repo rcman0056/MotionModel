@@ -22,14 +22,13 @@ object FAIN_Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        var pixhawklcm = LCM.getSingleton()
-        pixhawklcm.subscribe("PIXHAWK2", FAIN_Subscribe()) //This subscribes to LCM message is kept open as long as main is func is running
-
-
 
 
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
                 buffer = Buffer())
+
+        var pixhawklcm = LCM.getSingleton()
+        pixhawklcm.subscribe("PIXHAWK2", FAIN_Subscribe(filter)) //This subscribes to LCM message is kept open as long as main is func is running
 
 
         val block = MotionModelBlock(label = "motionmodel")
@@ -41,15 +40,15 @@ object FAIN_Main {
         val initCov = zeros(9, 9)
         var tau_vv:Double = 2.0//time constant on alt_vv ... also set in MotionModelBlock
         var sigma_vv = 5.0 //sigma on alt_vv ... also set in MotionModelBlock
-        initCov[0..7,0..7]=eye(8)*.01    //add noise to states for now need to calculate input noise
+        initCov[0..7,0..7]=eye(8)*.1    //add noise to states for now need to calculate input noise
         initCov[8, 8] = 2*pow(sigma_vv,2)/tau_vv
         filter.setStateBlockCovariance(label = "motionmodel",
                     covariance = initCov)
 
-        //Set intial States
+        //Set initial states but they are not really used as LCM over writes them
         var initStates = zeros(9,1)
-        initStates[0] = 1
-        initStates[1] = 1
+        initStates[0] = 0
+        initStates[1] = 0
         initStates[2] = 1
         initStates[3] = 1
         initStates[4] = 1
@@ -59,10 +58,10 @@ object FAIN_Main {
         initStates[8] = 1
         filter.setStateBlockEstimate("motionmodel", initStates )
 
-        //while(){
+        while(true){
 
            //Need to include error
-        //}
+        }
     }
 }
 
@@ -112,17 +111,36 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
 
         if (Input_LCM_Time.airspeed_time_flag == true && Input_LCM_Time.raw_rate_time_flag == true && Input_LCM_Time.attitude_time_flag == true) {
 
+            var time = Input_LCM_Time.attitude_time
             //set flags to false to reset time check
             Input_LCM_Time.airspeed_time_flag = false
             Input_LCM_Time.raw_rate_time_flag = false
             Input_LCM_Time.attitude_time_flag = false
 
+            //Sets filter to initial LCM attitude time and initial state values
+            if (Input_LCM_Time.LCM_start_time_flag == false){
+                Input_LCM_Time.LCM_start_time_flag = true
+                filter.curTime = Time(time)
+
+
+                var initStates_LCM = zeros(9,1)
+                initStates_LCM[0] = 0
+                initStates_LCM[1] = 0
+                initStates_LCM[2] = pixhawk2.airspeed[1]  //Set Ground speed guess to Air Speed
+                initStates_LCM[3] = pixhawk2.heading[1]*Math.PI/180 //Set Course Angle to Yaw Angle and assume no wind
+                initStates_LCM[4] = .01
+                initStates_LCM[5] = .01
+                initStates_LCM[6] = pixhawk2.heading[1]*Math.PI/180 //Set Yaw Angle
+                initStates_LCM[7] = pixhawk2.global_relative_frame[3]
+                initStates_LCM[8] = .1
+                filter.setStateBlockEstimate("motionmodel", initStates_LCM )
+            }
 
 
 
             filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
 
-            filter.propagate(Time(Input_LCM_Time.attitude_time))
+            filter.propagate(Time(time))
 
 
             var time_filter = filter.curTime
@@ -155,4 +173,6 @@ object InputLCMTimeCheck{
     var raw_rate_time_flag = false
     var attitude_time = 0.0
     var attitude_time_flag = false
+    var LCM_start_time = 0.0
+    var LCM_start_time_flag = false
 }

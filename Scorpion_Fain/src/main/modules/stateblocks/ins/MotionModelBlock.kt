@@ -62,9 +62,16 @@ class MotionModelBlock(override var label: String) : StateBlock {
                 pitch = pitch,
                 tau_vv = tau_vv,
                 xhat = xhat)
-        val Q = generateQMotionModel(tau_vv = tau_vv, sigma_vv = sigma_vv)
+        val Q = generateQdMotionModel(airspeed = airspeed,
+                pitchrate = pitchrate,
+                yawrate = yawrate,
+                roll = roll,
+                pitch = pitch,
+                xhat=xhat,
+                tau_vv = tau_vv,
+                sigma_vv = sigma_vv)
         var Phi = expm(F * dt)
-        var f = { x: Matrix<Double> -> Phi * x }
+        var f = { x: Matrix<Double> -> Phi * x } //discrete time propagation
         // Second order approximation
         var Qd = (Phi * Q * Phi.T + Q) * dt / 2
 
@@ -75,12 +82,60 @@ class MotionModelBlock(override var label: String) : StateBlock {
      * Takes an instance of the [IMUModel] class and generates the continuous time covariance matrix Q(t) = E[w(t)w(t)^T]
      * describing the states.
      */
-    fun generateQMotionModel(tau_vv: Double, sigma_vv: Double): Matrix<Double> {
+    fun generateQdMotionModel(airspeed: Double,
+                              pitchrate: Double,
+                              yawrate: Double,
+                              roll: Double,
+                              pitch: Double,
+                              xhat: Matrix<Double>,
+                              tau_vv: Double,
+                              sigma_vv: Double): Matrix<Double> {
 
-        var q = zeros(1, 9)
-        q[0..7,0..7]=eye(8)*.01    //add noise to states for now need to figureout how to calculate input noise
-        q[0, 0..8] = zeros(1, 9)
-        q[8, 8] = 2*pow(sigma_vv,2)/tau_vv
+        //Calculate Qd of just motion model then add in Qd of vertical velocity
+
+        //Calculate Qd of motion model
+          //B=df(x)/du and Qd_mm = B*Q_ud*B^T
+          //Where Qd_mm is the motion model Qd and Q_ud is the estimated noise on each input in u. This assume Q_u*dt=Q_ud.
+
+
+        //current states
+        var Vg  = xhat[2]
+        var chi = xhat[3]
+        var Wn = xhat[4]
+        var We  = xhat[5]
+        var psi = xhat[6]
+        var Q_ud = eye(5)
+        val g       = 9.81 //Gravity m/s
+
+        //Inputs
+        var Va = airspeed
+        var q = pitchrate
+        var r = yawrate
+        var phi = roll
+        var theta = pitch
+
+        //Set noise on inputs
+        Q_ud[0,0] = 1 //Noise on Va airspeed (m/s)
+        Q_ud[1,1] = .1*Math.PI/180 //Noise on q pitch ang rate (rads)
+        Q_ud[2,2] = .1*Math.PI/180 //Noise on q pitch ang rate (rads)
+        Q_ud[3,3] = 1*Math.PI/180 //Noise on phi aircraft roll (rads)
+        Q_ud[4,4] = 1*Math.PI/180 //Noise on theta aircraft pitch (rads)
+
+
+        //Calculate B where B=df(x)/du
+        var eq_1=We*cos(psi)-Wn*sin(psi)
+        var eq_2=r*cos(phi)+q*sin(phi)
+        var eq_3=q*cos(phi)-r*sin(phi)
+        var eq_4=Vg*cos(theta)
+
+        var B=zeros(7,5)
+
+        B[2,0..4] = mat[eq_1*eq_2/eq_4, Va*sin(phi)*eq_1/eq_4, Va*cos(phi)*eq_1/eq_4, Va*eq_1*eq_3/eq_4,Va*sin(theta)*eq_1*eq_2/(Vg*cos(theta)*cos(theta))]
+        B[3,3]    = g*cos(chi-psi)/(Vg*cos(phi)*cos(phi))
+        B[6,0..4] = mat[0,sin(phi)/cos(theta), cos(phi)/cos(theta), eq_3/cos(theta), sin(theta)*eq_2/(cos(theta)*cos(theta))]
+
+        //calculate Qd_mm
+        var Qd_mm = B*Q_ud*B.T
 
         //add q for all states
         return q
@@ -128,7 +183,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
 
         // Fain Motion model Below
         // Beard & McClain Motion Model
-        val F = zeros(8, 8)
+        val F = zeros(9, 9)
         var psi_dot = q*sin(phi)/cos(theta)+r*cos(phi)/cos(theta)
         var Vg_dot = (Va*cos(phi)+Wn)*(-Va*psi_dot*sin(psi)+Va*sin(phi)+We)*(Va*psi_dot*cos(psi))/Vg
 
