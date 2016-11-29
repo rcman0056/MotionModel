@@ -72,12 +72,13 @@ class MotionModelBlock(override var label: String) : StateBlock {
                 tau_vv = tau_vv,
                 sigma_vv = sigma_vv)
         var Phi = expm(F * dt)
-        //Calculate f for the motion model and vertical velocity separately
 
-        //??????????????????/ what does phi*x really do
-        var f_vv = { x: Matrix<Double> -> Phi[7..8,7..8] * x[7..8] } //discrete time propagation for Vertical Velocity
+
+
+
 
         //X_new=X_dot *dt +x_old
+        //Right now f_mm returns X_dot*dt
         var f_mm = generatef_mmMotionModel(dt =dt,
                 airspeed = airspeed,
                 pitchrate = pitchrate,
@@ -89,12 +90,18 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var Q_vv = mat[0 , 0 end
                        0, 2*sigma_vv*sigma_vv/tau_vv]
         var Qd_vv = (Phi[7..8,7..8] * Q_vv * Phi[7..8,7..8].T + Q_vv) * dt / 2
-        //Combine f
-        var f = zeros(9)
-         f[0..6,0..6] = f_mm
-         f[7..8,7..8] = f_vv
+
+        //Calculate f function
+        var f = { x: Matrix<Double> ->
+
+               x[7..8,0]= Phi[7..8,7..8] * x[7..8,0]
+               x[0..6,0]= f_mm + x[0..6,0]
+               x
+        }
+
+
         //Combine Qd
-        var Qd = zeros(9)
+        var Qd = zeros(9,9)
         Qd[0..6,0..6] = Qd_mm
         Qd[7..8,7..8] = Qd_vv
         return Dynamics(f, Phi, Qd)
@@ -105,7 +112,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
      * describing the states.
      */
 
-    fun generatef_mmMotionModel(dt: Double
+    fun generatef_mmMotionModel(dt: Double,
                               airspeed: Double,
                               pitchrate: Double,
                               yawrate: Double,
@@ -182,11 +189,11 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var theta = pitch
 
         //Set noise on inputs
-        Q_ud[0,0] = 1 //Noise on Va airspeed (m/s)
-        Q_ud[1,1] = .1*Math.PI/180 //Noise on q pitch ang rate (rads)
-        Q_ud[2,2] = .1*Math.PI/180 //Noise on q pitch ang rate (rads)
-        Q_ud[3,3] = 1*Math.PI/180 //Noise on phi aircraft roll (rads)
-        Q_ud[4,4] = 1*Math.PI/180 //Noise on theta aircraft pitch (rads)
+        Q_ud[0,0] = 1*dt //Noise on Va airspeed (m/s)
+        Q_ud[1,1] = (.1*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[2,2] = (.1*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[3,3] = (1*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
+        Q_ud[4,4] = (1*Math.PI/180)*dt //Noise on theta aircraft pitch (rads)
 
 
         //Calculate B where B=df(x)/du
