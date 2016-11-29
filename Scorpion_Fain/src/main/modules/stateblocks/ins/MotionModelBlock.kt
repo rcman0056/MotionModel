@@ -62,7 +62,8 @@ class MotionModelBlock(override var label: String) : StateBlock {
                 pitch = pitch,
                 tau_vv = tau_vv,
                 xhat = xhat)
-        val Q = generateQdMotionModel(airspeed = airspeed,
+        val Qd_mm = generateQd_mmMotionModel(dt = dt,
+                airspeed = airspeed,
                 pitchrate = pitchrate,
                 yawrate = yawrate,
                 roll = roll,
@@ -71,10 +72,31 @@ class MotionModelBlock(override var label: String) : StateBlock {
                 tau_vv = tau_vv,
                 sigma_vv = sigma_vv)
         var Phi = expm(F * dt)
-        var f = { x: Matrix<Double> -> Phi * x } //discrete time propagation
-        // Second order approximation
-        var Qd = (Phi * Q * Phi.T + Q) * dt / 2
+        //Calculate f for the motion model and vertical velocity separately
 
+        //??????????????????/ what does phi*x really do
+        var f_vv = { x: Matrix<Double> -> Phi[7..8,7..8] * x[7..8] } //discrete time propagation for Vertical Velocity
+
+        //X_new=X_dot *dt +x_old
+        var f_mm = generatef_mmMotionModel(dt =dt,
+                airspeed = airspeed,
+                pitchrate = pitchrate,
+                yawrate = yawrate,
+                roll = roll,
+                pitch = pitch,
+                xhat=xhat)
+        // Second order approximation of Vertical Velocity Noise
+        var Q_vv = mat[0 , 0 end
+                       0, 2*sigma_vv*sigma_vv/tau_vv]
+        var Qd_vv = (Phi[7..8,7..8] * Q_vv * Phi[7..8,7..8].T + Q_vv) * dt / 2
+        //Combine f
+        var f = zeros(9)
+         f[0..6,0..6] = f_mm
+         f[7..8,7..8] = f_vv
+        //Combine Qd
+        var Qd = zeros(9)
+        Qd[0..6,0..6] = Qd_mm
+        Qd[7..8,7..8] = Qd_vv
         return Dynamics(f, Phi, Qd)
     }
 
@@ -82,7 +104,49 @@ class MotionModelBlock(override var label: String) : StateBlock {
      * Takes an instance of the [IMUModel] class and generates the continuous time covariance matrix Q(t) = E[w(t)w(t)^T]
      * describing the states.
      */
-    fun generateQdMotionModel(airspeed: Double,
+
+    fun generatef_mmMotionModel(dt: Double
+                              airspeed: Double,
+                              pitchrate: Double,
+                              yawrate: Double,
+                              roll: Double,
+                              pitch: Double,
+                              xhat: Matrix<Double>): Matrix<Double> {
+
+        //current states
+        var Vg   = xhat[2]
+        var chi  = xhat[3]
+        var Wn   = xhat[4]
+        var We   = xhat[5]
+        var psi  = xhat[6]
+        val g    = 9.81 //Gravity m/s
+
+        //Inputs
+        var Va = airspeed
+        var q = pitchrate
+        var r = yawrate
+        var phi = roll
+        var theta = pitch
+
+        var f_mm = zeros(7,1)
+        var psi_dot = q*sin(phi)/cos(theta)+r*cos(phi)/cos(theta)
+        var Vg_dot = (Va*cos(phi)+Wn)*(-Va*psi_dot*sin(psi)+Va*sin(phi)+We)*(Va*psi_dot*cos(psi))/Vg
+
+        f_mm[0] = Vg*cos(chi)*dt
+        f_mm[1] = Vg*sin(chi)*dt
+        f_mm[2] = Vg_dot*dt
+        f_mm[3] = g*tan(phi)*cos(chi-psi)/Vg*dt
+        //f_mm[4] = 0*dt
+        //f_mm[5] = 0*dt
+        f_mm[6] = psi_dot*dt
+
+
+        return f_mm
+    }
+
+
+    fun generateQd_mmMotionModel( dt: Double,
+                              airspeed: Double,
                               pitchrate: Double,
                               yawrate: Double,
                               roll: Double,
@@ -91,21 +155,24 @@ class MotionModelBlock(override var label: String) : StateBlock {
                               tau_vv: Double,
                               sigma_vv: Double): Matrix<Double> {
 
-        //Calculate Qd of just motion model then add in Qd of vertical velocity
+
+
+
+
 
         //Calculate Qd of motion model
           //B=df(x)/du and Qd_mm = B*Q_ud*B^T
-          //Where Qd_mm is the motion model Qd and Q_ud is the estimated noise on each input in u. This assume Q_u*dt=Q_ud.
+          //Where Qd_mm is the motion model Qd and Q_ud is the estimated noise on each input in u. This assumes Q_u*dt=Q_ud.
 
 
         //current states
-        var Vg  = xhat[2]
-        var chi = xhat[3]
-        var Wn = xhat[4]
-        var We  = xhat[5]
-        var psi = xhat[6]
+        var Vg   = xhat[2]
+        var chi  = xhat[3]
+        var Wn   = xhat[4]
+        var We   = xhat[5]
+        var psi  = xhat[6]
         var Q_ud = eye(5)
-        val g       = 9.81 //Gravity m/s
+        val g    = 9.81 //Gravity m/s
 
         //Inputs
         var Va = airspeed
@@ -138,7 +205,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var Qd_mm = B*Q_ud*B.T
 
         //add q for all states
-        return q
+        return Qd_mm
         //return fill(rows = 15, cols = 15) { row, col -> if (row == col) pow(q[row], 2) else 0.0 }
     }
 
