@@ -31,9 +31,11 @@ object FAIN_Main {
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
                 buffer = Buffer())
 
-        var pixhawklcm = LCM.getSingleton()
-        pixhawklcm.subscribe("PIXHAWK2", FAIN_Subscribe(filter)) //This subscribes to LCM message is kept open as long as main is func is running
+        var pixhawk2lcm = LCM.getSingleton()
+        pixhawk2lcm.subscribe("PIXHAWK2", FAIN_Subscribe(filter)) //This subscribes to LCM message is kept open as long as main is func is running
 
+        var pixhawk1lcm = LCM.getSingleton()
+        pixhawk1lcm.subscribe("PIXHAWK1", FAIN_Subscribe(filter))
 
         val block = MotionModelBlock(label = "motionmodel")
             filter.addStateBlock(block)
@@ -132,8 +134,8 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
                 initStates_LCM[1] = 0
                 initStates_LCM[2] = pixhawk2.airspeed[1]  //Set Ground speed guess to Air Speed
                 initStates_LCM[3] = pixhawk2.heading[1]*Math.PI/180 //Set Course Angle to Yaw Angle and assume no wind
-                initStates_LCM[4] = 0.001
-                initStates_LCM[5] = 0.001
+                initStates_LCM[4] = 0
+                initStates_LCM[5] = 0
                 initStates_LCM[6] = pixhawk2.heading[1]*Math.PI/180 //Set Yaw Angle
                 initStates_LCM[7] = pixhawk2.global_relative_frame[3]
                 initStates_LCM[8] = .01
@@ -153,7 +155,7 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
             var time_filter = filter.curTime
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
-           /* println(time_filter.toString() + '\n' +
+         /*   println(time_filter.toString() + '\n' +
                     X[0].toString() + '\t' + P[0].toString() + '\n' +
                     X[1].toString() + '\t' + P[1].toString() + '\n' +
                     X[2].toString() + '\t' + P[2].toString() + '\n' +
@@ -162,12 +164,13 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
                     X[5].toString() + '\t' + P[5].toString() + '\n' +
                     X[6].toString() + '\t' + P[6].toString() + '\n' +
                     X[7].toString() + '\t' + P[7].toString() + '\n' +
-                    X[8].toString() + '\t' + P[8].toString() + '\n')
-            */
+                    X[8].toString() + '\t' + P[8].toString() + '\n'
+                    )
+*/
            // var current_data = mat[time_filter.time, X]
             var current_data = hstack(mat[time_filter.time], X)
             Export_Data = vstack(Export_Data, current_data)
-            println(Export_Data.numRows().toString() + '\n')
+            //println(Export_Data.numRows().toString() + '\n')
             if (Export_Data.numRows() >1000){
                 WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt")
                 exitProcess(0)
