@@ -4,6 +4,7 @@ import exlcm.pixhawk
 
 import golem.*
 import golem.containers.Time
+import golem.matrix.Matrix
 
 import lcm.lcm.LCM
 import lcm.lcm.LCMDataInputStream
@@ -11,11 +12,14 @@ import lcm.lcm.LCMSubscriber
 import modules.stateblocks.ins.MotionModelAuxData
 import modules.stateblocks.ins.MotionModelBlock
 import scorpion.buffers.Buffer
-
+import java.io.*
+import java.util.*
+import java.nio.ByteBuffer
 import scorpion.filters.sensor.StandardSensorEKF
+import kotlin.system.exitProcess
 
 var Input_LCM_Time = InputLCMTimeCheck  //Made as a global variable
-
+var Export_Data = zeros(1,10) //used to export the data
 
 // Main Function
 object FAIN_Main {
@@ -40,7 +44,7 @@ object FAIN_Main {
         val initCov = zeros(9, 9)
         var tau_vv:Double = 2.0//time constant on alt_vv ... also set in MotionModelBlock
         var sigma_vv = 5.0 //sigma on alt_vv ... also set in MotionModelBlock
-        initCov[0..7,0..7]=eye(8)*.1    //add noise to states for now need to calculate input noise
+        //initCov[0..7,0..7]=eye(8,8)*.001    //add noise to states for now need to calculate input noise
         initCov[8, 8] = 2*pow(sigma_vv,2)/tau_vv
         filter.setStateBlockCovariance(label = "motionmodel",
                     covariance = initCov)
@@ -57,7 +61,7 @@ object FAIN_Main {
         initStates[7] = 1
         initStates[8] = 1
         filter.setStateBlockEstimate("motionmodel", initStates )
-
+        Export_Data[0,1..9]=initStates.T
         while(true){
 
            //Need to include error
@@ -128,11 +132,11 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
                 initStates_LCM[1] = 0
                 initStates_LCM[2] = pixhawk2.airspeed[1]  //Set Ground speed guess to Air Speed
                 initStates_LCM[3] = pixhawk2.heading[1]*Math.PI/180 //Set Course Angle to Yaw Angle and assume no wind
-                initStates_LCM[4] = .01
-                initStates_LCM[5] = .01
+                initStates_LCM[4] = 0.001
+                initStates_LCM[5] = 0.001
                 initStates_LCM[6] = pixhawk2.heading[1]*Math.PI/180 //Set Yaw Angle
                 initStates_LCM[7] = pixhawk2.global_relative_frame[3]
-                initStates_LCM[8] = .1
+                initStates_LCM[8] = .01
                 filter.setStateBlockEstimate("motionmodel", initStates_LCM )
             }
 
@@ -143,9 +147,12 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
             filter.propagate(Time(time))
 
 
+
+
+
             var time_filter = filter.curTime
-            var X = filter.getStateBlockEstimate("motionmodel")
-            var P = filter.getStateBlockCovariance("motionmodel").diag()
+            var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
+            var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
             println(time_filter.toString() + '\n' +
                     X[0].toString() + '\t' + P[0].toString() + '\n' +
                     X[1].toString() + '\t' + P[1].toString() + '\n' +
@@ -157,6 +164,14 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
                     X[7].toString() + '\t' + P[7].toString() + '\n' +
                     X[8].toString() + '\t' + P[8].toString() + '\n')
 
+           // var current_data = mat[time_filter.time, X]
+            var current_data = hstack(mat[time_filter.time], X)
+            Export_Data = vstack(Export_Data, current_data)
+
+            if (Export_Data.numRows() >100){
+                WriteToFileBinary(Export_Data, "/home/suas/Desktop/Filter_Output/SampleRun.txt")
+                exitProcess(0)
+            }
         }
 
 
@@ -175,4 +190,28 @@ object InputLCMTimeCheck{
     var attitude_time_flag = false
     var LCM_start_time = 0.0
     var LCM_start_time_flag = false
+}
+
+
+fun WriteToFileBinary(results: Matrix<Double>, fileName:String){
+    System.out.println("Writing results to binary file...")
+    var doubleArray = DoubleArray(results.numRows()*results.numCols())
+    for(i in 0..results.numRows()-1){
+        for(j in 0..results.numCols()-1){
+            doubleArray.set(j+results.numCols()*i,results.get(i,j))
+        }
+    }
+    val byteArray = ToByteArray(doubleArray)
+    val fileTarget = File(fileName)
+    fileTarget.writeBytes(byteArray)
+    System.out.println("...results written")
+}
+
+fun ToByteArray(doubleArray: DoubleArray): ByteArray{
+    val times = 8 //doubleSize/byteSize
+    var bytes = ByteArray(doubleArray.size*times)
+    for(i in 0..doubleArray.size-1){
+        ByteBuffer.wrap(bytes, i*times, times).putDouble(doubleArray[i])
+    }
+    return bytes
 }

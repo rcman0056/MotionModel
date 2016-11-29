@@ -50,8 +50,10 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var yawrate = aux.yawrate
         var roll = aux.roll
         var pitch = aux.pitch
-        var tau_vv:Double = 2.0//time constant on alt_vv
-        var sigma_vv = 5.0 //sigma on alt_vv
+
+
+        var tau_vv:Double = 2.0//time constant on alt_vv = 2.0
+        var sigma_vv = 1.0 //sigma on alt_vv = 5.0
 
         val dt = timeTo.time - timeFrom.time
 
@@ -189,11 +191,11 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var theta = pitch
 
         //Set noise on inputs
-        Q_ud[0,0] = 1*dt //Noise on Va airspeed (m/s)
-        Q_ud[1,1] = (.1*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
-        Q_ud[2,2] = (.1*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
-        Q_ud[3,3] = (1*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
-        Q_ud[4,4] = (1*Math.PI/180)*dt //Noise on theta aircraft pitch (rads)
+        Q_ud[0,0] = .001*dt //Noise on Va airspeed (m/s)
+        Q_ud[1,1] = (.001*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[2,2] = (.001*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[3,3] = (.001*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
+        Q_ud[4,4] = (.001*Math.PI/180)*dt //Noise on theta aircraft pitch (rads)
 
 
         //Calculate B where B=df(x)/du

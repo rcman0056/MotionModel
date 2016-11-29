@@ -1,0 +1,6 @@
+filename= '/home/suas/Desktop/Filter_Output/SampleRun.txt';
+fid = fopen(filename, 'r');
+data = fread(fid,'double',0,'b');
+fclose(fid);
+numCols = 10;
+data = reshape(data,numCols,[])';
