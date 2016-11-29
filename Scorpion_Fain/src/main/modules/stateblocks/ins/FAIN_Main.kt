@@ -153,7 +153,7 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
             var time_filter = filter.curTime
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
-            println(time_filter.toString() + '\n' +
+           /* println(time_filter.toString() + '\n' +
                     X[0].toString() + '\t' + P[0].toString() + '\n' +
                     X[1].toString() + '\t' + P[1].toString() + '\n' +
                     X[2].toString() + '\t' + P[2].toString() + '\n' +
@@ -163,13 +163,13 @@ class FAIN_Subscribe(var filter:StandardSensorEKF ): LCMSubscriber {
                     X[6].toString() + '\t' + P[6].toString() + '\n' +
                     X[7].toString() + '\t' + P[7].toString() + '\n' +
                     X[8].toString() + '\t' + P[8].toString() + '\n')
-
+            */
            // var current_data = mat[time_filter.time, X]
             var current_data = hstack(mat[time_filter.time], X)
             Export_Data = vstack(Export_Data, current_data)
-
-            if (Export_Data.numRows() >100){
-                WriteToFileBinary(Export_Data, "/home/suas/Desktop/Filter_Output/SampleRun.txt")
+            println(Export_Data.numRows().toString() + '\n')
+            if (Export_Data.numRows() >1000){
+                WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt")
                 exitProcess(0)
             }
         }
