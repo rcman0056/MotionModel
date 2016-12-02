@@ -1,0 +1,10 @@
+filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data.txt';
+fid = fopen(filename, 'r');
+data = fread(fid,'double',0,'b');
+fclose(fid);
+numCols = 6;
+Pixhawk_Data = reshape(data,numCols,[])';
+Pixhawk_Data = 
+Description = '[Mag Time(s),xmag(milli-tesla),ymag(milli-tesla),zmag(milli-tesla),Heading Time(s),Heading(deg)]';
+
+save('Pixhawk_Data_Raw', [Pixhawk_Data, Description] )
