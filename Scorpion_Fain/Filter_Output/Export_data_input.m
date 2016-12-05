@@ -3,6 +3,7 @@ fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
 numCols = 14;
+
 data = reshape(data,numCols,[])';
 data_deg = data;
 data_deg(:,5)=data(:,5)*(180/pi);
@@ -10,7 +11,9 @@ data_deg(:,8)=data(:,8)*(180/pi);
 
 
 figure(1)
-plot(data(:,3),data(:,2),'X')
+plot(data(:,13),data(:,12),'r')
+hold on
+plot(data(:,3),data(:,2),'g')
 axis equal
 title('Flight Path')
 

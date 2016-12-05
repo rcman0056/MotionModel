@@ -107,8 +107,8 @@ class MotionModelBlock(override var label: String) : StateBlock {
         Qd[0..6,0..6] = Qd_mm
         Qd[7..8,7..8] = Qd_vv
 
-        //println("Qd="+ Qd)
-       // println("Phi=" + Phi)
+        println("Qd="+ Qd)
+        println("Phi=" + Phi)
        // println("F" + F)
         //println("dt=" + dt)
         return Dynamics(f, Phi, Qd)
@@ -143,7 +143,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var theta = pitch
 
         var f_mm = zeros(7,1)
-        var psi_dot = q*sin(phi)/cos(theta)+r*cos(phi)/cos(theta)
+        var psi_dot = (q*sin(phi)/cos(theta))+(r*cos(phi)/cos(theta))
         var Vg_dot = (((Va*cos(phi)+Wn)*(-Va*psi_dot*sin(psi)))+((Va*sin(phi)+We)*(Va*psi_dot*cos(psi))))/Vg
 
         f_mm[0] = Vg*cos(chi)*dt
