@@ -11,10 +11,17 @@ import golem.matrix.*
  */
 data class FainMeasurements(var range: Double,
                               var range_time: Double,
+                              var range_Lat: Double,
+                              var range_Lon: Double,
+                              var range_alt: Double,
                               var GPS_Linux_time: Double, //This is not GPS time just linux time the GPS was saved
                               var GPS_lat: Double,
                               var GPS_lon: Double,
-                              var GPS_height_agl: Double){
+                              var GPS_height_agl: Double,
+                              var GPS_origin_lat: Double,
+                              var GPS_origin_lon: Double,
+                              var GPS_origin_alt: Double,
+                              var GPS_origin_received: Boolean){
 
 
 

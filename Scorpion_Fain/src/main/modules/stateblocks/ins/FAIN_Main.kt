@@ -1,6 +1,8 @@
 
-// finish this first
+
 import exlcm.pixhawk
+import exlcm.range
+import exlcm.range_sensor
 
 import golem.*
 import golem.containers.Time
@@ -10,6 +12,7 @@ import lcm.lcm.LCM
 import lcm.lcm.LCMDataInputStream
 import lcm.lcm.LCMSubscriber
 import main.modules.stateblocks.ins.HeadingMeasurementProcessor
+import main.modules.stateblocks.ins.RangeMeasurementProcessor
 import modules.stateblocks.ins.FainMeasurements
 import modules.stateblocks.ins.MotionModelAuxData
 import modules.stateblocks.ins.MotionModelBlock
@@ -27,6 +30,7 @@ var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM me
 var Export_Data = zeros(1,14) //used to export the filter output data
 var Export_Pixhawk = zeros(1,6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn = false
+var RangeUpdateOn = true
 var SavePixhawkData = false
 
 
@@ -38,14 +42,17 @@ object FAIN_Main {
     fun main(args: Array<String>) {
         var P_count = 0.0
 
-        var LCMMeasurements = FainMeasurements(0.0,0.0,0.0,0.0,0.0,0.0)
+
+        var LCMMeasurements =   FainMeasurements(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,false)
+        var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
+
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
                 buffer = Buffer())
 
         var LCMChannels = LCM.getSingleton()
-        LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter,LCMMeasurements,P_count)) //This subscribes to LCM message is kept open as long as main is func is running
+        LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter,LCMMeasurements,Input_LCM_Time,P_count)) //This subscribes to LCM message is kept open as long as main is func is running
         LCMChannels.subscribe("PIXHAWK1", Subscribe_Pixhawk1(filter,LCMMeasurements))
-
+        LCMChannels.subscribe("RANGE", Subscribe_Range(filter,LCMMeasurements,Input_LCM_Time))
 
 
         val block = MotionModelBlock(label = "motionmodel")
@@ -56,15 +63,24 @@ object FAIN_Main {
         val HeadingUpdate = "HeadingUpdate"
         filter.addMeasurementProcessor(HeadingMeasurementProcessor(HeadingUpdate,"motionmodel"))
 
+        //Create HeadingUpdate Processor
+        val RangeUpdate = "RangeUpdate"
+        filter.addMeasurementProcessor(RangeMeasurementProcessor(RangeUpdate, "motionmodel"))
 
 
         //Set Intial Cov
-        var initCov = eye(9, 9)*.01
+        var initCov = zeros(9, 9)
         var tau_vv:Double = 2.0//time constant on alt_vv ... also set in MotionModelBlock
         var sigma_vv = 5.0 //sigma on alt_vv ... also set in MotionModelBlock
-        //initCov[0..7,0..7]=eye(8,8)*.001    //add noise to states for now need to calculate input noise
-        initCov[6,6]= 8*Math.PI/180
-        initCov[8, 8] = 2*pow(sigma_vv,2)/tau_vv
+        initCov[0,0]  = 3                         //North (m)
+        initCov[1,1]  = 3                         //East  (m)
+        initCov[2,2]  = 3                         //Vg Ground Speed (m/s)
+        initCov[3,3]  = 10*Math.PI/180            //chi Course Angle (rads)
+        initCov[4,4]  = 1                         //Wind North (m/s)
+        initCov[5,5]  = 1                         //Wind East  (m/s)
+        initCov[6,6]  = 10*Math.PI/180            //Yaw (rads)
+        initCov[7,7]  = 1                         //Alt (m)
+        initCov[8,8]  = 2*pow(sigma_vv,2)/tau_vv  //Alt_VV
         filter.setStateBlockCovariance(label = "motionmodel",
                     covariance = initCov)
 
@@ -99,17 +115,39 @@ class Subscribe_Pixhawk1(var filter:StandardSensorEKF, var LCMMeasurements: Fain
         LCMMeasurements.GPS_lon = pixhawk1.global_relative_frame[2]
         LCMMeasurements.GPS_height_agl = pixhawk1.global_relative_frame[3]
 
+
+
         //save off origin
-        if (GPS_origin_vars.GPS_origin_recieved == false){
-            GPS_origin_vars.GPS_origin_recieved = true
-            GPS_origin_vars.GPS_origin = mat[LCMMeasurements.GPS_lat,LCMMeasurements.GPS_lon,LCMMeasurements.GPS_height_agl]
+        if (LCMMeasurements.GPS_origin_received == false){
+            LCMMeasurements.GPS_origin_received = true
+            LCMMeasurements.GPS_origin_lat = LCMMeasurements.GPS_lat
+            LCMMeasurements.GPS_origin_lon = LCMMeasurements.GPS_lon
+            LCMMeasurements.GPS_origin_alt = LCMMeasurements.GPS_height_agl
         }
 
     }
 }
 
+class Subscribe_Range(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements, Input_LCM_Time: InputLCMTimeCheck): LCMSubscriber {
+
+    // comments
+    override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
+        //var range_data = (range(p2)) //Use this for the Telemaster data that uses the real ranging data
+        var range_data = (range_sensor(p2))
+
+        LCMMeasurements.range_time = range_data.timestamp
+        LCMMeasurements.range = range_data.range_mag.toDouble()
+        LCMMeasurements.range_Lat = range_data.mav_position[0].toDouble()
+        LCMMeasurements.range_Lon = range_data.mav_position[1].toDouble()
+        LCMMeasurements.range_alt = range_data.mav_position[2].toDouble()
+
+        Input_LCM_Time.range_time = LCMMeasurements.range_time
+        Input_LCM_Time.range_time_flag = true
+
+    }
+}
 //Subscriber for Pixhawk2 with filter updates
-class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements, var P_count:  Double ): LCMSubscriber {
+class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements,var Input_LCM_Time:InputLCMTimeCheck, var P_count:  Double ): LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream){
@@ -199,16 +237,15 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
 
 
 
-
+/*
             // Set P to always be symmetric..This will likely be fixed in future Scorpion Jar Files
-            // if (P_count > 200){
-            //       P_count = 0.0
+            if (P_count > 200){
+                 P_count = 0.0
             var P_1 = filter.getStateBlockCovariance("motionmodel")
             P_1 = (P_1 + P_1.T) / 2
-            filter.setStateBlockCovariance("motionmodel", P_1)
-        //}
-         //   else{P_count = P_count + 1}
-
+            filter.setStateBlockCovariance("motionmodel", P_1) }
+            else{P_count = P_count + 1}
+*/
             //Give Current Aux Data to the Filter
             filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
             //Propagate to the time based on the LCm message time from Input_LCM_Time
@@ -236,12 +273,12 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
 
             //Get current GPS value:Note this is at 4hz while the Filter propagates at ~10Hz
 
-                if(GPS_origin_vars.GPS_origin_recieved == true){
+                if(LCMMeasurements.GPS_origin_received == true){
                     var current_gps = mat[LCMMeasurements.GPS_Linux_time,LCMMeasurements.GPS_lat,LCMMeasurements.GPS_lon,LCMMeasurements.GPS_height_agl]
                     //Convert to NEU using first received GPS value as origin
                     var current_gps_NE_AGL = mat[current_gps[0],
-                                       deltaLatToNorth((current_gps[1]-GPS_origin_vars.GPS_origin[0])*Math.PI/180,current_gps[1]*Math.PI/180,GPS_origin_vars.GPS_origin[2]),
-                                        deltaLonToEast((current_gps[2]-GPS_origin_vars.GPS_origin[1])*Math.PI/180,current_gps[1]*Math.PI/180,GPS_origin_vars.GPS_origin[2]),
+                                       deltaLatToNorth((current_gps[1]-LCMMeasurements.GPS_origin_lat)*Math.PI/180,current_gps[1]*Math.PI/180,X[7]),//Diff in rads,Current lat,Estimated ALT
+                                        deltaLonToEast((current_gps[2]-LCMMeasurements.GPS_origin_lon)*Math.PI/180,current_gps[1]*Math.PI/180,X[7]),
                                         current_gps[3]]
 
                     // var current_data = mat[time_filter.time, X,GPS _Data]
@@ -286,7 +323,29 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
 
         }
 
+        if (Input_LCM_Time.range_time_flag == true && Input_LCM_Time.range_time > filter.curTime.time && Input_LCM_Time.LCM_start_time_flag==true && RangeUpdateOn == true){
+            Input_LCM_Time.range_time_flag = false
 
+
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //filter.giveMeasurementProcessorAuxData("HeadingUpdate", pixhawk2_lcm_message_aux)
+
+            val RangeMeasurement = Measurement(processorLabel = "RangeUpdate",
+                    timeReceived = Time(Input_LCM_Time.range_time),
+                    timeValidity = Time(Input_LCM_Time.range_time),
+                    measurementData = mat[LCMMeasurements.range],
+                    auxData = LCMMeasurements,
+                    measurementCov = mat[15])
+
+            filter.update(RangeMeasurement)
+            var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
+            var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
+            println('\n' + "An Update happened for the Range to" + '\n'+ filter.curTime.time + '\n'
+                    + X[0].toString() + '\t' + P[0].toString() + '\n'
+                    + X[1].toString() + '\t' + P[1].toString() + '\n')
+
+
+        }
 
 
         //flags for aux update. take time of last flag. make sure to update and not propagate past on an old time. skip aux data for that time?
@@ -306,10 +365,8 @@ object InputLCMTimeCheck {
     var LCM_start_time_flag = false
     var heading_time = 0.0
     var heading_time_flag = false
-}
-object GPS_origin_vars{
-    var GPS_origin = mat[0.0,0.0,0.0]
-    var GPS_origin_recieved = false
+    var range_time = 0.0
+    var range_time_flag = false
 }
 
 

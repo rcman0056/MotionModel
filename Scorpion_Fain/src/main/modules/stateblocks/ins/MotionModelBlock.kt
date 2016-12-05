@@ -107,9 +107,9 @@ class MotionModelBlock(override var label: String) : StateBlock {
         Qd[0..6,0..6] = Qd_mm
         Qd[7..8,7..8] = Qd_vv
 
-        println("Qd="+ Qd)
-        println("Phi=" + Phi)
-       // println("F" + F)
+        //println("Qd="+ Qd)
+        //println("Phi=" + Phi)
+        //println("F" + F)
         //println("dt=" + dt)
         return Dynamics(f, Phi, Qd)
     }
@@ -196,11 +196,11 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var theta = pitch
 
         //Set noise on inputs
-        Q_ud[0,0] = .001*dt //Noise on Va airspeed (m/s)
-        Q_ud[1,1] = (.001*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
-        Q_ud[2,2] = (.001*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
-        Q_ud[3,3] = (.001*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
-        Q_ud[4,4] = (.001*Math.PI/180)*dt //Noise on theta aircraft pitch (rads)
+        Q_ud[0,0] = 1*dt //Noise on Va airspeed (m/s)
+        Q_ud[1,1] = (.5*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[2,2] = (.5*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[3,3] = (.5*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
+        Q_ud[4,4] = (.5*Math.PI/180)*dt //Noise on theta aircraft pitch (rads)
 
 
         //Calculate B where B=df(x)/du
