@@ -237,15 +237,16 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
 
 
 
-/*
+
             // Set P to always be symmetric..This will likely be fixed in future Scorpion Jar Files
-            if (P_count > 200){
-                 P_count = 0.0
-            var P_1 = filter.getStateBlockCovariance("motionmodel")
-            P_1 = (P_1 + P_1.T) / 2
-            filter.setStateBlockCovariance("motionmodel", P_1) }
-            else{P_count = P_count + 1}
-*/
+      //      if (P_count > 100){
+        //         P_count = 0.0
+         //   var P_1 = filter.getStateBlockCovariance("motionmodel")
+         //   P_1 = (P_1 + P_1.T) / 2
+          //  filter.setStateBlockCovariance("motionmodel", P_1)
+        //}
+       //     else{P_count = P_count + 1}
+
             //Give Current Aux Data to the Filter
             filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
             //Propagate to the time based on the LCm message time from Input_LCM_Time
@@ -299,7 +300,7 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
         }
 
 //If the model does not propagate or the measurement time is after the filter time then propagate
-
+        //Heading UpDate Call
        if (Input_LCM_Time.heading_time_flag == true && Input_LCM_Time.heading_time > filter.curTime.time && Input_LCM_Time.LCM_start_time_flag==true && HeadingUpdateOn == true){
             Input_LCM_Time.heading_time_flag = false
 
@@ -323,6 +324,12 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
 
         }
 
+        println("P="+ P_count.toString()+ "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ '\n')
+        if (P_count > 100){
+                 P_count = 0.0
+
+
+
         if (Input_LCM_Time.range_time_flag == true && Input_LCM_Time.range_time > filter.curTime.time && Input_LCM_Time.LCM_start_time_flag==true && RangeUpdateOn == true){
             Input_LCM_Time.range_time_flag = false
 
@@ -341,11 +348,12 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
             println('\n' + "An Update happened for the Range to" + '\n'+ filter.curTime.time + '\n'
-                    + X[0].toString() + '\t' + P[0].toString() + '\n'
-                    + X[1].toString() + '\t' + P[1].toString() + '\n')
+                    + "Pn="+ X[0].toString() + '\t' + P[0].toString() + '\n'
+                    + "Pe="+ X[1].toString() + '\t' + P[1].toString() + '\n'
+                    + "Alt=" + X[7].toString() + '\t' + P[7].toString() + '\n')
 
 
-        }
+        } }else{P_count = P_count + 1}
 
 
         //flags for aux update. take time of last flag. make sure to update and not propagate past on an old time. skip aux data for that time?

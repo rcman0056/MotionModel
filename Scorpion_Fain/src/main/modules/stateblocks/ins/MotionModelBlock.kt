@@ -107,8 +107,8 @@ class MotionModelBlock(override var label: String) : StateBlock {
         Qd[0..6,0..6] = Qd_mm
         Qd[7..8,7..8] = Qd_vv
 
-        //println("Qd="+ Qd)
-        //println("Phi=" + Phi)
+        println("Qd="+ Qd)
+        println("Phi=" + Phi)
         //println("F" + F)
         //println("dt=" + dt)
         return Dynamics(f, Phi, Qd)
