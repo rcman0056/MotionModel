@@ -16,9 +16,8 @@ data class MotionModelAuxData(var airspeed: Double,
                               var yaw_pitch_rate_time: Double,
                               var roll: Double,
                               var pitch :Double,
-                              var roll_pitch_time: Double,
-                              var heading_time: Double,
-                              var heading: Double){
+                              var roll_pitch_time: Double
+                              ){
 
 
 
