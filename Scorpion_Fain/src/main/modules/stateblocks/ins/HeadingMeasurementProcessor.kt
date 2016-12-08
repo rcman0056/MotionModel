@@ -58,8 +58,8 @@ class HeadingMeasurementProcessor : MeasurementProcessor {
         // Constructs a 1x1 matrix for H using the parameter HValue we received before
         var H = mat[0,0,0,0,0,0,1,0,0]
         // Use the measurement container's covariance
-        var R = meas.measurementCov
-        println("z="+ z*(180/Math.PI) + "\n" + "xhat=" + xhat[6]*(180/Math.PI) + "\n" + "meas=" + meas.measurementData*(180/Math.PI))
+        var R = meas.measurementCov  //sigma^2
+        //println("z="+ z*(180/Math.PI) + "\n" + "xhat=" + xhat[6]*(180/Math.PI) + "\n" + "meas=" + meas.measurementData*(180/Math.PI))
         // Make a inner function "h" to return to the filter
         fun h(x: Matrix<Double>): Matrix<Double> {
             return H * x
