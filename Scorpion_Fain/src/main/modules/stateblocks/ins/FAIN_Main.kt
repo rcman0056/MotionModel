@@ -36,7 +36,7 @@ var Export_Pixhawk = zeros(1,6) // used to export Pixhawk data. Size depends on 
 var HeadingUpdateOn = false
 var RangeUpdateOn = true
 var AltitudeUpdateOn = false
-
+var VOUpdateOn = false
 var SavePixhawkData = false
 
 
@@ -118,6 +118,7 @@ class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasu
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
+        if (VOUpdateOn == true){
         var Camera = (rawopticalcameraimage(p2))
 
         var Image = Camera.data
@@ -127,7 +128,7 @@ class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasu
 
         //Create Data type for Image processor
         //Byte Array [height width row0 row1 row2....row(height)]
-
+OpticalFlow_Carson()
         Image_data.New_Image[0] = height
         Image_data.New_Image[1] = width
         for(i in 0..height-1) {
@@ -155,7 +156,7 @@ class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasu
         }
 
 
-}
+}}
 }
 
 
