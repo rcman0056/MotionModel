@@ -218,9 +218,9 @@ class MotionModelBlock(override var label: String) : StateBlock {
         //calculate Qd_mm
         var Qd_mm = B*Q_ud*B.T
 
-        //add q for all states
+        //add q for all states of motion model
         return Qd_mm
-        //return fill(rows = 15, cols = 15) { row, col -> if (row == col) pow(q[row], 2) else 0.0 }
+
     }
 
     //@formatter:off

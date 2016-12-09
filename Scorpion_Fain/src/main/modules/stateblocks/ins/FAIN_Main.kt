@@ -14,6 +14,7 @@ import lcm.lcm.LCMSubscriber
 import main.modules.stateblocks.ins.AltitudeFainMeasurementProcessor
 import main.modules.stateblocks.ins.HeadingMeasurementProcessor
 import main.modules.stateblocks.ins.RangeMeasurementProcessor
+import modules.stateblocks.ins.FainImagePreMeasurements
 import modules.stateblocks.ins.FainMeasurements
 import modules.stateblocks.ins.MotionModelAuxData
 import modules.stateblocks.ins.MotionModelBlock
@@ -48,8 +49,9 @@ object FAIN_Main {
         var P_count = 0.0
 
 
-        var LCMMeasurements =   FainMeasurements(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,false)
+        var LCMMeasurements = FainMeasurements(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,mat[0.0,0.0,0.0],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,false)
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
+        var Image_data = FainImagePreMeasurements(IntArray((1280*960+2).toInt()),IntArray((1280*960+2).toInt()),0.0,0.0,false,false,zeros(3,3))
 
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
                 buffer = Buffer())
@@ -58,7 +60,7 @@ object FAIN_Main {
         LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter,LCMMeasurements,Input_LCM_Time,P_count)) //This subscribes to LCM message is kept open as long as main is func is running
         LCMChannels.subscribe("PIXHAWK1", Subscribe_Pixhawk1(filter,LCMMeasurements))
         LCMChannels.subscribe("RANGE", Subscribe_Range(filter,LCMMeasurements,Input_LCM_Time))
-        LCMChannels.subscribe("CAM", Subscribe_Cam(filter))
+        LCMChannels.subscribe("CAM", Subscribe_Cam(filter,LCMMeasurements,Input_LCM_Time,Image_data))
 
         val block = MotionModelBlock(label = "motionmodel")
             filter.addStateBlock(block)
@@ -112,30 +114,54 @@ object FAIN_Main {
         }
     }
 }
-class Subscribe_Cam(var filter:StandardSensorEKF): LCMSubscriber {
+class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck, var Image_data: FainImagePreMeasurements): LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
         var Camera = (rawopticalcameraimage(p2))
 
         var Image = Camera.data
-        var Time_Valid = Camera.valid_t_sec + Camera.valid_t_nsec*pow(10,-9) //Add seconds and nano secs fields
+        Image_data.New_Image_Time_Valid = Camera.valid_t_sec + Camera.valid_t_nsec*pow(10,-9) //Add seconds and nano secs fields
         var width = Camera.width
         var height = Camera.height
 
         //Create Data type for Image processor
         //Byte Array [height width row0 row1 row2....row(height)]
 
-        var New_Image = IntArray((width*height+2).toInt())
-        New_Image[0] = height
-        New_Image[1] = width
-        var i = 0
-  //      for(i in 1..height){
+        Image_data.New_Image[0] = height
+        Image_data.New_Image[1] = width
+        for(i in 0..height-1) {
+            var big_index = 2 + (width * i)
+            for (a in 0..width - 1) {
+                Image_data.New_Image[big_index+a] = Image[i][a].toInt()
+            }
+        }
+        if (Image_data.First_Image_Received == true) {
 
+            //Run Image Processor
+
+            //LCMMeasurements.Image_velocity =
+            Input_LCM_Time.image_update_time=Image_data.New_Image_Time_Valid
+
+            LCMMeasurements.Image_velocity_time = Image_data.New_Image_Time_Valid //This time is not used but to keep consistency of times in LCMMeasurements
+
+            Input_LCM_Time.image_update_time_flag = true
 
         }
+        else {
+            Image_data.Old_Image = Image_data.New_Image
+            Image_data.Old_Image_Time_Valid=Image_data.New_Image_Time_Valid
+            Image_data.First_Image_Received == true
+        }
 
-    }
+
+}
+}
+
+
+
+
+
 
 
 
@@ -519,4 +545,6 @@ object InputLCMTimeCheck {
     var range_time_flag = false
     var altitude_time_flag = false
     var altitude_time = 0.0
+    var image_update_time = 0.0
+    var image_update_time_flag = false
 }
