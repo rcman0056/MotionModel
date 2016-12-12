@@ -362,9 +362,9 @@ double* mainOpticalFlow(int8_t* inputData) {
 	vector<Point3f> translationField;
 	for (int i = 0; i < numPoints; i++) {
 		Point3f tempTranslation;
-		tempTranslation.x = pointsNEDScaled[1][i].x - pointsNEDScaled[0][i].x;
-		tempTranslation.y = pointsNEDScaled[1][i].y - pointsNEDScaled[0][i].y;
-		tempTranslation.z = pointsNEDScaled[1][i].z - pointsNEDScaled[0][i].z;
+		tempTranslation.x = pointsNEDScaled[0][i].x - pointsNEDScaled[1][i].x;
+		tempTranslation.y = pointsNEDScaled[0][i].y - pointsNEDScaled[1][i].y;
+		tempTranslation.z = pointsNEDScaled[0][i].z - pointsNEDScaled[1][i].z;
 		translationField.push_back(tempTranslation);
 	}
 	//print out for debugging

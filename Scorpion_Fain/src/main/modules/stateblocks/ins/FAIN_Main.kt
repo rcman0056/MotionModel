@@ -35,9 +35,9 @@ var Export_Data = zeros(1,23) //used to export the filter output data
 var Export_Pixhawk = zeros(1,6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn = false
 var RangeUpdateOn = true
-var AltitudeUpdateOn = false
+var AltitudeUpdateOn = true
 var VOUpdateOn = false
-var SavePixhawkData = false
+var SavePixhawkData = true
 
 
 
@@ -56,11 +56,17 @@ object FAIN_Main {
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
                 buffer = Buffer())
 
+
+        //For OF Pre processor
+        var PreprocessorOptical_Flow = OpticalFlow_Carson()
+
+
+
         var LCMChannels = LCM.getSingleton()
         LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter,LCMMeasurements,Input_LCM_Time,P_count)) //This subscribes to LCM message is kept open as long as main is func is running
         LCMChannels.subscribe("PIXHAWK1", Subscribe_Pixhawk1(filter,LCMMeasurements))
         LCMChannels.subscribe("RANGE", Subscribe_Range(filter,LCMMeasurements,Input_LCM_Time))
-        LCMChannels.subscribe("CAM", Subscribe_Cam(filter,LCMMeasurements,Input_LCM_Time,Image_data))
+        LCMChannels.subscribe("CAM", Subscribe_Cam(filter,LCMMeasurements,Input_LCM_Time,Image_data,PreprocessorOptical_Flow))
 
         val block = MotionModelBlock(label = "motionmodel")
             filter.addStateBlock(block)
@@ -114,7 +120,8 @@ object FAIN_Main {
         }
     }
 }
-class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck, var Image_data: FainImagePreMeasurements): LCMSubscriber {
+class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck,
+                    var Image_data: FainImagePreMeasurements, var PreprocessorOptical_Flow: OpticalFlow_Carson ): LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
@@ -128,7 +135,7 @@ class Subscribe_Cam(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasu
 
         //Create Data type for Image processor
         //Byte Array [height width row0 row1 row2....row(height)]
-OpticalFlow_Carson()
+        OpticalFlow_Carson()
         Image_data.New_Image[0] = height
         Image_data.New_Image[1] = width
         for(i in 0..height-1) {
@@ -139,8 +146,11 @@ OpticalFlow_Carson()
         }
         if (Image_data.First_Image_Received == true) {
 
-            //Run Image Processor
+            //Run Image Processor     h= agl [fx fy], focal center [cx cy]
+            //fc = [ 998.09342   1005.01966 ];
+            //cc = [ 670.90144   466.79380 ];
 
+//            PreprocessorOptical_Flow.runOpticalFlow()
             //LCMMeasurements.Image_velocity =
             Input_LCM_Time.image_update_time=Image_data.New_Image_Time_Valid
 
@@ -150,22 +160,15 @@ OpticalFlow_Carson()
 
         }
         else {
+            //Handle the case of the first image
             Image_data.Old_Image = Image_data.New_Image
             Image_data.Old_Image_Time_Valid=Image_data.New_Image_Time_Valid
-            Image_data.First_Image_Received == true
+            Image_data.First_Image_Received = true
         }
 
 
 }}
 }
-
-
-
-
-
-
-
-
 
 
 class Subscribe_Pixhawk1(var filter:StandardSensorEKF, var LCMMeasurements: FainMeasurements): LCMSubscriber {
@@ -362,9 +365,9 @@ class Subscribe_Pixhawk2(var filter:StandardSensorEKF, var LCMMeasurements: Fain
                 // var current_data = mat[time_filter.time, X States,GPS _Data,P Covariance after sqrt taken]
                 var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P)
                 Export_Data = vstack(Export_Data, current_data)
-        //        println(Export_Data.numRows().toString() + "--------------------#For Output Above----------------------------" + '\n')
+                println(Export_Data.numRows().toString() + "--------------------#For Output Above----------------------------" + '\n')
 
-                if (Export_Data.numRows() > 700) {
+                if (Export_Data.numRows() > 1000) {
 
                     WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt")
 
@@ -444,7 +447,7 @@ fun HeadingUpdate(filter: StandardSensorEKF,
             timeValidity = Time(Input_LCM_Time.heading_time),
             measurementData = mat[LCMMeasurements.heading * (Math.PI / 180)],
             auxData = null,
-            measurementCov = mat[5*5* (Math.PI / 180)])
+            measurementCov = mat[90*90* (Math.PI / 180)])
 
     filter.update(HeadingMeasurement)
     var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
@@ -466,7 +469,7 @@ fun HeadingUpdate(filter: StandardSensorEKF,
             timeValidity = Time(Input_LCM_Time.range_time),
             measurementData = mat[LCMMeasurements.range],
             auxData = LCMMeasurements,
-            measurementCov = mat[9*9])
+            measurementCov = mat[12*12])
 
     filter.update(RangeMeasurement)
     var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

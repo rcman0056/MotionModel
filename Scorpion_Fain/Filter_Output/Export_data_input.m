@@ -1,8 +1,8 @@
 
-close all
-clear all
+%close all
+%clear all
 
-%Pull in data byte array and convert
+%Pull in data byte array for filter and convert
 filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt';
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
@@ -10,7 +10,13 @@ fclose(fid);
 numCols = 23; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
-
+%Pull in data byte array for pixhawk data and convert
+filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data.txt';
+fid = fopen(filename, 'r');
+data_pix = fread(fid,'double',0,'b');
+fclose(fid);
+numCols = 6; %Set num of cols in data bytearray so matlab can parse the data
+data_pix = reshape(data_pix,numCols,[])';
 
 %Resize Data to get rid of first row
 data=data(2:end,:);
@@ -27,7 +33,7 @@ Grnd_Spd_Est=data(:,4);
 Course_ang_Est=data(:,5)*(180/pi);
 Wn_est=data(:,6);
 We_est=data(:,7);
-Yaw_est=data(:,8)*(180/pi);
+Yaw_est=wrapTo360(data(:,8)*(180/pi));
 Alt_est=data(:,9);
 Alt_vv_est=data(:,10);
 GPS_unix_time=data(:,11);
@@ -45,7 +51,7 @@ Alt_est_cov=data(:,22);
 Alt_vv_est_cov=data(:,23);
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure(1)
+figure(4)
 %%%%%%%%%%%
 %Error = Est -Truth
 %Time Value
@@ -110,6 +116,7 @@ hold off
 subplot(4,3,11)
 plot(Time,Yaw_est,'g')
 hold on
+plot(data_pix(2:end,5)-Filter_Time(1),data_pix(2:end,6))
 plot(Time,Yaw_est_cov,'r')
 plot(Time,-Yaw_est_cov,'r')
 ylabel('Yaw')
