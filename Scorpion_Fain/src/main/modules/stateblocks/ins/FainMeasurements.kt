@@ -20,6 +20,7 @@ data class FainMeasurements(  var range: Double,
                               var heading: Double,
                               var Image_velocity: Matrix<Double>,
                               var Image_velocity_time: Double,
+                              var Image_TimeRPY_input: Matrix<Double>,
                               var GPS_Linux_time: Double, //This is not GPS time just linux time the GPS was saved
                               var GPS_lat: Double,
                               var GPS_lon: Double,

@@ -13,7 +13,7 @@
 using namespace cv;
 using namespace std;
 
-static void displayResults(Mat& prevImage, Mat& image,
+ static void displayResults(Mat& prevImage, Mat& image,
 		vector<Point2f>* points, bool* outliers) {
 	String displayType = "vectors"; //points, vectors are the options
 	int waitTime = 10; //in ms
@@ -30,16 +30,16 @@ static void displayResults(Mat& prevImage, Mat& image,
 
 		//display first image with original points
 		imshow("LK Demo", colorImage);
-		waitKey(waitTime);
+		//waitKey(waitTime);
 
 		//circle translated set of points
 		for (int i = 0; i < points[1].size(); i++) {
 			circle(nextColorImage, points[1][i], 3, Scalar(0, 200, 0), 3, 8);
 		}
-		waitKey(0);
+		//waitKey(0);
 		//display second image with translated points
 		imshow("LK Demo", nextColorImage);
-		waitKey(waitTime);
+		//waitKey(waitTime);
 	} else if (displayType == "vectors") {
 		//vector<Point2f> vectors[1];
 		//cout<<endl<<points[0].size()<<" "<<points[1].size()<<endl;
@@ -57,7 +57,7 @@ static void displayResults(Mat& prevImage, Mat& image,
 		}
 		//cout<<endl<<"flag1"<<endl;
 		imshow("LK Demo", colorImage);
-		waitKey(waitTime);
+		//waitKey(waitTime);
 	}
 }
 
@@ -128,6 +128,7 @@ double* calcStanDev(vector<Point3f> translationField, double translation[3]){
 
 double* mainOpticalFlow(int8_t* inputData) {
     bool DISPLAY = true;
+    bool DEBUGGING = true;
 
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -164,14 +165,14 @@ double* mainOpticalFlow(int8_t* inputData) {
 	int col;
 	for (row = 0; row < ny; ++row) {
 		for (col = 0; col < nx; ++col) {
-			prevGray.at<uchar>(row, col) = (uint8_t)inputData[row + col * ny + index];
+			prevGray.at<uchar>(row, col) = (uint8_t)inputData[index + col + nx*row];
 		}
 	}
 	index += nx * ny;
 	cv::Mat gray(ny, nx, CV_8UC1, cv::Scalar(255));
 	for (row = 0; row < ny; ++row) {
 		for (col = 0; col < nx; ++col) {
-			gray.at<uchar>(row, col) = (uint8_t)inputData[row + col * ny + index];
+			gray.at<uchar>(row, col) = (uint8_t)inputData[index + col + nx*row];
 		}
 	}
 
@@ -208,10 +209,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 
 	//print out for debugging
 	int indexD = 24;
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING0"<<"\t";
 	cout<<points[0][indexD].x<<"\t"<<points[0][indexD].y<<"\t";
 	cout<<points[1][indexD].x<<"\t"<<points[1][indexD].y<<"\t";
 	cout<<"pixel coordinates"<<"\t"<<"END";
+	}
 
 	//calculate the normalized points
 	vector<Point3f> pointsNorm[2];
@@ -231,28 +234,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 	}
 
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING1"<<"\t";
 	cout<<pointsNorm[0][indexD].x<<"\t"<<pointsNorm[0][indexD].y<<"\t"<<pointsNorm[0][indexD].z<<"\t";
 	cout<<pointsNorm[1][indexD].x<<"\t"<<pointsNorm[1][indexD].y<<"\t"<<pointsNorm[1][indexD].z<<"\t";
 	cout<<"normalized coordinates"<<"\t"<<"END";
-
-/*
-	//for debugging, use height as global depth vector. print mean of all vectors
-	vector<Point3f> translationFieldD;
-    	for (int i = 0; i < numPoints; i++) {
-    		Point3f tempTranslation;
-    		tempTranslation.x = (pointsNorm[1][i].x - pointsNorm[0][i].x)*height;
-    		tempTranslation.y = (pointsNorm[1][i].y - pointsNorm[0][i].y)*height;
-    		tempTranslation.z = (pointsNorm[1][i].z - pointsNorm[0][i].z)*height;
-    		translationFieldD.push_back(tempTranslation);
-    	}
-	bool outliersD[numPoints];
-        for (int i = 0; i < numPoints; i++) {
-            outliersD[i] = false;
-        }
-	double *translationD = calcMean(translationFieldD, outliersD);
-	cout<<endl<<translationD[0]<<"\t"<<translationD[1]<<"\t"<<translationD[2];
-*/
+}
 
 	//rotate the normalized points into the nav frame
 	vector<Point3f> pointsNED[2];
@@ -275,11 +262,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 		}
 	}
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING2"<<"\t";
 	cout<<pointsNED[0][indexD].x<<"\t"<<pointsNED[0][indexD].y<<"\t"<<pointsNED[0][indexD].z<<"\t";
 	cout<<pointsNED[1][indexD].x<<"\t"<<pointsNED[1][indexD].y<<"\t"<<pointsNED[1][indexD].z<<"\t";
 	cout<<"unscaled nav coordinates"<<"\t"<<"END";
-
+}
 	//calculate the angle between the unit depth vector and each point-vector
 	vector<double> theta[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -295,11 +283,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 	}
 
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING3"<<"\t";
 	cout<<theta[0][indexD]<<"\t";
 	cout<<theta[1][indexD]<<"\t";
 	cout<<"thetas"<<"\t"<<"END";
-
+}
 	//calculate the depth vector to each point from the camera
 	vector<double> depth[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -310,11 +299,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 	}
 
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING4"<<"\t";
 	cout<<depth[0][indexD]<<"\t";;
 	cout<<depth[1][indexD]<<"\t";;
 	cout<<"depth vectors"<<"\t"<<"END";
-
+}
 	//calculate the camera coordinates
 	vector<Point3f> pointsCam[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -327,11 +317,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 		}
 	}
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING5"<<"\t";
 	cout<<pointsCam[0][indexD].x<<"\t"<<pointsCam[0][indexD].y<<"\t"<<pointsCam[0][indexD].z<<"\t";
 	cout<<pointsCam[1][indexD].x<<"\t"<<pointsCam[1][indexD].y<<"\t"<<pointsCam[1][indexD].z<<"\t";
 	cout<<"camera coordinates"<<"\t"<<"END";
-
+}
 	//rotate camera coordinates into nav frame (this time they're actually scaled)
 	vector<Point3f> pointsNEDScaled[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -353,11 +344,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 		}
 	}
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING6"<<"\t";
 	cout<<pointsNEDScaled[0][indexD].x<<"\t"<<pointsNEDScaled[0][indexD].y<<"\t"<<pointsNEDScaled[0][indexD].z<<"\t";
 	cout<<pointsNEDScaled[1][indexD].x<<"\t"<<pointsNEDScaled[1][indexD].y<<"\t"<<pointsNEDScaled[1][indexD].z<<"\t";
 	cout<<"scaled NED coordinates"<<"\t"<<"END";
-
+}
 	//difference the two sets of points to calculate a vector field
 	vector<Point3f> translationField;
 	for (int i = 0; i < numPoints; i++) {
@@ -368,10 +360,11 @@ double* mainOpticalFlow(int8_t* inputData) {
 		translationField.push_back(tempTranslation);
 	}
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING7"<<"\t";
 	cout<<translationField[indexD].x<<"\t"<<translationField[indexD].y<<"\t"<<translationField[indexD].z<<"\t";
 	cout<<"translation vector"<<"\t"<<"END";
-
+}
     int numIterations = 5;
     int numOutliers = 0;
     double *translation;
@@ -414,6 +407,7 @@ double* mainOpticalFlow(int8_t* inputData) {
     }
 
 	//print out for debugging
+	if (DEBUGGING){
 	cout<<endl<<"DEBUGGING8"<<"\t";
 	cout<<firstCamToNav[0][0]<<"\t"<<firstCamToNav[0][1]<<"\t"<<firstCamToNav[0][2]<<"\t";
 	cout<<firstCamToNav[1][0]<<"\t"<<firstCamToNav[1][1]<<"\t"<<firstCamToNav[1][2]<<"\t";
@@ -426,12 +420,19 @@ double* mainOpticalFlow(int8_t* inputData) {
 	cout<<secondCamToNav[1][0]<<"\t"<<secondCamToNav[1][1]<<"\t"<<secondCamToNav[1][2]<<"\t";
 	cout<<secondCamToNav[2][0]<<"\t"<<secondCamToNav[2][1]<<"\t"<<secondCamToNav[2][2]<<"\t";
 	cout<<"second camToNav"<<"\t"<<"END";
+	}
 
-if (true){
+if (DISPLAY){
     namedWindow( "LK Demo", WINDOW_NORMAL   ); //create resizable window
         //resizeWindow("LK Demo", nx/2,ny/2); //resize window to half of image resolution
 	displayResults(prevGray, gray, points,outliers);
-	waitKey(0);
+
+	//imshow("LK Demo Old", prevGray);
+    //waitKey(0);
+	//imshow("LK Demo New", gray);
+	waitKey(100);
+
+
 	}
 
 	//clean up stuff

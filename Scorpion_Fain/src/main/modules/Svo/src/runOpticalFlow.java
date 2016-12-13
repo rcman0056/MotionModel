@@ -7,9 +7,9 @@ import java.nio.ByteBuffer;
 
 public class runOpticalFlow {
     static {
-        System.setProperty("java.library.path",  "/home/daniel/workspace/optical_flow/Carson-OpticalFlow/src");
+        //System.setProperty("java.library.path",  "/home/daniel/workspace/optical_flow/Carson-OpticalFlow/src");
         //System.load(System.getProperty("user.dir")+"/Carson-OpticalFlow/librunOpticalFlow.so");
-        System.load("/home/daniel/workspace/optical_flow/Carson-OpticalFlow/src/librunOpticalFlow.so");
+        System.load("/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/src/main/modules/Svo/src/librunOpticalFlow.so");
     }
 
 
