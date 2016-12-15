@@ -133,11 +133,15 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
             var Image = Camera.data
             Image_data.New_Image_Time_Valid = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9) //Add seconds and nano secs fields
 
-            var Recieved_Time = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
-            var Time_Difference = Image_data.New_Image_Time_Valid - Recieved_Time
+            var Valid_Time_TAI = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9)
+            var Valid_Time2 = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
 
-            //Error in the Valid time. It is off by 30+ seconds
-            Image_data.New_Image_Time_Valid = Recieved_Time
+            //Difference between TAI(PTP) and UTC(UNIX) is 36 Seconds  http://tycho.usno.navy.mil/leapsec.html
+            //As of June 30 2015, and until the leap second of December 31 2016 TAI is ahead of UTC by 36 seconds.
+            var Valid_Time_UTC = Valid_Time_TAI +36
+            var dt = Valid_Time_UTC - Image_data.Old_Image_Time_Valid
+
+            Image_data.New_Image_Time_Valid = Valid_Time_UTC
 
             var width = Camera.width
             var height = Camera.height
@@ -178,7 +182,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
             //                  filterVel: Matrix<Double>, processor: String, measCov: Matrix<Double>): Measurement {
 
 
-            var dt = Image_data.New_Image_Time_Valid - Image_data.Old_Image_Time_Valid
+
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var Height_AGL = X[7]
             var fc = doubleArrayOf(998.09342, 1005.01966)

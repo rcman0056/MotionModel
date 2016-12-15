@@ -2,24 +2,20 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
-
 #include <vector>
 #include <iostream>
 #include <ctype.h>
 #include <fstream>
 #include <string>
 #include <limits>
-
 using namespace cv;
 using namespace std;
-
- static void displayResults(Mat& prevImage, Mat& image,
+static void displayResults(Mat& prevImage, Mat& image,
 		vector<Point2f>* points, bool* outliers) {
 	String displayType = "vectors"; //points, vectors are the options
 	int waitTime = 10; //in ms
 	Mat colorImage;
 	cvtColor(prevImage,colorImage,CV_GRAY2RGB);
-
 	if (displayType == "points") {
 	Mat nextColorImage;
 	cvtColor(image,nextColorImage,CV_GRAY2RGB);
@@ -27,19 +23,17 @@ using namespace std;
 		for (int i = 0; i < points[0].size(); i++) {
 			circle(colorImage, points[0][i], 3, Scalar(0, 200, 0), 3, 8);
 		}
-
 		//display first image with original points
 		imshow("LK Demo", colorImage);
-		//waitKey(waitTime);
-
+		waitKey(waitTime);
 		//circle translated set of points
 		for (int i = 0; i < points[1].size(); i++) {
 			circle(nextColorImage, points[1][i], 3, Scalar(0, 200, 0), 3, 8);
 		}
-		//waitKey(0);
+		waitKey(0);
 		//display second image with translated points
 		imshow("LK Demo", nextColorImage);
-		//waitKey(waitTime);
+		waitKey(waitTime);
 	} else if (displayType == "vectors") {
 		//vector<Point2f> vectors[1];
 		//cout<<endl<<points[0].size()<<" "<<points[1].size()<<endl;
@@ -49,7 +43,6 @@ using namespace std;
 			//float y = points[1][i].y-points[0][i].y;
 			//Point2f vector = Point2f(x, y);
 			//vectors[0].push_back(vector);
-
             if(outliers[i])
 			    arrowedLine(colorImage, points[1][i], points[0][i], Scalar(0, 0, 200), 5, 8, 0, 0.3);
 			else
@@ -57,17 +50,14 @@ using namespace std;
 		}
 		//cout<<endl<<"flag1"<<endl;
 		imshow("LK Demo", colorImage);
-		//waitKey(waitTime);
+		waitKey(waitTime);
 	}
 }
-
 int bytesToInt(int8_t* bytes, int index) {
 	int integerOut = (bytes[index] << 8) | (bytes[index + 1] & 0x0FF);
 	return integerOut;
 }
-
 double bytesToDouble(int8_t* bytes, int index) {
-
 	union {
 		double doubleOut;
 		char bytes[sizeof(double)];
@@ -76,60 +66,62 @@ double bytesToDouble(int8_t* bytes, int index) {
 	for (int i = 0; i < 8; i++) {
 		dataUnion.bytes[7-i] = bytes[i+index];
 	}
-
 	return dataUnion.doubleOut;
 }
-
 double* calcMean(vector<Point3f> translationField, bool* outliers){
     static double translation[3] = {0,0,0};
 	//accumulate the translation in every direction
 	//cout<<endl<<"X translation:";
 	int numPoints = translationField.size();
-	int skippedPoints = 0;
+	int numInliers = 0;
+	int numOutliers = 0;
 	//cout<<endl<<"Num Points: "<<numPoints<<endl;
+	//cout<<endl;
 	for (int i = 0; i < numPoints; i++) {
-	    if(~outliers[i]){
+	    if(outliers[i]){
+	    numOutliers++;
+	    }
+	    else{
 		translation[0] += translationField[i].x;
 		translation[1] += translationField[i].y;
 		translation[2] += translationField[i].z;
-		//cout<<"\t"<<translationField[i].x;
-		}
-		else {
-		skippedPoints++;
+		numInliers++;
+		//cout<<"\t"<<outliers[i];
 		}
 	}
 	//cout<<endl<<"Skipped points: "<<skippedPoints;
 	//divide by number of points to complete the average
-	translation[0] /= (numPoints-skippedPoints);
-	translation[1] /= (numPoints-skippedPoints);
-	translation[2] /= (numPoints-skippedPoints);
-	//cout<<endl<<"Mean translation:"<<"\t"<<translation[0]<<"\t"<<translation[1]<<"\t"<<translation[2];
-
+	translation[0] /= numInliers;
+	translation[1] /= numInliers;
+	translation[2] /= numInliers;
+	//cout<<endl<<"Outliers: "<<numOutliers<<"\tInliers: "<<numInliers;
     return translation;
 }
-
-double* calcStanDev(vector<Point3f> translationField, double translation[3]){
+double* calcStanDev(vector<Point3f> translationField, double translation[3], bool* outliers){
     static double sigma[3] = {0,0,0};
     int numPoints = translationField.size();
+    int numInliers = 0;
 	for (int i = 0; i < numPoints; i++) {
-	    sigma[0] += pow(translationField[i].x-translation[0],2);
-	    sigma[1] += pow(translationField[i].y-translation[1],2);
-	    sigma[2] += pow(translationField[i].z-translation[2],2);
+	    if(outliers[i]){
+	    }
+	    else {
+	        sigma[0] += pow(translationField[i].x-translation[0],2);
+	        sigma[1] += pow(translationField[i].y-translation[1],2);
+	        sigma[2] += pow(translationField[i].z-translation[2],2);
+	        numInliers++;
+        }
 	}
-	sigma[0] /= numPoints;
-    sigma[1] /= numPoints;
-    sigma[2] /= numPoints;
+	sigma[0] /= numInliers;
+    sigma[1] /= numInliers;
+    sigma[2] /= numInliers;
     sigma[0] = pow(sigma[0],0.5);
     sigma[1] = pow(sigma[1],0.5);
     sigma[2] = pow(sigma[2],0.5);
-
     return sigma;
 }
-
 double* mainOpticalFlow(int8_t* inputData) {
-    bool DISPLAY = true;
-    bool DEBUGGING = true;
-
+    bool DISPLAY = false;
+    bool DEBUGGING = false;
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
 	double height = bytesToDouble(inputData, index);
@@ -175,16 +167,12 @@ double* mainOpticalFlow(int8_t* inputData) {
 			gray.at<uchar>(row, col) = (uint8_t)inputData[index + col + nx*row];
 		}
 	}
-
 	TermCriteria termcrit(TermCriteria::COUNT | TermCriteria::EPS, 20, 0.03);
 	Size winSize(31, 31);
-
 	//Mat gray, prevGray//, prevImage, image, frame;
 	vector<Point2f> points[2];
-
 	vector<uchar> status;
 	vector<float> err;
-
 	//evenly distribute first set of points
 	int xlim = gray.cols;
 	int ylim = gray.rows;
@@ -206,16 +194,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 	//calculate location of points in next frame
 	calcOpticalFlowPyrLK(prevGray, gray, points[0], points[1], status, err,
 			winSize, 3, termcrit, 0, 0.001);
-
-	//print out for debugging
-	int indexD = 24;
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING0"<<"\t";
-	cout<<points[0][indexD].x<<"\t"<<points[0][indexD].y<<"\t";
-	cout<<points[1][indexD].x<<"\t"<<points[1][indexD].y<<"\t";
-	cout<<"pixel coordinates"<<"\t"<<"END";
-	}
-
 	//calculate the normalized points
 	vector<Point3f> pointsNorm[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -223,7 +201,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			Point3f tempPoint;
 			tempPoint.x = (points[j][i].x - cx) / fx;
 			tempPoint.y = (points[j][i].y - cy) / fy;
-
 			//normalize
 			double magnitude = pow(pow(tempPoint.x,2)+pow(tempPoint.y,2)+1,0.5);
 			tempPoint.x *= 1/magnitude;
@@ -232,15 +209,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			pointsNorm[j].push_back(tempPoint);
 		}
 	}
-
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING1"<<"\t";
-	cout<<pointsNorm[0][indexD].x<<"\t"<<pointsNorm[0][indexD].y<<"\t"<<pointsNorm[0][indexD].z<<"\t";
-	cout<<pointsNorm[1][indexD].x<<"\t"<<pointsNorm[1][indexD].y<<"\t"<<pointsNorm[1][indexD].z<<"\t";
-	cout<<"normalized coordinates"<<"\t"<<"END";
-}
-
 	//rotate the normalized points into the nav frame
 	vector<Point3f> pointsNED[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -261,13 +229,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			pointsNED[j].push_back(tempPoint);
 		}
 	}
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING2"<<"\t";
-	cout<<pointsNED[0][indexD].x<<"\t"<<pointsNED[0][indexD].y<<"\t"<<pointsNED[0][indexD].z<<"\t";
-	cout<<pointsNED[1][indexD].x<<"\t"<<pointsNED[1][indexD].y<<"\t"<<pointsNED[1][indexD].z<<"\t";
-	cout<<"unscaled nav coordinates"<<"\t"<<"END";
-}
 	//calculate the angle between the unit depth vector and each point-vector
 	vector<double> theta[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -281,14 +242,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			theta[j].push_back(tempTheta);
 		}
 	}
-
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING3"<<"\t";
-	cout<<theta[0][indexD]<<"\t";
-	cout<<theta[1][indexD]<<"\t";
-	cout<<"thetas"<<"\t"<<"END";
-}
 	//calculate the depth vector to each point from the camera
 	vector<double> depth[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -297,14 +250,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			depth[j].push_back(tempDepth);
 		}
 	}
-
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING4"<<"\t";
-	cout<<depth[0][indexD]<<"\t";;
-	cout<<depth[1][indexD]<<"\t";;
-	cout<<"depth vectors"<<"\t"<<"END";
-}
 	//calculate the camera coordinates
 	vector<Point3f> pointsCam[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -316,13 +261,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			pointsCam[j].push_back(tempPoint);
 		}
 	}
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING5"<<"\t";
-	cout<<pointsCam[0][indexD].x<<"\t"<<pointsCam[0][indexD].y<<"\t"<<pointsCam[0][indexD].z<<"\t";
-	cout<<pointsCam[1][indexD].x<<"\t"<<pointsCam[1][indexD].y<<"\t"<<pointsCam[1][indexD].z<<"\t";
-	cout<<"camera coordinates"<<"\t"<<"END";
-}
 	//rotate camera coordinates into nav frame (this time they're actually scaled)
 	vector<Point3f> pointsNEDScaled[2];
 	for (int i = 0; i < numPoints; i++) {
@@ -343,13 +281,6 @@ double* mainOpticalFlow(int8_t* inputData) {
 			pointsNEDScaled[j].push_back(tempPoint);
 		}
 	}
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING6"<<"\t";
-	cout<<pointsNEDScaled[0][indexD].x<<"\t"<<pointsNEDScaled[0][indexD].y<<"\t"<<pointsNEDScaled[0][indexD].z<<"\t";
-	cout<<pointsNEDScaled[1][indexD].x<<"\t"<<pointsNEDScaled[1][indexD].y<<"\t"<<pointsNEDScaled[1][indexD].z<<"\t";
-	cout<<"scaled NED coordinates"<<"\t"<<"END";
-}
 	//difference the two sets of points to calculate a vector field
 	vector<Point3f> translationField;
 	for (int i = 0; i < numPoints; i++) {
@@ -359,82 +290,109 @@ double* mainOpticalFlow(int8_t* inputData) {
 		tempTranslation.z = pointsNEDScaled[0][i].z - pointsNEDScaled[1][i].z;
 		translationField.push_back(tempTranslation);
 	}
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING7"<<"\t";
-	cout<<translationField[indexD].x<<"\t"<<translationField[indexD].y<<"\t"<<translationField[indexD].z<<"\t";
-	cout<<"translation vector"<<"\t"<<"END";
-}
     int numIterations = 5;
-    int numOutliers = 0;
+    int numOutliers;
     double *translation;
     double *sigma;
     bool outliers[numPoints];
-    for (int i = 0; i < numPoints; i++) {
-        outliers[i] = false;
+    for (int j = 0; j < numPoints; j++) {
+        outliers[j] = false;
     }
     for (int i = 0; i<numIterations;i++){
-    //calculate the mean translation
+        //calculate the mean translation
     	translation = calcMean(translationField, outliers);
-
     	//calculate the standard deviation of the translation
-    	sigma = calcStanDev(translationField, translation);
-
+    	sigma = calcStanDev(translationField, translation, outliers);
         //cout.precision(10);
         //cout<<endl<<"Sigma:"<<"\t"<<sigma[0]<<"\t"<<sigma[1]<<"\t"<<sigma[2];
         //cout<<endl<<"Mean translation:"<<"\t"<<translation[0]<<"\t"<<translation[1]<<"\t"<<translation[2]<<endl<<endl;
-
+        numOutliers = 0;
+        for (int j = 0; j < numPoints; j++) {
+                outliers[j] = false;
+        }
         //detect outliers
         for (int j = 0; j < numPoints; j++) {
             double deviance[3];
-            double thresholdFactor = 3;
+            double thresholdFactor = 2;
             deviance[0] = translationField[j].x-translation[0];
             deviance[1] = translationField[j].y-translation[1];
             deviance[2] = translationField[j].z-translation[2];
             if(abs(deviance[0])>thresholdFactor*sigma[0]){
                 outliers[j] = true;
+                numOutliers++;
             }
             else if(abs(deviance[1])>thresholdFactor*sigma[1]){
                 outliers[j] = true;
+                numOutliers++;
             }
+            /*
             else if(abs(deviance[2])>thresholdFactor*sigma[2]){
                 outliers[j] = true;
+                numOutliers++;
             }
+            */
             else {
                 outliers[j] = false;
             }
         }
     }
-
-	//print out for debugging
-	if (DEBUGGING){
-	cout<<endl<<"DEBUGGING8"<<"\t";
-	cout<<firstCamToNav[0][0]<<"\t"<<firstCamToNav[0][1]<<"\t"<<firstCamToNav[0][2]<<"\t";
-	cout<<firstCamToNav[1][0]<<"\t"<<firstCamToNav[1][1]<<"\t"<<firstCamToNav[1][2]<<"\t";
-	cout<<firstCamToNav[2][0]<<"\t"<<firstCamToNav[2][1]<<"\t"<<firstCamToNav[2][2]<<"\t";
-	cout<<"first camToNav"<<"\t"<<"END";
-
-	//print out for debugging
-	cout<<endl<<"DEBUGGING9"<<"\t";
-	cout<<secondCamToNav[0][0]<<"\t"<<secondCamToNav[0][1]<<"\t"<<secondCamToNav[0][2]<<"\t";
-	cout<<secondCamToNav[1][0]<<"\t"<<secondCamToNav[1][1]<<"\t"<<secondCamToNav[1][2]<<"\t";
-	cout<<secondCamToNav[2][0]<<"\t"<<secondCamToNav[2][1]<<"\t"<<secondCamToNav[2][2]<<"\t";
-	cout<<"second camToNav"<<"\t"<<"END";
-	}
-
+    	//print out for debugging
+    	int indexD = 24;
+    	if (DEBUGGING){
+    	cout<<endl<<"DEBUGGING00"<<"\t";
+    	cout<<points[0][indexD].x<<"\t"<<points[0][indexD].y<<"\t";
+    	cout<<points[1][indexD].x<<"\t"<<points[1][indexD].y<<"\t";
+    	cout<<"pixel coordinates"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING01"<<"\t";
+    	cout<<pointsNorm[0][indexD].x<<"\t"<<pointsNorm[0][indexD].y<<"\t"<<pointsNorm[0][indexD].z<<"\t";
+    	cout<<pointsNorm[1][indexD].x<<"\t"<<pointsNorm[1][indexD].y<<"\t"<<pointsNorm[1][indexD].z<<"\t";
+    	cout<<"normalized coordinates"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING02"<<"\t";
+    	cout<<pointsNED[0][indexD].x<<"\t"<<pointsNED[0][indexD].y<<"\t"<<pointsNED[0][indexD].z<<"\t";
+    	cout<<pointsNED[1][indexD].x<<"\t"<<pointsNED[1][indexD].y<<"\t"<<pointsNED[1][indexD].z<<"\t";
+    	cout<<"unscaled nav coordinates"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING03"<<"\t";
+    	cout<<theta[0][indexD]<<"\t";
+    	cout<<theta[1][indexD]<<"\t";
+    	cout<<"thetas"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING04"<<"\t";
+    	cout<<depth[0][indexD]<<"\t";;
+    	cout<<depth[1][indexD]<<"\t";;
+    	cout<<"depth vectors"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING05"<<"\t";
+    	cout<<pointsCam[0][indexD].x<<"\t"<<pointsCam[0][indexD].y<<"\t"<<pointsCam[0][indexD].z<<"\t";
+    	cout<<pointsCam[1][indexD].x<<"\t"<<pointsCam[1][indexD].y<<"\t"<<pointsCam[1][indexD].z<<"\t";
+    	cout<<"camera coordinates"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING06"<<"\t";
+    	cout<<pointsNEDScaled[0][indexD].x<<"\t"<<pointsNEDScaled[0][indexD].y<<"\t"<<pointsNEDScaled[0][indexD].z<<"\t";
+    	cout<<pointsNEDScaled[1][indexD].x<<"\t"<<pointsNEDScaled[1][indexD].y<<"\t"<<pointsNEDScaled[1][indexD].z<<"\t";
+    	cout<<"scaled NED coordinates"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING07"<<"\t";
+    	cout<<translationField[indexD].x<<"\t"<<translationField[indexD].y<<"\t"<<translationField[indexD].z<<"\t";
+    	cout<<"translation vector"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING08"<<"\t";
+    	cout<<firstCamToNav[0][0]<<"\t"<<firstCamToNav[0][1]<<"\t"<<firstCamToNav[0][2]<<"\t";
+    	cout<<firstCamToNav[1][0]<<"\t"<<firstCamToNav[1][1]<<"\t"<<firstCamToNav[1][2]<<"\t";
+    	cout<<firstCamToNav[2][0]<<"\t"<<firstCamToNav[2][1]<<"\t"<<firstCamToNav[2][2]<<"\t";
+    	cout<<"first camToNav"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING09"<<"\t";
+    	cout<<secondCamToNav[0][0]<<"\t"<<secondCamToNav[0][1]<<"\t"<<secondCamToNav[0][2]<<"\t";
+    	cout<<secondCamToNav[1][0]<<"\t"<<secondCamToNav[1][1]<<"\t"<<secondCamToNav[1][2]<<"\t";
+    	cout<<secondCamToNav[2][0]<<"\t"<<secondCamToNav[2][1]<<"\t"<<secondCamToNav[2][2]<<"\t";
+    	cout<<"second camToNav"<<"\t"<<"END";
+    	cout<<endl<<"DEBUGGING10"<<"\t";
+        cout<<outliers[indexD]<<"\t"<<numOutliers<<"\t";
+        cout<<"outlier"<<"\t"<<"END";
+        cout<<endl<<"DEBUGGING11"<<"\t";
+        cout<<translation[0]<<"\t"<<translation[1]<<"\t"<<translation[2]<<"\t";
+        cout<<"final translation vector"<<"\t"<<"END";
+    	}
 if (DISPLAY){
     namedWindow( "LK Demo", WINDOW_NORMAL   ); //create resizable window
         //resizeWindow("LK Demo", nx/2,ny/2); //resize window to half of image resolution
 	displayResults(prevGray, gray, points,outliers);
-
-	//imshow("LK Demo Old", prevGray);
-    //waitKey(0);
-	//imshow("LK Demo New", gray);
-	waitKey(100);
-
-
+	waitKey(0);
 	}
-
 	//clean up stuff
 	points[1].clear();
     points[0].clear();
@@ -446,11 +404,8 @@ if (DISPLAY){
     pointsNEDScaled[0].clear();
     pointsNorm[1].clear();
     pointsNorm[0].clear();
-
 	return translation;
 }
-
 extern "C" double* opticalFlow(int8_t* inputData) {
 	return mainOpticalFlow(inputData);
 }
-

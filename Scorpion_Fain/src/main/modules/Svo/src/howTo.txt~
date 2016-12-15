@@ -5,7 +5,7 @@ javac hello.java
 javah -classpath . hello
 
 Compile the source code into a shared library
-g++ -shared -fPIC -L /usr/local/lib opticalFlowVO.cpp -l opencv_core -l opencv_imgproc -l opencv_highgui -l opencv_video -o libopticalFlowVO.so
+g++ -shared -fPIC -L ~/anaconda/lib opticalFlowVO.cpp -l opencv_core -l opencv_imgproc -l opencv_highgui -l opencv_video -o libopticalFlowVO.so
 
 Compile the shared object and JNI into a shared library
 gcc -shared -fPIC -I $JAVA_HOME/include -I $JAVA_HOME/include/linux runOpticalFlow.c -L. -l opticalFlowVO -o librunOpticalFlow.so
