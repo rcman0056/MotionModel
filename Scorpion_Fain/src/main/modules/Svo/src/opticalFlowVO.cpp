@@ -120,7 +120,7 @@ double* calcStanDev(vector<Point3f> translationField, double translation[3], boo
     return sigma;
 }
 double* mainOpticalFlow(int8_t* inputData) {
-    bool DISPLAY = false;
+    bool DISPLAY = true;
     bool DEBUGGING = false;
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -313,7 +313,7 @@ double* mainOpticalFlow(int8_t* inputData) {
         //detect outliers
         for (int j = 0; j < numPoints; j++) {
             double deviance[3];
-            double thresholdFactor = 2;
+            double thresholdFactor = 1.5;//Increase-> more inliers Decrease-> less inliers
             deviance[0] = translationField[j].x-translation[0];
             deviance[1] = translationField[j].y-translation[1];
             deviance[2] = translationField[j].z-translation[2];
@@ -391,7 +391,7 @@ if (DISPLAY){
     namedWindow( "LK Demo", WINDOW_NORMAL   ); //create resizable window
         //resizeWindow("LK Demo", nx/2,ny/2); //resize window to half of image resolution
 	displayResults(prevGray, gray, points,outliers);
-	waitKey(0);
+	waitKey(60);
 	}
 	//clean up stuff
 	points[1].clear();

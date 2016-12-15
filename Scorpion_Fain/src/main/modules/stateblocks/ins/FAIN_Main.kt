@@ -47,11 +47,16 @@ object FAIN_Main {
         var P_count = 0.0
 
 
-        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, mat[0.0, 0.0, 0.0], 0.0, mat[0.0, 0.0, 0.0], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
+        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, zeros(1, 3), 0.0, zeros(1, 3),
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
-        var Image_data = FainImagePreMeasurements(IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0, false, false, zeros(3, 3))
-        var Uncorrect_Cam_To_Cam_DCM = mat[0, 0, -1 end 0, 1, 0 end 1, 0, 1]
-        Image_data.Cam_To_Body_DCM = Uncorrect_Cam_To_Cam_DCM * mat[0.999725309234785, -0.0220425040105579, 0.00796455223834097 end
+        var Image_data = FainImagePreMeasurements(IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0,
+                zeros(3, 3), zeros(3, 3), false, false, zeros(3, 3))
+        //DCM from a Perfect Cam to Body Frame
+        var Corrected_Cam_To_Body_DCM = mat[0, 0, -1 end 0, 1, 0 end 1, 0, 1]
+
+        //Cam to Body * Cam to Corrected Cam
+        Image_data.Cam_To_Body_DCM = Corrected_Cam_To_Body_DCM * mat[0.999725309234785, -0.0220425040105579, 0.00796455223834097 end
                 0.0220432031669384, 0.999757019077206, 0 end
                 -0.00796261700408846, 0.000175564243123444, 0.99996828245082]
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
@@ -134,11 +139,11 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
             Image_data.New_Image_Time_Valid = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9) //Add seconds and nano secs fields
 
             var Valid_Time_TAI = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9)
-            var Valid_Time2 = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
+            // var Valid_Time2 = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
 
             //Difference between TAI(PTP) and UTC(UNIX) is 36 Seconds  http://tycho.usno.navy.mil/leapsec.html
             //As of June 30 2015, and until the leap second of December 31 2016 TAI is ahead of UTC by 36 seconds.
-            var Valid_Time_UTC = Valid_Time_TAI +36
+            var Valid_Time_UTC = Valid_Time_TAI + 36
             var dt = Valid_Time_UTC - Image_data.Old_Image_Time_Valid
 
             Image_data.New_Image_Time_Valid = Valid_Time_UTC
@@ -159,62 +164,57 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
                     NewImage[big_index + a] = Image[i][a].toInt()
                 }
             }
-            //      Image_data.New_Image[0] = height
-            //  Image_data.New_Image[1] = width
-            // for(i in 0..height-1) {
-            //     var big_index = 2 + (width * i)
-            //     for (a in 0..width - 1) {
 
-            //         Image_data.New_Image[big_index+a] = Image[i][a].toInt()
-            //    }
-
-        if (Image_data.First_Image_Received == true) {
-
-            var Body_To_Nav_DCM = rpyToDcm(LCMMeasurements.Image_TimeRPY_input[0, 1..3])
-            var Cam_To_Nav_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
-            //Run Image Processor     h= agl [fx fy], focal center [cx cy]
-            //fc = [ 998.09342   1005.01966 ];
-            //cc = [ 670.90144   466.79380 ];
-
-
-            //fun runOpticalFlow(timeStep: Double, firstImage: IntArray current image, secondImage previous: IntArray, h: Double, f: DoubleArray,
-            //                  c: DoubleArray, firstCamToNav: Matrix<Double>, secondCamToNav: Matrix<Double>, t: Time,
-            //                  filterVel: Matrix<Double>, processor: String, measCov: Matrix<Double>): Measurement {
-
-
-
+            //Calculate DCMs The Image recieved is on average .1 seconds behind(diff btwn Valid time and received time) so the current RPY is stored as the RPY updates at .1 secs
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
-            var Height_AGL = X[7]
-            var fc = doubleArrayOf(998.09342, 1005.01966)
-            var cc = doubleArrayOf(670.90144, 466.79380)
-            var Cam_ToNav_DCM_old = Cam_To_Nav_DCM
-            //For starters the RPYs are the same for both images. Whatever the latest RPY availiable.
+            var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_input[1], LCMMeasurements.Image_TimeRPY_input[2], X[6]]) //Roll, Pitch, Filter Yaw
+            Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
+
+            if (Image_data.First_Image_Received == true) {
 
 
-            PreprocessorOptical_Flow.runOpticalFlow(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Cam_ToNav_DCM_old,
-                    Cam_To_Nav_DCM, filter.curTime, zeros(3, 1), "Blank", zeros(3, 3))
-            //LCMMeasurements.Image_velocity =
-            var Velocity = PreprocessorOptical_Flow.getDebugData()
+                //Run Image Processor     h= agl [fx fy], focal center [cx cy]
+                //fc = [ 998.09342   1005.01966 ];
+                //cc = [ 670.90144   466.79380 ];
 
-            Image_data.Old_Image = NewImage
-            Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
 
-            Input_LCM_Time.image_update_time = Image_data.New_Image_Time_Valid
+                //fun runOpticalFlow(timeStep: Double, firstImage: IntArray current image, secondImage previous: IntArray, h: Double, f: DoubleArray,
+                //                  c: DoubleArray, firstCamToNav: Matrix<Double>, secondCamToNav: Matrix<Double>, t: Time,
+                //                  filterVel: Matrix<Double>, processor: String, measCov: Matrix<Double>): Measurement {
 
-            LCMMeasurements.Image_velocity_time = Image_data.New_Image_Time_Valid //This time is not used but to keep consistency of times in LCMMeasurements
+                var Height_AGL = X[7]
+                var fc = doubleArrayOf(998.09342, 1005.01966)
+                var cc = doubleArrayOf(670.90144, 466.79380)
 
-            Input_LCM_Time.image_update_time_flag = true
 
-        } else {
-            //Handle the case of the first image
-            Image_data.Old_Image = NewImage
-            Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
-            Image_data.First_Image_Received = true
+
+
+                PreprocessorOptical_Flow.runOpticalFlow(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
+                        Image_data.New_Image_DCM, filter.curTime, zeros(3, 1), "Blank", zeros(3, 3))
+                //LCMMeasurements.Image_velocity =
+                LCMMeasurements.Image_velocity = PreprocessorOptical_Flow.getDebugData().asRowVector()
+                LCMMeasurements.Image_velocity_time = Image_data.New_Image_Time_Valid
+
+                Image_data.Old_Image = NewImage
+                Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
+
+                Input_LCM_Time.image_update_time = Image_data.New_Image_Time_Valid
+
+                LCMMeasurements.Image_velocity_time = Image_data.New_Image_Time_Valid //This time is not used but to keep consistency of times in LCMMeasurements
+
+                Input_LCM_Time.image_update_time_flag = true
+
+            } else {
+                //Handle the case of the first image
+                Image_data.Old_Image = NewImage
+                Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
+                Image_data.Old_Image_DCM = Image_data.New_Image_DCM
+                Image_data.First_Image_Received = true
+            }
+
+
         }
-
-
     }
-}
 }
 
 
