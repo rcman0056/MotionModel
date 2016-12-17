@@ -52,26 +52,26 @@ Yaw_est_cov=data(:,21);
 Alt_est_cov=data(:,22);
 Alt_vv_est_cov=data(:,23);
 %Calculate Ground speeds
-Ground_Speed_Cal = zeros(length(Pe),1);
-for i = 1:length(Pe)-1
-   
- if   Pn(i+1)-Pn(i) < 1*10^(-6)
-     Delta_Pn = 0;
- else    
-    Delta_Pn = Pn(i+1)-Pn(i);
- end
-  if   Pe(i+1)-Pe(i) < 1*10^(-6)
-     Delta_Pe = 0;
- else    
-    Delta_Pe = Pe(i+10)-Pe(i);
- end
- 
- if GPS_Time_UNIX(i+10)-GPS_Time_UNIX(i) == 0
-     Ground_Speed_Cal(i) = 1;
- else
- Ground_Speed_Cal(i)=sqrt((Delta_Pn)^2+(Delta_Pe)^2)/(GPS_Time_UNIX(i+1)-GPS_Time_UNIX(i));
- end
-end
+% Ground_Speed_Cal = zeros(length(Pe),1);
+% for i = 1:length(Pe)-1
+%    
+%  if   Pn(i+1)-Pn(i) < 1*10^(-6)
+%      Delta_Pn = 0;
+%  else    
+%     Delta_Pn = Pn(i+1)-Pn(i);
+%  end
+%   if   Pe(i+1)-Pe(i) < 1*10^(-6)
+%      Delta_Pe = 0;
+%  else    
+%     Delta_Pe = Pe(i+10)-Pe(i);
+%  end
+%  
+%  if GPS_Time_UNIX(i+10)-GPS_Time_UNIX(i) == 0
+%      Ground_Speed_Cal(i) = 1;
+%  else
+%  Ground_Speed_Cal(i)=sqrt((Delta_Pn)^2+(Delta_Pe)^2)/(GPS_Time_UNIX(i+1)-GPS_Time_UNIX(i));
+%  end
+% end
 
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

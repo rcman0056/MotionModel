@@ -12,6 +12,7 @@ import lcm.lcm.LCMSubscriber
 import main.modules.stateblocks.ins.AltitudeFainMeasurementProcessor
 import main.modules.stateblocks.ins.HeadingMeasurementProcessor
 import main.modules.stateblocks.ins.RangeMeasurementProcessor
+import main.modules.stateblocks.ins.VOMeasurementProcessor
 import modules.stateblocks.ins.FainImagePreMeasurements
 import modules.stateblocks.ins.FainMeasurements
 import modules.stateblocks.ins.MotionModelAuxData
@@ -32,9 +33,9 @@ var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM me
 
 var Export_Data = zeros(1, 24) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
-var HeadingUpdateOn = false
-var RangeUpdateOn = false
-var AltitudeUpdateOn = false
+var HeadingUpdateOn = true
+var RangeUpdateOn = true
+var AltitudeUpdateOn = true
 var VOUpdateOn = true
 var SavePixhawkData = true //used to plot True Heading not true GPS data
 
@@ -91,7 +92,7 @@ object FAIN_Main {
 
         //Create VOUpdate Processor
         val VOUpdate = "VOUpdate"
-        filter.addMeasurementProcessor(AltitudeFainMeasurementProcessor(VOUpdate, "motionmodel"))
+        filter.addMeasurementProcessor(VOMeasurementProcessor(VOUpdate, "motionmodel"))
 
         //Set Intial Cov
         var initCov = zeros(9, 9)
@@ -170,7 +171,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
             //Calculate DCMs The Image recieved is on average .1 seconds behind(diff btwn Valid time and received time) so the current RPY is stored as the RPY updates at .1 secs
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
-            var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_input[1], LCMMeasurements.Image_TimeRPY_input[2], X[6]]) //Roll, Pitch, Filter Yaw
+            var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_input[1], LCMMeasurements.Image_TimeRPY_input[2], LCMMeasurements.Image_TimeRPY_input[3]]) //Roll, Pitch, Not Filter Yaw
             Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
 
             if (Image_data.First_Image_Received == true) {
@@ -575,9 +576,9 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         val VOMeasurement = Measurement(processorLabel = "VOUpdate",
                 timeReceived = Time(Input_LCM_Time.image_update_time),
                 timeValidity = Time(Input_LCM_Time.image_update_time),
-                measurementData = mat[1],//Not Used as measurement is calculated from LCMMeasurements
-                auxData = LCMMeasurements,
-                measurementCov = mat[10*10 end 30*30*(Math.PI/2)])
+                measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
+                auxData = null,
+                measurementCov = mat[100*100, 0 end 0, 100*100*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

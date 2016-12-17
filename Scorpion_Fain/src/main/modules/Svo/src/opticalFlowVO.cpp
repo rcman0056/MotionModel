@@ -290,7 +290,7 @@ double* mainOpticalFlow(int8_t* inputData) {
 		tempTranslation.z = pointsNEDScaled[0][i].z - pointsNEDScaled[1][i].z;
 		translationField.push_back(tempTranslation);
 	}
-    int numIterations = 5;
+    int numIterations = 7;//changed from 5
     int numOutliers;
     double *translation;
     double *sigma;
@@ -313,7 +313,8 @@ double* mainOpticalFlow(int8_t* inputData) {
         //detect outliers
         for (int j = 0; j < numPoints; j++) {
             double deviance[3];
-            double thresholdFactor = 1.5;//Increase-> more inliers Decrease-> less inliers
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Threshhold
+            double thresholdFactor = 1.8;//Increase-> more inliers Decrease-> less inliers
             deviance[0] = translationField[j].x-translation[0];
             deviance[1] = translationField[j].y-translation[1];
             deviance[2] = translationField[j].z-translation[2];
