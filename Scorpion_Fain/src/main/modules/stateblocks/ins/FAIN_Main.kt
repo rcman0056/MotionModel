@@ -30,13 +30,13 @@ import scorpion.filters.sensor.containers.Measurement
 var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
 
 
-var Export_Data = zeros(1, 23) //used to export the filter output data
+var Export_Data = zeros(1, 24) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn = false
-var RangeUpdateOn = true
-var AltitudeUpdateOn = true
+var RangeUpdateOn = false
+var AltitudeUpdateOn = false
 var VOUpdateOn = true
-var SavePixhawkData = true
+var SavePixhawkData = true //used to plot True Heading not true GPS data
 
 
 // Main Function
@@ -45,9 +45,9 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
+        var Length_Of_Run = 700
 
-
-        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, zeros(1, 3), 0.0, zeros(1, 3),
+        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, zeros(1, 4), 0.0, zeros(1, 3),
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
         var Image_data = FainImagePreMeasurements(IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0,
@@ -68,7 +68,7 @@ object FAIN_Main {
 
 
         var LCMChannels = LCM.getSingleton()
-        LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter, LCMMeasurements, Input_LCM_Time, P_count)) //This subscribes to LCM message is kept open as long as main is func is running
+        LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter, LCMMeasurements, Input_LCM_Time, P_count,Length_Of_Run)) //This subscribes to LCM message is kept open as long as main is func is running
         LCMChannels.subscribe("PIXHAWK1", Subscribe_Pixhawk1(filter, LCMMeasurements))
         LCMChannels.subscribe("RANGE", Subscribe_Range(filter, LCMMeasurements, Input_LCM_Time))
         LCMChannels.subscribe("CAM", Subscribe_Cam(filter, LCMMeasurements, Input_LCM_Time, Image_data, PreprocessorOptical_Flow))
@@ -89,6 +89,9 @@ object FAIN_Main {
         val AltitudeUpdate = "AltitudeUpdate"
         filter.addMeasurementProcessor(AltitudeFainMeasurementProcessor(AltitudeUpdate, "motionmodel"))
 
+        //Create VOUpdate Processor
+        val VOUpdate = "VOUpdate"
+        filter.addMeasurementProcessor(AltitudeFainMeasurementProcessor(VOUpdate, "motionmodel"))
 
         //Set Intial Cov
         var initCov = zeros(9, 9)
@@ -97,10 +100,10 @@ object FAIN_Main {
         initCov[0, 0] = 3                         //North (m)
         initCov[1, 1] = 3                         //East  (m)
         initCov[2, 2] = 3                         //Vg Ground Speed (m/s)
-        initCov[3, 3] = 10 * Math.PI / 180            //chi Course Angle (rads)
+        initCov[3, 3] = 100 * Math.PI / 180            //chi Course Angle (rads)
         initCov[4, 4] = 1                         //Wind North (m/s)
         initCov[5, 5] = 1                         //Wind East  (m/s)
-        initCov[6, 6] = 10 * Math.PI / 180            //Yaw (rads)
+        initCov[6, 6] = 64 * Math.PI / 180         //Yaw (rads)
         initCov[7, 7] = 1                         //Alt (m)
         initCov[8, 8] = 2 * pow(sigma_vv, 2) / tau_vv  //Alt_VV
         filter.setStateBlockCovariance(label = "motionmodel",
@@ -136,9 +139,9 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
             var Camera = (rawopticalcameraimage(p2))
 
             var Image = Camera.data
-            Image_data.New_Image_Time_Valid = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9) //Add seconds and nano secs fields
 
-            var Valid_Time_TAI = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9)
+
+            var Valid_Time_TAI = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9)//Add seconds and nano secs fields
             // var Valid_Time2 = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
 
             //Difference between TAI(PTP) and UTC(UNIX) is 36 Seconds  http://tycho.usno.navy.mil/leapsec.html
@@ -191,11 +194,21 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
                 PreprocessorOptical_Flow.runOpticalFlow(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
                         Image_data.New_Image_DCM, filter.curTime, zeros(3, 1), "Blank", zeros(3, 3))
-                //LCMMeasurements.Image_velocity =
-                LCMMeasurements.Image_velocity = PreprocessorOptical_Flow.getDebugData().asRowVector()
+
+                //LCMMeasurements.Image_dt_velocityXYZ = [dt,Vx,Vy,Vz]
+
+                var VxVyVz = PreprocessorOptical_Flow.getDebugData().asRowVector()
+                LCMMeasurements.Image_dt_velocityXYZ = mat[dt,VxVyVz[0],VxVyVz[1],VxVyVz[2]]
+
+                //println(LCMMeasurements.Image_dt_velocityXYZ.toString())
+
+                //Set Time of measurement to last Image received time...Ideally it would be dt/2 but the filter time is usually already past that from other measurements
                 LCMMeasurements.Image_velocity_time = Image_data.New_Image_Time_Valid
 
+                //Set Current Image Data to Old Image
                 Image_data.Old_Image = NewImage
+
+                //Set current time to Old Time
                 Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
 
                 Input_LCM_Time.image_update_time = Image_data.New_Image_Time_Valid
@@ -265,7 +278,7 @@ class Subscribe_Range(var filter: StandardSensorEKF, var LCMMeasurements: FainMe
 }
 
 //Subscriber for Pixhawk2 with filter updates
-class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck, var P_count: Double) : LCMSubscriber {
+class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck, var P_count: Double, var Length_Of_Run: Int) : LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
@@ -302,12 +315,22 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
              var pitch :Double,
              var roll_pitch_time: Double
               */
+        //Upon getting an Image update just apply it to the current filter time. Otherwise need a delayed state filter
+        if (Input_LCM_Time.LCM_start_time_flag == true) {
+
+            if (Input_LCM_Time.image_update_time_flag == true && VOUpdateOn == true) {
+                //Set VOUpdate time to current filter time. Averages a .1~.25 second delay of when the image is recieved and the valid time for the images.
+                Input_LCM_Time.image_update_time = filter.curTime.time
+                filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
+                Input_LCM_Time = VOUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = true)
+            }}
 
         //Check to see if individual time stamps have updated
 
         //If incoming message time is greater then stored time
         //Set time to new time
         //Set flag to high
+
         if (LCMMeasurements.heading_time > Input_LCM_Time.heading_time && Input_LCM_Time.LCM_start_time_flag == true) {
             Input_LCM_Time.heading_time = LCMMeasurements.heading_time
             Input_LCM_Time.heading_time_flag = true
@@ -384,14 +407,14 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
 
             //Give Current Aux Data to the Filter
             filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
-            //Propagate to the time based on the LCm message time from Input_LCM_Time
+            //Propagate to the time based on the LCM message time from Input_LCM_Time
             filter.propagate(Time(time))
 
 
             var time_filter = filter.curTime
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
-            /*
+
                        println(time_filter.toString() + '\n' +
                                X[0].toString() + '\t' + P[0].toString() + '\n' +
                                X[1].toString() + '\t' + P[1].toString() + '\n' +
@@ -403,7 +426,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                                X[7].toString() + '\t' + P[7].toString() + '\n' +
                                X[8].toString() + '\t' + P[8].toString() + '\n'
                        )
-           */
+
             //Get current GPS value:Note this is at 4hz while the Filter propagates at ~10Hz
 
             if (LCMMeasurements.GPS_origin_received == true) {
@@ -415,11 +438,12 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                         current_gps[3]]
 
                 // var current_data = mat[time_filter.time, X States,GPS _Data,P Covariance after sqrt taken]
-                var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P)
+                var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P,mat[LCMMeasurements.heading])
                 Export_Data = vstack(Export_Data, current_data)
                 println(Export_Data.numRows().toString() + "--------------------#For Output Above----------------------------" + '\n')
 
-                if (Export_Data.numRows() > 1000) {
+
+                if (Export_Data.numRows() > Length_Of_Run) {
 
                     WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt")
 
@@ -437,18 +461,24 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         //Make sure initial LCM values are set
         if (Input_LCM_Time.LCM_start_time_flag == true) {
 
-            if (Input_LCM_Time.range_time_flag == true && Input_LCM_Time.range_time > filter.curTime.time && RangeUpdateOn == true) {
+            ////Not used as image times are prior to the curr filter time due to delay in receiving the images
+            //if (Input_LCM_Time.image_update_time_flag == true && Input_LCM_Time.image_update_time >= filter.curTime.time && VOUpdateOn == true) {
+            //    filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
+            //    Input_LCM_Time = VOUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
+            //}
+
+            if (Input_LCM_Time.range_time_flag == true && Input_LCM_Time.range_time >= filter.curTime.time && RangeUpdateOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
                 Input_LCM_Time = RangeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
             }
 
-            if (Input_LCM_Time.heading_time_flag == true && Input_LCM_Time.heading_time > filter.curTime.time && HeadingUpdateOn == true) {
+            if (Input_LCM_Time.heading_time_flag == true && Input_LCM_Time.heading_time >= filter.curTime.time && HeadingUpdateOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
                 Input_LCM_Time = HeadingUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
             }
 
 
-            if (Input_LCM_Time.altitude_time_flag == true && Input_LCM_Time.altitude_time > filter.curTime.time && AltitudeUpdateOn == true) {
+            if (Input_LCM_Time.altitude_time_flag == true && Input_LCM_Time.altitude_time >= filter.curTime.time && AltitudeUpdateOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
                 Input_LCM_Time = AltitudeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
             }
@@ -499,7 +529,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.heading_time),
                 measurementData = mat[LCMMeasurements.heading * (Math.PI / 180)],
                 auxData = null,
-                measurementCov = mat[90 * 90 * (Math.PI / 180)])
+                measurementCov = mat[20 * 20 * (Math.PI / 180)])
 
         filter.update(HeadingMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
@@ -536,6 +566,31 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         return Input_LCM_Time
     }
 
+    fun VOUpdate(filter: StandardSensorEKF,
+                    Input_LCM_Time: InputLCMTimeCheck,
+                    LCMMeasurements: FainMeasurements,
+                    Console_Output: Boolean): InputLCMTimeCheck {
+
+        Input_LCM_Time.image_update_time_flag = false
+        val VOMeasurement = Measurement(processorLabel = "VOUpdate",
+                timeReceived = Time(Input_LCM_Time.image_update_time),
+                timeValidity = Time(Input_LCM_Time.image_update_time),
+                measurementData = mat[1],//Not Used as measurement is calculated from LCMMeasurements
+                auxData = LCMMeasurements,
+                measurementCov = mat[10*10 end 30*30*(Math.PI/2)])
+
+        filter.update(VOMeasurement)
+        var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
+        var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
+        if (Console_Output) {
+            println('\n' + "An Update happened for the VO to" + '\n' + filter.curTime.time + '\n'
+                    + "GrdSpeed=" + X[2].toString() + '\t' + P[2].toString() + '\n'
+                    + "CourseAng=" + X[4].toString() + '\t' + P[4].toString() + '\n'
+                    )
+        }
+        return Input_LCM_Time
+    }
+
     fun AltitudeUpdate(filter: StandardSensorEKF,
                        Input_LCM_Time: InputLCMTimeCheck,
                        LCMMeasurements: FainMeasurements,
@@ -547,7 +602,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.altitude_time),
                 measurementData = mat[LCMMeasurements.pix2_alt],
                 auxData = null,
-                measurementCov = mat[2])
+                measurementCov = mat[64])
 
         filter.update(AltitudeMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

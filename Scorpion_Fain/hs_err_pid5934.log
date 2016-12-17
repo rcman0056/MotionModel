@@ -1,0 +1,29 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fb25c8b2f97, pid=5934, tid=140404701038336
+#
+# JRE version: OpenJDK Runtime Environment (7.0_121) (build 1.7.0_121-b00)
+# Java VM: OpenJDK 64-Bit Server VM (24.121-b00 mixed mode linux-amd64 compressed oops)
+# Derivative: IcedTea 2.6.8
+# Distribution: Ubuntu 14.04 LTS, package 7u121-2.6.8-1ubuntu0.14.04.1
+# Problematic frame:
+# C  [libQt5Core.so.5+0x267f97]  QCoreApplication::processEvents(QFlags<QEventLoop::ProcessEventsFlag>)+0x17
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please include
+# instructions on how to reproduce the bug and visit:
+#   http://icedtea.classpath.org/bugzilla
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007fb2c022c000):  JavaThread "Thread-1" daemon [_thread_in_native, id=5972, stack(0x00007fb284448000,0x00007fb284549000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0x00007fb2445d3bf0
+
+Registers:
+RAX=0x00007fb25808bdd0, RBX=0x00000000ffffffff, RCX=0x00007fb2c5dc5dfd, RDX=0x00007fb2445d3b90

@@ -1,0 +1,47 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f0373bc1f97, pid=4993, tid=139652937479936
+#
+# JRE version: OpenJDK Runtime Environment (7.0_121) (build 1.7.0_121-b00)
+# Java VM: OpenJDK 64-Bit Server VM (24.121-b00 mixed mode linux-amd64 compressed oops)
+# Derivative: IcedTea 2.6.8
+# Distribution: Ubuntu 14.04 LTS, package 7u121-2.6.8-1ubuntu0.14.04.1
+# Problematic frame:
+# C  [libQt5Core.so.5+0x267f97]  QCoreApplication::processEvents(QFlags<QEventLoop::ProcessEventsFlag>)+0x17
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please include
+# instructions on how to reproduce the bug and visit:
+#   http://icedtea.classpath.org/bugzilla
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f03a822c000):  JavaThread "Thread-1" daemon [_thread_in_native, id=5020, stack(0x00007f037baaf000,0x00007f037bbb0000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0x00007f032fa8bbf0
+
+Registers:
+RAX=0x00007f033c24d1f0, RBX=0x00000000ffffffff, RCX=0x00007f03b1573dfd, RDX=0x00007f032fa8bb90
+RSP=0x00007f037bbadd08, RBP=0x00007f037bbae380, RSI=0x0000000000000000, RDI=0x00007f033c26d0e0
+R8 =0x0000000000000000, R9 =0x0000000000000000, R10=0x0000000000000001, R11=0x0000000000000000
+R12=0xffffffffffffffff, R13=0x00007f037bbae1a0, R14=0x0000000000000040, R15=0x0000000000000000
+RIP=0x00007f0373bc1f97, EFLAGS=0x0000000000010202, CSGSFS=0x0000000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007f037bbadd08)
+0x00007f037bbadd08:   00007f0378d0f257 00007f037bbadd48
+0x00007f037bbadd18:   00007f037b6a482f 00007f033c24d984
+0x00007f037bbadd28:   00007f037bbae010 00007f037bbadd50
+0x00007f037bbadd38:   00007f037b6a5c7a 00007f037bbae240
+0x00007f037bbadd48:   0000000000000000 0000000000000000
+0x00007f037bbadd58:   0000000000000000 0000000000000000
+0x00007f037bbadd68:   0000000000000000 0000000000000000
+0x00007f037bbadd78:   0000000000000000 0000000000000000
+0x00007f037bbadd88:   0000000000000000 0000000000000040
+0x00007f037bbadd98:   0000000000000000 3ff20a7780000000
+0x00007f037bbadda8:   0000000000000000 00007f037bbadd60

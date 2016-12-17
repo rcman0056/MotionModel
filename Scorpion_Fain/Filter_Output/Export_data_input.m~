@@ -106,8 +106,7 @@ ylabel('Alt|Error')
 hold off
 
 subplot(4,3,10)
-%plot(Time(1:length(Ground_Speed_Cal)),Grnd_Spd_Est(1:length(Ground_Speed_Cal))-Ground_Speed_Cal,'g')
-plot(Time,Grnd_Spd_Est,'g')
+plot(Time(1:length(Ground_Speed_Cal)),Grnd_Spd_Est(1:length(Ground_Speed_Cal))-Ground_Speed_Cal,'g')
 hold on
 plot(Time,Grnd_Spd_Est_cov,'r')
 plot(Time,-Grnd_Spd_Est_cov,'r')
