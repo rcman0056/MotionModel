@@ -61,6 +61,15 @@ class VOMeasurementProcessor : MeasurementProcessor {
 
         var Ground_Speed = pow((Vx * Vx) + (Vy * Vy), .5) / dt
         var Course_ang = Math.atan2(Vy,Vx)
+        //Convert atan2 to a 0-2pi where 0 is pointing north. Output of atan2 is -pi to pi where 0 is pointing east.
+        if (Course_ang < 0){Course_ang = -Course_ang + Math.PI/2}
+        else if (Course_ang*(180/Math.PI) == 180.0) {Course_ang = 1.5*Math.PI}
+        else{if (Vx < 0){Course_ang = 2*Math.PI-(Course_ang-Math.PI/2)}
+             if (Vx > 0){Course_ang = Math.PI/2 - Course_ang}}
+
+
+
+
         var z = mat[Ground_Speed end Course_ang]
         // Constructs a 1x1 matrix for H using the parameter HValue we received before
         var H = mat[0, 0, 1, 0, 0, 0, 0, 0, 0 end

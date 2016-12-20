@@ -33,10 +33,10 @@ var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM me
 
 var Export_Data = zeros(1, 24) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
-var HeadingUpdateOn = true
-var RangeUpdateOn = true
-var AltitudeUpdateOn = true
+var HeadingUpdateOn =false
+var AltitudeUpdateOn = false
 var VOUpdateOn = true
+var RangeUpdateOn = false
 var SavePixhawkData = true //used to plot True Heading not true GPS data
 
 
@@ -46,7 +46,7 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 700
+        var Length_Of_Run = 1090
 
         var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, zeros(1, 4), 0.0, zeros(1, 3),
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
@@ -54,7 +54,7 @@ object FAIN_Main {
         var Image_data = FainImagePreMeasurements(IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0,
                 zeros(3, 3), zeros(3, 3), false, false, zeros(3, 3))
         //DCM from a Perfect Cam to Body Frame
-        var Corrected_Cam_To_Body_DCM = mat[0, 0, -1 end 0, 1, 0 end 1, 0, 1]
+        var Corrected_Cam_To_Body_DCM = mat[0, -1, 0 end 1, 0, 0 end 0, 0, 1]
 
         //Cam to Body * Cam to Corrected Cam
         Image_data.Cam_To_Body_DCM = Corrected_Cam_To_Body_DCM * mat[0.999725309234785, -0.0220425040105579, 0.00796455223834097 end
@@ -415,7 +415,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
             var time_filter = filter.curTime
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
-
+/*
                        println(time_filter.toString() + '\n' +
                                X[0].toString() + '\t' + P[0].toString() + '\n' +
                                X[1].toString() + '\t' + P[1].toString() + '\n' +
@@ -427,7 +427,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                                X[7].toString() + '\t' + P[7].toString() + '\n' +
                                X[8].toString() + '\t' + P[8].toString() + '\n'
                        )
-
+*/
             //Get current GPS value:Note this is at 4hz while the Filter propagates at ~10Hz
 
             if (LCMMeasurements.GPS_origin_received == true) {
@@ -444,6 +444,9 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 println(Export_Data.numRows().toString() + "--------------------#For Output Above----------------------------" + '\n')
 
 
+                if (Export_Data.numRows() == 389 ){
+                    var empty = 0
+                }
                 if (Export_Data.numRows() > Length_Of_Run) {
 
                     WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt")
@@ -553,7 +556,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.range_time),
                 measurementData = mat[LCMMeasurements.range],
                 auxData = LCMMeasurements,
-                measurementCov = mat[12 * 12])
+                measurementCov = mat[15 * 15])
 
         filter.update(RangeMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
@@ -578,7 +581,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.image_update_time),
                 measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
                 auxData = null,
-                measurementCov = mat[100*100, 0 end 0, 100*100*(Math.PI/2)])
+                measurementCov = mat[20*20, 0 end 0, 30*30*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

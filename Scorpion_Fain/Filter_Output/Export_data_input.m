@@ -1,8 +1,8 @@
 
 %close all
 %clear all
-Title_Super ='Qdmm = [.5,1,1,1,1] Run = 700 Measurements=ran alt heading';
-FigNum=9;
+Title_Super ='Qdmm = [.5,1,1,1,1] and  Run = 1000 Measurements=alt rang heading';
+FigNum=23;
 %Pull in data byte array for filter and convert
 filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt';
 fid = fopen(filename, 'r');
@@ -52,26 +52,29 @@ Yaw_est_cov=data(:,21);
 Alt_est_cov=data(:,22);
 Alt_vv_est_cov=data(:,23);
 %Calculate Ground speeds
-% Ground_Speed_Cal = zeros(length(Pe),1);
-% for i = 1:length(Pe)-1
-%    
-%  if   Pn(i+1)-Pn(i) < 1*10^(-6)
-%      Delta_Pn = 0;
-%  else    
-%     Delta_Pn = Pn(i+1)-Pn(i);
-%  end
-%   if   Pe(i+1)-Pe(i) < 1*10^(-6)
-%      Delta_Pe = 0;
-%  else    
-%     Delta_Pe = Pe(i+10)-Pe(i);
-%  end
-%  
-%  if GPS_Time_UNIX(i+10)-GPS_Time_UNIX(i) == 0
-%      Ground_Speed_Cal(i) = 1;
-%  else
-%  Ground_Speed_Cal(i)=sqrt((Delta_Pn)^2+(Delta_Pe)^2)/(GPS_Time_UNIX(i+1)-GPS_Time_UNIX(i));
-%  end
-% end
+ Ground_Speed_Cal = zeros(length(Pe),1);
+ L=10;
+ for i = L+5:L:length(Pe)-1
+    
+  if   abs(Pn(i)-Pn(i-L)) < 1*10^(-6)
+        Delta_Pn = 0;
+  else    
+     Delta_Pn = Pn(i)-Pn(i-L);
+  end
+   if   abs(Pe(i)-Pe(i-L)) < 1*10^(-6)
+      Delta_Pe = 0;
+  else    
+     Delta_Pe = Pe(i)-Pe(i-L);
+  end
+  
+  if GPS_Time_UNIX(i)-GPS_Time_UNIX(i-L) == 0
+      Ground_Speed_Cal(i) = 1;
+  else
+      for count = i-L:i
+      Ground_Speed_Cal(count)=sqrt((Delta_Pn)^2+(Delta_Pe)^2)/(GPS_Time_UNIX(i)-GPS_Time_UNIX(i-L));
+      end
+  end
+ end
 
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,35 +109,35 @@ ylabel('Alt|Error')
 hold off
 
 subplot(4,3,10)
-%plot(Time(1:length(Ground_Speed_Cal)),Grnd_Spd_Est(1:length(Ground_Speed_Cal))-Ground_Speed_Cal,'g')
-plot(Time,Grnd_Spd_Est,'g')
+plot(Time(5:length(Ground_Speed_Cal)-L),Grnd_Spd_Est(5:length(Ground_Speed_Cal)-L)-Ground_Speed_Cal(5:end-L),'g')
+%plot(Time,Grnd_Spd_Est,'g')
 hold on
 plot(Time,Grnd_Spd_Est_cov,'r')
 plot(Time,-Grnd_Spd_Est_cov,'r')
-ylabel('GrndSpeed')
+ylabel('GrndSpeed|Error')
 hold off
 
 subplot(4,3,2)
 plot(Time,Course_ang_Est,'g')
 hold on
-plot(Time,Course_ang_Est_cov,'r')
-plot(Time,-Course_ang_Est_cov,'r')
+plot(Time,Course_ang_Est_cov+Course_ang_Est,'r')
+plot(Time,-Course_ang_Est_cov+Course_ang_Est,'r')
 ylabel('CourseAng(deg)')
 hold off
 
 subplot(4,3,5)
 plot(Time,Wn_est,'g')
 hold on
-plot(Time,Wn_est_cov,'r')
-plot(Time,-Wn_est_cov,'r')
+plot(Time,Wn_est_cov+Wn_est,'r')
+plot(Time,-Wn_est_cov+Wn_est,'r')
 ylabel('WindNorth')
 hold off
 
 subplot(4,3,8)
 plot(Time,We_est,'g')
 hold on
-plot(Time,We_est_cov,'r')
-plot(Time,-We_est_cov,'r')
+plot(Time,We_est_cov+We_est,'r')
+plot(Time,-We_est_cov+We_est,'r')
 ylabel('WindEast')
 hold off
 
@@ -173,5 +176,20 @@ axis equal
 suptitle(Title_Super)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
+Vx=1;
+Vy=1;
+Course_ang = atan2(Vy,Vx);
+Course_ang*180/pi
+if (Course_ang < 0)
+    Course_ang = -Course_ang + pi/2;
+elseif (Course_ang*(180/pi) == 180.0) 
+    Course_ang = 1.5*pi;
+else
+    if (Vx < 0)
+        Course_ang = 2*pi-(Course_ang-pi/2);
+    end
+    if (Vx > 0)
+        Course_ang = pi/2 - Course_ang;
+    end
+end
+Course_ang*180/pi

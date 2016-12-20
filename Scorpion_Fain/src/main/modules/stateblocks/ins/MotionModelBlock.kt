@@ -109,7 +109,10 @@ class MotionModelBlock(override var label: String) : StateBlock {
 
         //println("Qd="+ Qd)
         //println("Phi=" + Phi)
-        //println("F" + F)
+
+        //println("F*dt=" + F*dt)
+
+        //print()
         //println("dt=" + dt)
         return Dynamics(f, Phi, Qd)
     }
@@ -144,7 +147,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
 
         var f_mm = zeros(7,1)
         var psi_dot = (q*sin(phi)/cos(theta))+(r*cos(phi)/cos(theta))
-        var Vg_dot = (((Va*cos(phi)+Wn)*(-Va*psi_dot*sin(psi)))+((Va*sin(phi)+We)*(Va*psi_dot*cos(psi))))/Vg
+        var Vg_dot = (((Va*cos(psi)+Wn)*(-Va*psi_dot*sin(psi)))+((Va*sin(psi)+We)*(Va*psi_dot*cos(psi))))/Vg
 
         f_mm[0] = Vg*cos(chi)*dt
         f_mm[1] = Vg*sin(chi)*dt
@@ -185,7 +188,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var Wn   = xhat[4]
         var We   = xhat[5]
         var psi  = xhat[6]
-        var Q_ud = eye(5)
+        var Q_ud = zeros(5,5)
         val g    = 9.81 //Gravity m/s
 
         //Inputs
@@ -196,7 +199,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         var theta = pitch
 
         //Set noise on inputs
-        Q_ud[0,0] = .5*.5*dt*10 //Noise on Va airspeed (m/s)
+        Q_ud[0,0] = .5*.5*dt //Noise on Va airspeed (m/s)
         Q_ud[1,1] = (1*1*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
         Q_ud[2,2] = (1*1*Math.PI/180)*dt //Noise on r pitch ang rate (rads)
         Q_ud[3,3] = (1*1*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
@@ -214,10 +217,19 @@ class MotionModelBlock(override var label: String) : StateBlock {
         B[2,0..4] = mat[eq_1*eq_2/eq_4, Va*sin(phi)*eq_1/eq_4, Va*cos(phi)*eq_1/eq_4, Va*eq_1*eq_3/eq_4,Va*sin(theta)*eq_1*eq_2/(Vg*cos(theta)*cos(theta))]
         B[3,3]    = g*cos(chi-psi)/(Vg*cos(phi)*cos(phi))
         B[6,0..4] = mat[0,sin(phi)/cos(theta), cos(phi)/cos(theta), eq_3/cos(theta), sin(theta)*eq_2/(cos(theta)*cos(theta))]
-
+        var Q = zeros(7,7)
+                //Q[0,0] = 1*dt
+                //Q[1,1] = 1*dt
+                //Q[2,2] = 100*dt
+                //Q[3,3] = 1*dt
+                //Q[3,3] = 1*dt
+                //Q[4,4] = 1*dt
+                //Q[5,5] = 1*dt
+                //Q[6,6] = 1*dt
+        //B = abs(B)
         //calculate Qd_mm
-        var Qd_mm = B*Q_ud*B.T
-
+        var Qd_mm = B*Q_ud*B.T+Q
+        //println("Qdmm =" + '\n' +  Qd_mm.toString())
         //add q for all states of motion model
         return Qd_mm
 
@@ -266,7 +278,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         // Beard & McClain Motion Model
         val F = zeros(9, 9)
         var psi_dot = q*sin(phi)/cos(theta)+r*cos(phi)/cos(theta)
-        var Vg_dot = (Va*cos(phi)+Wn)*(-Va*psi_dot*sin(psi)+Va*sin(phi)+We)*(Va*psi_dot*cos(psi))/Vg
+        var Vg_dot = ((Va*cos(psi)+Wn)*(-Va*psi_dot*sin(psi))+(Va*sin(psi)+We)*(Va*psi_dot*cos(psi)))/Vg
 
 
 
@@ -276,7 +288,7 @@ class MotionModelBlock(override var label: String) : StateBlock {
         F[2,4]       = -psi_dot*Va*sin(psi) / Vg
         F[2,5]       =  psi_dot*Va*cos(psi) / Vg
         F[2,6]       = -psi_dot*Va*(Wn*cos(psi)+We*sin(psi)) / Vg
-        F[3,2]       = -g*tan(phi)*cos(chi-psi) / pow(Vg,2)
+        F[3,2]       = -g*tan(phi)*cos(chi-psi) / (Vg*Vg)
         F[3,3]       = -g*tan(phi)*sin(chi-psi) / Vg
         F[3,6]       = g*tan(phi)*sin(chi-psi) / Vg
         F[7,8]       = 1
