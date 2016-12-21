@@ -51,10 +51,13 @@ class RangeMeasurementProcessor : MeasurementProcessor {
     // Generates z, h, H, and R for the filter to use during updates.
     override fun generateModel(meas: Measurement, xhat: Matrix<Double>, P: Matrix<Double>): MeasurementModel {
         var Curr_Meas = meas.auxData as FainMeasurements
-      //  var alt =0.0
-       // with(Curr_Meas as FainMeasurements) {
-            //alt=
-            //Measurement from LCm message
+        //  var alt =0.0
+        // with(Curr_Meas as FainMeasurements) {
+        //alt=
+        //Measurement from LCm message
+
+
+
             var Corrected_range_lon_2pi = -(2 * Math.PI - Curr_Meas.range_Lon)
             var range_Lat_neu = deltaLatToNorth((Curr_Meas.range_Lat - (Curr_Meas.GPS_origin_lat * Math.PI / 180)), Curr_Meas.range_Lat, xhat[7])
             var range_Lon_neu = deltaLonToEast((Corrected_range_lon_2pi - (Curr_Meas.GPS_origin_lon * Math.PI / 180)), Curr_Meas.range_Lat, xhat[7])
@@ -67,7 +70,7 @@ class RangeMeasurementProcessor : MeasurementProcessor {
             // h = sqrt((North Diff^2)+(East Diff^2)+(Alt Diff^2))
             var h1 = pow(pow(North_delta1, 2) + pow(East_delta1, 2) + pow(Alt_delta1, 2), .5)
 
-           // println("z=" + z.toString() + "/t" + "h1=" + h1.toString())
+            // println("z=" + z.toString() + "/t" + "h1=" + h1.toString())
 
             var H = mat[North_delta1 / h1, East_delta1 / h1, 0, 0, 0, 0, 0, Alt_delta1 / h1, 0] //linearized measurement
             // Use the measurement container's covariance
@@ -85,14 +88,16 @@ class RangeMeasurementProcessor : MeasurementProcessor {
 
                 return mat[h]
             }
-
-
-            // ::h is a reference to the function "h"
             return MeasurementModel(z, ::h, H, R)
-       //  }
-    }
+        }
 }
-        /*
+
+
+
+
+/*   <-----------------------------------///////////////////////////////////////////
+            //For a single point range use these equations and comment out the ones above
+            ////////////////////////////////////////////////////////////////////////////
             //var Test_Point = mat[39.773692, -84.107681, 127.0] //Lat Lon AGL
             var Test_Point = mat[39.779692, -84.107681, 127.0] //Lat Lon AGL
             var range_Lat_neu_truth = deltaLatToNorth((Test_Point[0] - Curr_Meas.GPS_lat)* Math.PI / 180, Test_Point[0]*Math.PI/180, Test_Point[2])
@@ -136,10 +141,11 @@ class RangeMeasurementProcessor : MeasurementProcessor {
                 // ::h is a reference to the function "h"
             }
 
-        return MeasurementModel(z, ::h, H, R)}
-    }
-
-    // Unused for this example, so throw an error if someone tries to use it
-
+        return MeasurementModel(z, ::h, H, R)
 }
-*/
+}
+       */   //<-----------------------------------///////////////////////////////////////////
+
+
+
+

@@ -66,7 +66,8 @@ class VOMeasurementProcessor : MeasurementProcessor {
         else if (Course_ang*(180/Math.PI) == 180.0) {Course_ang = 1.5*Math.PI}
         else{if (Vx < 0){Course_ang = 2*Math.PI-(Course_ang-Math.PI/2)}
              if (Vx > 0){Course_ang = Math.PI/2 - Course_ang}}
-
+        var Course_deg = Course_ang*180/Math.PI
+        println("GrdSpd=" + Ground_Speed.toString() + "Course_ang=" + Course_deg.toString())
 
 
 

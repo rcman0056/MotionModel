@@ -33,10 +33,10 @@ var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM me
 
 var Export_Data = zeros(1, 24) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
-var HeadingUpdateOn =false
-var AltitudeUpdateOn = false
-var VOUpdateOn = true
-var RangeUpdateOn = false
+var HeadingUpdateOn =true
+var AltitudeUpdateOn = true
+var VOUpdateOn = false
+var RangeUpdateOn = true
 var SavePixhawkData = true //used to plot True Heading not true GPS data
 
 
@@ -98,14 +98,14 @@ object FAIN_Main {
         var initCov = zeros(9, 9)
         var tau_vv: Double = 2.0//time constant on alt_vv ... also set in MotionModelBlock
         var sigma_vv = 5.0 //sigma on alt_vv ... also set in MotionModelBlock
-        initCov[0, 0] = 3                         //North (m)
-        initCov[1, 1] = 3                         //East  (m)
-        initCov[2, 2] = 3                         //Vg Ground Speed (m/s)
+        initCov[0, 0] = 5                         //North (m)
+        initCov[1, 1] = 5                         //East  (m)
+        initCov[2, 2] = 5                         //Vg Ground Speed (m/s)
         initCov[3, 3] = 100 * Math.PI / 180            //chi Course Angle (rads)
-        initCov[4, 4] = 1                         //Wind North (m/s)
-        initCov[5, 5] = 1                         //Wind East  (m/s)
+        initCov[4, 4] = 3                         //Wind North (m/s)
+        initCov[5, 5] = 3                         //Wind East  (m/s)
         initCov[6, 6] = 64 * Math.PI / 180         //Yaw (rads)
-        initCov[7, 7] = 1                         //Alt (m)
+        initCov[7, 7] = 3                         //Alt (m)
         initCov[8, 8] = 2 * pow(sigma_vv, 2) / tau_vv  //Alt_VV
         filter.setStateBlockCovariance(label = "motionmodel",
                 covariance = initCov)
@@ -556,7 +556,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.range_time),
                 measurementData = mat[LCMMeasurements.range],
                 auxData = LCMMeasurements,
-                measurementCov = mat[15 * 15])
+                measurementCov = mat[18 * 18])
 
         filter.update(RangeMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

@@ -1,8 +1,8 @@
 
 %close all
 %clear all
-Title_Super ='Qdmm = [.5,1,1,1,1] and  Run = 1000 Measurements=alt rang heading';
-FigNum=23;
+Title_Super ='Qdmm = [.5,3,3,1,1] and  Run = 1090 Measurements=RangePoint(10) Alt heading';
+FigNum=30;
 %Pull in data byte array for filter and convert
 filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt';
 fid = fopen(filename, 'r');
@@ -31,7 +31,7 @@ Filter_Time=data(:,1);
 Pn_est=data(:,2);
 Pe_est=data(:,3);
 Grnd_Spd_Est=data(:,4);
-Course_ang_Est=data(:,5)*(180/pi);
+Course_ang_Est=wrapTo360(data(:,5)*(180/pi));
 Wn_est=data(:,6);
 We_est=data(:,7);
 Yaw_est=wrapTo360(data(:,8)*(180/pi));
@@ -75,7 +75,50 @@ Alt_vv_est_cov=data(:,23);
       end
   end
  end
-
+%%
+%Calculate Course Angle
+Course_Ang_Cal = zeros(length(Pe),1);
+ K=5;
+ for i = K+5:K:length(Pe)-1
+    
+    if   abs(Pn(i)-Pn(i-K)) < 1*10^(-6)
+        Delta_Pn = 0;
+    else    
+        Delta_Pn = Pn(i)-Pn(i-K);
+    end
+    
+    if   abs(Pe(i)-Pe(i-K)) < 1*10^(-6)
+        Delta_Pe = 0;
+    else    
+        Delta_Pe = Pe(i)-Pe(i-K);
+    end
+  
+        for count = i-K:i
+            Course_ang = atan2(Delta_Pn,Delta_Pe);
+            
+            if Course_ang < 0
+                Course_ang = -Course_ang + pi/2;
+            
+            elseif Course_ang*(180/pi) == 180.0 
+                Course_ang = 1.5*pi;
+            else
+                    if Delta_Pe < 0
+                        Course_ang = 2*pi-(Course_ang-pi/2);
+                    end
+                    if Delta_Pe > 0
+                        Course_ang = pi - Course_ang;
+                    end
+             end
+            
+        
+        
+            
+            Course_Ang_Cal(count)=Course_ang;
+        end
+ end
+ Course_Ang_Cal = Course_Ang_Cal*180/pi; 
+ Course_Ang_Cal = wrapTo360(Course_Ang_Cal);
+ 
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure(FigNum)
@@ -118,11 +161,11 @@ ylabel('GrndSpeed|Error')
 hold off
 
 subplot(4,3,2)
-plot(Time,Course_ang_Est,'g')
+plot(Time(5:length(Course_Ang_Cal)-K),Course_ang_Est(5:length(Course_Ang_Cal)-K)-Course_Ang_Cal(5:end-K),'g')
 hold on
-plot(Time,Course_ang_Est_cov+Course_ang_Est,'r')
-plot(Time,-Course_ang_Est_cov+Course_ang_Est,'r')
-ylabel('CourseAng(deg)')
+plot(Time,Course_ang_Est_cov,'r')
+plot(Time,-Course_ang_Est_cov,'r')
+ylabel('CourseAng(deg)|Error')
 hold off
 
 subplot(4,3,5)
@@ -176,20 +219,3 @@ axis equal
 suptitle(Title_Super)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Vx=1;
-Vy=1;
-Course_ang = atan2(Vy,Vx);
-Course_ang*180/pi
-if (Course_ang < 0)
-    Course_ang = -Course_ang + pi/2;
-elseif (Course_ang*(180/pi) == 180.0) 
-    Course_ang = 1.5*pi;
-else
-    if (Vx < 0)
-        Course_ang = 2*pi-(Course_ang-pi/2);
-    end
-    if (Vx > 0)
-        Course_ang = pi/2 - Course_ang;
-    end
-end
-Course_ang*180/pi

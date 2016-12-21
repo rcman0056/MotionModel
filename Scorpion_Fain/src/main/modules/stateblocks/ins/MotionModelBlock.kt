@@ -200,8 +200,8 @@ class MotionModelBlock(override var label: String) : StateBlock {
 
         //Set noise on inputs
         Q_ud[0,0] = .5*.5*dt //Noise on Va airspeed (m/s)
-        Q_ud[1,1] = (1*1*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
-        Q_ud[2,2] = (1*1*Math.PI/180)*dt //Noise on r pitch ang rate (rads)
+        Q_ud[1,1] = (3*5*Math.PI/180)*dt //Noise on q pitch ang rate (rads)
+        Q_ud[2,2] = (3*5*Math.PI/180)*dt //Noise on r pitch ang rate (rads)
         Q_ud[3,3] = (1*1*Math.PI/180)*dt //Noise on phi aircraft roll (rads)
         Q_ud[4,4] = (1*1*Math.PI/180)*dt //Noise on theta aircraft pitch (rads)
 

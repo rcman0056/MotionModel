@@ -314,7 +314,7 @@ double* mainOpticalFlow(int8_t* inputData) {
         for (int j = 0; j < numPoints; j++) {
             double deviance[3];
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Threshhold
-            double thresholdFactor = 1.8;//Increase-> more inliers Decrease-> less inliers
+            double thresholdFactor = 1.6;//Increase-> more inliers Decrease-> less inliers
             deviance[0] = translationField[j].x-translation[0];
             deviance[1] = translationField[j].y-translation[1];
             deviance[2] = translationField[j].z-translation[2];
