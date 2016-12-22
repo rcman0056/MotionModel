@@ -52,9 +52,9 @@ object FAIN_Main {
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
 
         //Set simulated range values for an aircraft that circles at a point with a given radius and ground speed.
-        LCMMeasurements.simulated_range_CenterNEU = mat[0,0,200] //X Y Z
-        LCMMeasurements.simulated_range_ground_speed = 30.0 // m/s
-        LCMMeasurements.simulated_range_radius = 300.0 // m
+        LCMMeasurements.simulated_range_CenterNEU = mat[0,0,3048] //X Y Z 10K ft = 3048m
+        LCMMeasurements.simulated_range_ground_speed = 76.0 // m/s  76=170 MPH   stall speed C-130 =115mph
+        LCMMeasurements.simulated_range_radius = 800.0 // m
 
 
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message

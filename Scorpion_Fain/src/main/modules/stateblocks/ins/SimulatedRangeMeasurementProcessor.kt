@@ -71,21 +71,21 @@ class SimulatedRangeMeasurementProcessor : MeasurementProcessor {
         var current_gps = mat[Curr_Meas.GPS_Linux_time, Curr_Meas.GPS_lat, Curr_Meas.GPS_lon, Curr_Meas.GPS_height_agl]
         //Convert to NEU using first received GPS value as origin
 
-        var GPS_X =      deltaLatToNorth((current_gps[1] - Curr_Meas.GPS_origin_lat) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]) //Diff in rads,Current lat,Estimated ALT
-        var GPS_Y =      deltaLonToEast((current_gps[2] - Curr_Meas.GPS_origin_lon) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3])
-        var GPS_Z =      current_gps[3]
+        var GPS_Y_NEU =      deltaLatToNorth((current_gps[1] - Curr_Meas.GPS_origin_lat) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]) //Diff in rads,Current lat,Estimated ALT
+        var GPS_X_NEU =      deltaLonToEast((current_gps[2] - Curr_Meas.GPS_origin_lon) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3])
+        var GPS_Z_NEU =      current_gps[3]
 
         //Calculate truth range
-        var North_delta = Y_sim - GPS_Y
-        var East_delta  = X_sim - GPS_X
-        var Alt_delta   = Z_sim - GPS_Z
+        var North_delta = Y_sim - GPS_Y_NEU
+        var East_delta  = X_sim - GPS_X_NEU
+        var Alt_delta   = Z_sim - GPS_Z_NEU
         var z =  mat[pow(pow(North_delta,2)+pow(East_delta,2)+pow(Alt_delta,2),.5)]
 
 
         //Calculate Non-Linear H
-        var North_delta1 = Y_sim - xhat[0]
-        var East_delta1  = X_sim - xhat[1]
-        var Alt_delta1   = Z_sim - xhat[7]
+        var North_delta1 = xhat[0] - Y_sim
+        var East_delta1  = xhat[1] - X_sim
+        var Alt_delta1   = xhat[7] - Z_sim
         // h = sqrt((North Diff^2)+(East Diff^2)+(Alt Diff^2))
         var h1 = pow(pow(North_delta1, 2) + pow(East_delta1, 2) + pow(Alt_delta1, 2), .5)
 
@@ -97,9 +97,9 @@ class SimulatedRangeMeasurementProcessor : MeasurementProcessor {
         //println("z=" + z + "\n" + "xhat=" + xhat[6] * (180 / Math.PI) + "\n" + "meas=" + meas.measurementData)
         // Make a inner function "h" to return to the filter
         fun h(x: Matrix<Double>): Matrix<Double> {
-            var North_delta = Y_sim - x[0]
-            var East_delta = X_sim - x[1]
-            var Alt_delta = Z_sim - x[7]
+            var North_delta = x[0] - Y_sim
+            var East_delta  = x[1] - X_sim
+            var Alt_delta =   x[7] - Z_sim
             // h = sqrt((North Diff^2)+(East Diff^2)+(Alt Diff^2))
 
 
