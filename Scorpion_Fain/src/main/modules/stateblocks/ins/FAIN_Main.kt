@@ -32,11 +32,12 @@ var Export_Data = zeros(1, 24) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn =true
 var AltitudeUpdateOn = true
-var VOUpdateOn = false
+var VOUpdateOn = true
 var RangeUpdateOn = false
 var SimulatedRangeUpdateOn = true
+var SimulatedRangeUpdateTwoOn = false
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-
+var Save_Name = "OneLoopMM"
 
 // Main Function
 object FAIN_Main {
@@ -44,18 +45,25 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 1090
+        var Length_Of_Run = 1090 //1090 FOR ONELOOP 1790 for longloop
 
 
 
-        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4), 0.0, zeros(1, 3),
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
+        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4), 0.0, zeros(1, 4),
+                zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
 
-        //Set simulated range values for an aircraft that circles at a point with a given radius and ground speed.
+        //Set simulated range values for an aircraft that circles clockwise at a point starting at 1,0 on the unit circle with a given radius and ground speed.
         LCMMeasurements.simulated_range_CenterNEU = mat[0,0,3048] //X Y Z 10K ft = 3048m
         LCMMeasurements.simulated_range_ground_speed = 76.0 // m/s  76=170 MPH   stall speed C-130 =115mph
-        LCMMeasurements.simulated_range_radius = 800.0 // m
+        LCMMeasurements.simulated_range_radius = 3048.0 // m
 
+
+        //Set simulated range values for an aircraft that circles at a point with a given radius and ground speed.
+        // When trying to have two aircraft fly the same path but at different locations around the radius set this value below
+        LCMMeasurements.Circumference_Offset_rads = Math.PI/2  //Must be a double in radians. Math.PI/2 = plane starts at 0,1 on the unit circle flying clockwise
+        LCMMeasurements.simulated_range_CenterNEU_Two = mat[0,0,3048] //X Y Z 10K ft = 3048m
+        LCMMeasurements.simulated_range_ground_speed_Two = 76.0 // m/s  76=170 MPH   stall speed C-130 =115mph
+        LCMMeasurements.simulated_range_radius_Two = 500.0 // m
 
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
         var Image_data = FainImagePreMeasurements(IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0,
@@ -72,11 +80,11 @@ object FAIN_Main {
 
 
         //For OF Pre processor
-        var PreprocessorOptical_Flow = OpticalFlow_Carson()
+        var PreprocessorOptical_Flow = VO_Carson()
 
 
         var LCMChannels = LCM.getSingleton()
-        LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter, LCMMeasurements, Input_LCM_Time, P_count,Length_Of_Run)) //This subscribes to LCM message is kept open as long as main is func is running
+        LCMChannels.subscribe("PIXHAWK2", Subscribe_Pixhawk2(filter, LCMMeasurements, Input_LCM_Time, P_count,Length_Of_Run, Save_Name)) //This subscribes to LCM message is kept open as long as main is func is running
         LCMChannels.subscribe("PIXHAWK1", Subscribe_Pixhawk1(filter, LCMMeasurements))
         LCMChannels.subscribe("RANGE", Subscribe_Range(filter, LCMMeasurements, Input_LCM_Time))
         LCMChannels.subscribe("CAM", Subscribe_Cam(filter, LCMMeasurements, Input_LCM_Time, Image_data, PreprocessorOptical_Flow))
@@ -100,6 +108,10 @@ object FAIN_Main {
         //Create SimulatedRangeUpdate Processor
         val SimulatedRangeUpdate = "SimulatedRangeUpdate"
         filter.addMeasurementProcessor(SimulatedRangeMeasurementProcessor(SimulatedRangeUpdate, "motionmodel"))
+
+        //Create SimulatedRangeUpdate Processor Two
+        val SimulatedRangeUpdateTwo = "SimulatedRangeUpdateTwo"
+        filter.addMeasurementProcessor(SimulatedRangeMeasurementProcessorTwo(SimulatedRangeUpdateTwo, "motionmodel"))
 
         //Create VOUpdate Processor
         val VOUpdate = "VOUpdate"
@@ -142,7 +154,7 @@ object FAIN_Main {
 }
 
 class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck,
-                    var Image_data: FainImagePreMeasurements, var PreprocessorOptical_Flow: OpticalFlow_Carson) : LCMSubscriber {
+                    var Image_data: FainImagePreMeasurements, var PreprocessorOptical_Flow: VO_Carson) : LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
@@ -180,9 +192,9 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
                 }
             }
 
-            //Calculate DCMs The Image recieved is on average .1 seconds behind(diff btwn Valid time and received time) so the current RPY is stored as the RPY updates at .1 secs
+            //Calculate DCMs The Image received is on average .1 seconds behind(diff btwn Valid time and received time) so the current RPY is stored as the RPY updates at .1 secs
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
-            var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_input[1], LCMMeasurements.Image_TimeRPY_input[2], LCMMeasurements.Image_TimeRPY_input[3]]) //Roll, Pitch, Not Filter Yaw
+            var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2], LCMMeasurements.Image_TimeRPY_delayed[3]]) //Roll, Pitch, Not Filter Yaw
             Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
 
             if (Image_data.First_Image_Received == true) {
@@ -202,10 +214,14 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
                 var cc = doubleArrayOf(670.90144, 466.79380)
 
 
+                var useFeatures = false //=> FAST then uses a lucas-kanade Tracker uses features found in first image by FAST to located and find differenc ein second image
+                //useFeatures = false //=> optical flow
 
-
-                PreprocessorOptical_Flow.runOpticalFlow(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
-                        Image_data.New_Image_DCM, filter.curTime, zeros(3, 1), "Blank", zeros(3, 3))
+                var inertialAiding = true //=> use both provided DCM's
+                //inertialAiding = false => calculate the rotation between frames
+                val params = booleanArrayOf(useFeatures,inertialAiding)
+                PreprocessorOptical_Flow.runVO(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
+                        Image_data.New_Image_DCM, filter.curTime, zeros(3, 1), "Blank", zeros(3, 3),params)
 
                 //LCMMeasurements.Image_dt_velocityXYZ = [dt,Vx,Vy,Vz]
 
@@ -294,13 +310,37 @@ class Subscribe_Range(var filter: StandardSensorEKF, var LCMMeasurements: FainMe
             if(LCMMeasurements.simulated_range_dt == 0.0 && LCMMeasurements.simulated_range_total_dt == 0.0){
                 LCMMeasurements.simulated_range_dt = LCMMeasurements.range_time - filter.curTime.time
                 LCMMeasurements.simulated_range_total_dt = LCMMeasurements.simulated_range_total_dt + LCMMeasurements.simulated_range_dt
-                LCMMeasurements.simulated_range_time_old = LCMMeasurements.simulated_range_time
+                LCMMeasurements.simulated_range_time_old = LCMMeasurements.range_time
             }
             //handle creation of dt and total_dt used to calculate MAVs position while flying a simulated circle.
             else{
                 LCMMeasurements.simulated_range_dt = LCMMeasurements.range_time - LCMMeasurements.simulated_range_time_old
                 LCMMeasurements.simulated_range_total_dt = LCMMeasurements.simulated_range_total_dt + LCMMeasurements.simulated_range_dt
-                LCMMeasurements.simulated_range_time_old = LCMMeasurements.simulated_range_time
+                LCMMeasurements.simulated_range_time_old = LCMMeasurements.range_time
+            }
+        }
+
+        //Handle second simulated range separately
+
+        if (Input_LCM_Time.LCM_start_time_flag == true && SimulatedRangeUpdateTwoOn == true){
+            Input_LCM_Time.simulated_range_time_Two = LCMMeasurements.range_time //Set equal to time range on LCM was received
+            Input_LCM_Time.simulated_range_time_Two_flag = true
+
+            //This if statement handles the fist SimRange update as the range is calculated using a dt. Only 1 LCM msg means only one time
+            if(LCMMeasurements.simulated_range_dt_Two == 0.0 && LCMMeasurements.simulated_range_total_dt_Two == 0.0 && SimulatedRangeUpdateOn == false){
+                LCMMeasurements.simulated_range_dt_Two = LCMMeasurements.range_time - filter.curTime.time
+                LCMMeasurements.simulated_range_total_dt_Two = LCMMeasurements.simulated_range_total_dt_Two + LCMMeasurements.simulated_range_dt_Two
+                LCMMeasurements.simulated_range_time_old_Two = LCMMeasurements.range_time
+            }
+            else if (LCMMeasurements.simulated_range_dt_Two == 0.0 && LCMMeasurements.simulated_range_total_dt_Two == 0.0 && SimulatedRangeUpdateOn == true){
+                LCMMeasurements.simulated_range_total_dt_Two = LCMMeasurements.simulated_range_total_dt
+                LCMMeasurements.simulated_range_time_old_Two = LCMMeasurements.simulated_range_time_old
+            }
+            //handle creation of dt and total_dt used to calculate MAVs position while flying a simulated circle.
+            else{
+                LCMMeasurements.simulated_range_dt_Two = LCMMeasurements.range_time - LCMMeasurements.simulated_range_time_old
+                LCMMeasurements.simulated_range_total_dt_Two = LCMMeasurements.simulated_range_total_dt_Two + LCMMeasurements.simulated_range_dt_Two
+                LCMMeasurements.simulated_range_time_old = LCMMeasurements.range_time
             }
         }
 
@@ -308,7 +348,7 @@ class Subscribe_Range(var filter: StandardSensorEKF, var LCMMeasurements: FainMe
 }
 
 //Subscriber for Pixhawk2 with filter updates
-class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck, var P_count: Double, var Length_Of_Run: Int) : LCMSubscriber {
+class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, var Input_LCM_Time: InputLCMTimeCheck, var P_count: Double, var Length_Of_Run: Int,Save_Name: String) : LCMSubscriber {
 
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
@@ -329,7 +369,10 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         LCMMeasurements.pix2_alt_time = pixhawk2.global_relative_frame[0]
 
         //Set RPY for VO
-        LCMMeasurements.Image_TimeRPY_input = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
+        LCMMeasurements.Image_TimeRPY_current = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
+
+
+        LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
 
         if (SavePixhawkData == true) {
             var PixhawkRow = SavePixhawkData(pixhawk2)
@@ -445,7 +488,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
             var time_filter = filter.curTime
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
-
+/*
                        println(time_filter.toString() + '\n' +
                                X[0].toString() + '\t' + P[0].toString() + '\n' +
                                X[1].toString() + '\t' + P[1].toString() + '\n' +
@@ -457,7 +500,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                                X[7].toString() + '\t' + P[7].toString() + '\n' +
                                X[8].toString() + '\t' + P[8].toString() + '\n'
                        )
-
+*/
             //Get current GPS value:Note this is at 4hz while the Filter propagates at ~10Hz
 
             if (LCMMeasurements.GPS_origin_received == true) {
@@ -477,10 +520,10 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
 
                 if (Export_Data.numRows() > Length_Of_Run) {
 
-                    WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt")
+                    WriteToFileBinary(Export_Data, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_"+ Save_Name+".txt")
 
                     if (SavePixhawkData == true) {
-                        WriteToFileBinary(Export_Pixhawk, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data.txt")
+                        WriteToFileBinary(Export_Pixhawk, "/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data_"+ Save_Name+".txt")
                     }
 
                     exitProcess(0)
@@ -503,6 +546,11 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
             if (Input_LCM_Time.simulated_range_time_flag == true && Input_LCM_Time.simulated_range_time >= filter.curTime.time && SimulatedRangeUpdateOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
                 Input_LCM_Time = SimulatedRangeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = true)
+            }
+
+            if (Input_LCM_Time.simulated_range_time_Two_flag == true && Input_LCM_Time.simulated_range_time_Two >= filter.curTime.time && SimulatedRangeUpdateTwoOn == true) {
+                filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
+                Input_LCM_Time = SimulatedRangeUpdateTwo(filter, Input_LCM_Time, LCMMeasurements, Console_Output = true)
             }
 
             if (Input_LCM_Time.range_time_flag == true && Input_LCM_Time.range_time >= filter.curTime.time && RangeUpdateOn == true) {
@@ -615,13 +663,38 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.simulated_range_time),
                 measurementData = mat[LCMMeasurements.simulated_range],//not used as z is calculated in the processor
                 auxData = LCMMeasurements,
-                measurementCov = mat[18 * 18])
+                measurementCov = mat[10 * 10])
 
         filter.update(SimulatedRangeMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
         var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
         if (Console_Output) {
             println('\n' + "An Update happened for the Range to" + '\n' + filter.curTime.time + '\n'
+                    + "Pn=" + X[0].toString() + '\t' + P[0].toString() + '\n'
+                    + "Pe=" + X[1].toString() + '\t' + P[1].toString() + '\n'
+                    + "Alt=" + X[7].toString() + '\t' + P[7].toString() + '\n')
+        }
+        return Input_LCM_Time
+    }
+
+    fun SimulatedRangeUpdateTwo(filter: StandardSensorEKF,
+                             Input_LCM_Time: InputLCMTimeCheck,
+                             LCMMeasurements: FainMeasurements,
+                             Console_Output: Boolean): InputLCMTimeCheck {
+
+        Input_LCM_Time.simulated_range_time_Two_flag = false
+        val SimulatedRangeMeasurementTwo = Measurement(processorLabel = "SimulatedRangeUpdateTwo",
+                timeReceived = Time(Input_LCM_Time.simulated_range_time_Two),
+                timeValidity = Time(Input_LCM_Time.simulated_range_time_Two),
+                measurementData = mat[LCMMeasurements.simulated_range],//not used as z is calculated in the processor
+                auxData = LCMMeasurements,
+                measurementCov = mat[10 * 10])
+
+        filter.update(SimulatedRangeMeasurementTwo)
+        var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
+        var P = filter.getStateBlockCovariance("motionmodel").diag().asRowVector()
+        if (Console_Output) {
+            println('\n' + "An Update happened for the RangeTwo to" + '\n' + filter.curTime.time + '\n'
                     + "Pn=" + X[0].toString() + '\t' + P[0].toString() + '\n'
                     + "Pe=" + X[1].toString() + '\t' + P[1].toString() + '\n'
                     + "Alt=" + X[7].toString() + '\t' + P[7].toString() + '\n')
@@ -640,7 +713,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.image_update_time),
                 measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
                 auxData = null,
-                measurementCov = mat[20*20, 0 end 0, 30*30*(Math.PI/2)])
+                measurementCov = mat[100*100, 0 end 0, 90*90*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
@@ -722,6 +795,8 @@ object InputLCMTimeCheck {
     var range_time_flag = false
     var simulated_range_time = 0.0
     var simulated_range_time_flag = false
+    var simulated_range_time_Two = 0.0
+    var simulated_range_time_Two_flag = false
     var altitude_time_flag = false
     var altitude_time = 0.0
     var image_update_time = 0.0

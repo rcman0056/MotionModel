@@ -4,6 +4,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../src/main/modules/Svo">
       <sourceFolder url="file://$MODULE_DIR$/../src/main/modules/Svo/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../src/main/modules/Svo" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

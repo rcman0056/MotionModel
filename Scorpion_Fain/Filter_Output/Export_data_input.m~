@@ -1,10 +1,12 @@
 
 %close all
 %clear all
-Title_Super ='Qdmm = [.5,3,3,1,1] and  Run = 1090 Measurements=RangePoint(10) Alt heading';
-FigNum=29;
+Save_Name = 'MM';
+Title_Super =['Qdmm = [.5,3,3,1,1] and  Run =' Save_Name];
+FigNum=1;
 %Pull in data byte array for filter and convert
-filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt';
+
+filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
@@ -12,7 +14,7 @@ numCols = 24; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
 %Pull in data byte array for pixhawk data and convert
-filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data.txt';
+filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data_'  Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data_pix = fread(fid,'double',0,'b');
 fclose(fid);
@@ -31,7 +33,7 @@ Filter_Time=data(:,1);
 Pn_est=data(:,2);
 Pe_est=data(:,3);
 Grnd_Spd_Est=data(:,4);
-Course_ang_Est=data(:,5)*(180/pi);
+Course_ang_Est=wrapTo360(data(:,5)*(180/pi));
 Wn_est=data(:,6);
 We_est=data(:,7);
 Yaw_est=wrapTo360(data(:,8)*(180/pi));
@@ -78,7 +80,7 @@ Alt_vv_est_cov=data(:,23);
 %%
 %Calculate Course Angle
 Course_Ang_Cal = zeros(length(Pe),1);
- K=10;
+ K=5;
  for i = K+5:K:length(Pe)-1
     
     if   abs(Pn(i)-Pn(i-K)) < 1*10^(-6)
@@ -100,7 +102,7 @@ Course_Ang_Cal = zeros(length(Pe),1);
                 Course_ang = -Course_ang + pi/2;
             
             elseif Course_ang*(180/pi) == 180.0 
-                Course_ang = 1.5*Math.PI;
+                Course_ang = 1.5*pi;
             else
                     if Delta_Pe < 0
                         Course_ang = 2*pi-(Course_ang-pi/2);
@@ -116,7 +118,8 @@ Course_Ang_Cal = zeros(length(Pe),1);
             Course_Ang_Cal(count)=Course_ang;
         end
  end
- Course_Ang_Cal = Course_Ang_Cal*180/pi;      
+ Course_Ang_Cal = Course_Ang_Cal*180/pi; 
+ Course_Ang_Cal = wrapTo360(Course_Ang_Cal);
  
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -160,7 +163,7 @@ ylabel('GrndSpeed|Error')
 hold off
 
 subplot(4,3,2)
-plot(Time(5:length(Course_Ang_Cal)-K),Course_ang_Est(5:length(Course-Course_Ang_Cal,'g')
+plot(Time(5:length(Course_Ang_Cal)-K),Course_ang_Est(5:length(Course_Ang_Cal)-K)-Course_Ang_Cal(5:end-K),'g')
 hold on
 plot(Time,Course_ang_Est_cov,'r')
 plot(Time,-Course_ang_Est_cov,'r')

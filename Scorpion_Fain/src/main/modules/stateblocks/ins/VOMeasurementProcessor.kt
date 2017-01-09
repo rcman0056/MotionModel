@@ -66,9 +66,12 @@ class VOMeasurementProcessor : MeasurementProcessor {
         else if (Course_ang*(180/Math.PI) == 180.0) {Course_ang = 1.5*Math.PI}
         else{if (Vx < 0){Course_ang = 2*Math.PI-(Course_ang-Math.PI/2)}
              if (Vx > 0){Course_ang = Math.PI/2 - Course_ang}}
-        var Course_deg = Course_ang*180/Math.PI
-        println("GrdSpd=" + Ground_Speed.toString() + "Course_ang=" + Course_deg.toString())
 
+        Course_ang = Course_ang + 2*Math.PI*Math.round((xhat[6]-Course_ang)/(2*Math.PI))
+        var Course_deg = Course_ang*180/Math.PI
+        println("GrdSpd=" + Ground_Speed.toString() + "Course_ang_deg=" + Course_deg.toString())
+
+        // Correct course angle to be inline with the current filter course angle to handle wrapping beyond 0 and 2PI
 
 
         var z = mat[Ground_Speed end Course_ang]

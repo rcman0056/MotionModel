@@ -1,0 +1,11 @@
+export LD_LIBRARY_PATH=/home/daniel/workspace/rpg_svo/svo/lib:$LD_LIBRARY_PATH
+
+Compile Java code:
+javac runVO.java
+javah -classpath . runVO
+
+Compile the source code into a shared library
+g++ -shared -fPIC -L /usr/local/lib VO.cpp -l opencv_core -l opencv_imgproc -l opencv_highgui -l opencv_video -l opencv_features2d -l opencv_calib3d -o libVO.so
+
+Compile the shared object and JNI into a shared library
+gcc -shared -fPIC -I $JAVA_HOME/include -I $JAVA_HOME/include/linux runVO.c -L. -l VO -o librunVO.so

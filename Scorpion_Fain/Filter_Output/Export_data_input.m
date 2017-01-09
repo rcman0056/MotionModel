@@ -1,10 +1,12 @@
 
 %close all
 %clear all
-Title_Super ='Qdmm = [.5,3,3,1,1] and  Run = 1090 Measurements=RangePoint(10) Alt heading';
-FigNum=30;
+Save_Name = 'OneLoopMM';
+Title_Super =['Qdmm = [.5,3,3,1,1] and  Run =' Save_Name];
+FigNum=2;
 %Pull in data byte array for filter and convert
-filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun.txt';
+
+filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
@@ -12,7 +14,7 @@ numCols = 24; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
 %Pull in data byte array for pixhawk data and convert
-filename= '/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data.txt';
+filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Pixhawk_Data_'  Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data_pix = fread(fid,'double',0,'b');
 fclose(fid);
