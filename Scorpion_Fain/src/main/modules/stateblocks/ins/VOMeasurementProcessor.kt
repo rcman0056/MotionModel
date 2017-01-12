@@ -61,15 +61,19 @@ class VOMeasurementProcessor : MeasurementProcessor {
 
         var Ground_Speed = pow((Vx * Vx) + (Vy * Vy), .5) / dt
         var Course_ang = Math.atan2(Vy,Vx)
+        Course_ang = Math.PI/2 - Course_ang
+
+        if (Course_ang < 0) {Course_ang=Course_ang+2*Math.PI}
+
         //Convert atan2 to a 0-2pi where 0 is pointing north. Output of atan2 is -pi to pi where 0 is pointing east.
-        if (Course_ang < 0){Course_ang = -Course_ang + Math.PI/2}
-        else if (Course_ang*(180/Math.PI) == 180.0) {Course_ang = 1.5*Math.PI}
-        else{if (Vx < 0){Course_ang = 2*Math.PI-(Course_ang-Math.PI/2)}
-             if (Vx > 0){Course_ang = Math.PI/2 - Course_ang}}
+        //if (Course_ang < 0){Course_ang = -Course_ang + Math.PI/2}
+        //else if (Course_ang*(180/Math.PI) == 180.0) {Course_ang = 1.5*Math.PI}
+        //else{if (Vx < 0){Course_ang = 2*Math.PI-(Course_ang-Math.PI/2)}
+        //     if (Vx > 0){Course_ang = Math.PI/2 - Course_ang}}
 
         Course_ang = Course_ang + 2*Math.PI*Math.round((xhat[6]-Course_ang)/(2*Math.PI))
         var Course_deg = Course_ang*180/Math.PI
-        println("GrdSpd=" + Ground_Speed.toString() + "Course_ang_deg=" + Course_deg.toString())
+        println("GrdSpd=" + Ground_Speed.toString() + "Course_ang_deg=" + Course_deg.toString() + "Image DT= " + dt.toString())
 
         // Correct course angle to be inline with the current filter course angle to handle wrapping beyond 0 and 2PI
 

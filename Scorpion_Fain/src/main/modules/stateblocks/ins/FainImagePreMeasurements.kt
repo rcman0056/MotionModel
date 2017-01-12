@@ -4,7 +4,8 @@ import golem.matrix.Matrix
 
 
 data class FainImagePreMeasurements(
-
+                                var Skip_Images: Int,
+                                var Skip_Images_Count: Int,
                               var New_Image: IntArray,
                               var Old_Image: IntArray,
                               var New_Image_Time_Valid: Double,

@@ -79,7 +79,7 @@ class SimulatedRangeMeasurementProcessor : MeasurementProcessor {
         var North_delta = Y_sim - GPS_Y_NEU
         var East_delta  = X_sim - GPS_X_NEU
         var Alt_delta   = Z_sim - GPS_Z_NEU
-        var z =  mat[pow(pow(North_delta,2)+pow(East_delta,2)+pow(Alt_delta,2),.5)]
+        var z =  mat[pow(pow(North_delta,2)+pow(East_delta,2)+pow(Alt_delta,2),.5)] + randn(1)*sqrt(meas.measurementCov)
 
 
         //Calculate Non-Linear H

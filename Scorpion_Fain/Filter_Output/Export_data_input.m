@@ -1,16 +1,16 @@
 
 %close all
 %clear all
-Save_Name = 'OneLoopMM';
+Save_Name = 'testVO';
 Title_Super =['Qdmm = [.5,3,3,1,1] and  Run =' Save_Name];
-FigNum=2;
+FigNum=3;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
-numCols = 24; %Set num of cols in data bytearray so matlab can parse the data
+numCols = 30; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
 %Pull in data byte array for pixhawk data and convert
@@ -53,30 +53,31 @@ We_est_cov=data(:,20);
 Yaw_est_cov=data(:,21);
 Alt_est_cov=data(:,22);
 Alt_vv_est_cov=data(:,23);
+Ground_Speed=data(:,25);
 %Calculate Ground speeds
- Ground_Speed_Cal = zeros(length(Pe),1);
- L=10;
- for i = L+5:L:length(Pe)-1
-    
-  if   abs(Pn(i)-Pn(i-L)) < 1*10^(-6)
-        Delta_Pn = 0;
-  else    
-     Delta_Pn = Pn(i)-Pn(i-L);
-  end
-   if   abs(Pe(i)-Pe(i-L)) < 1*10^(-6)
-      Delta_Pe = 0;
-  else    
-     Delta_Pe = Pe(i)-Pe(i-L);
-  end
-  
-  if GPS_Time_UNIX(i)-GPS_Time_UNIX(i-L) == 0
-      Ground_Speed_Cal(i) = 1;
-  else
-      for count = i-L:i
-      Ground_Speed_Cal(count)=sqrt((Delta_Pn)^2+(Delta_Pe)^2)/(GPS_Time_UNIX(i)-GPS_Time_UNIX(i-L));
-      end
-  end
- end
+%  Ground_Speed_Cal = zeros(length(Pe),1);
+%  L=10;
+%  for i = L+5:L:length(Pe)-1
+%     
+%   if   abs(Pn(i)-Pn(i-L)) < 1*10^(-6)
+%         Delta_Pn = 0;
+%   else    
+%      Delta_Pn = Pn(i)-Pn(i-L);
+%   end
+%    if   abs(Pe(i)-Pe(i-L)) < 1*10^(-6)
+%       Delta_Pe = 0;
+%   else    
+%      Delta_Pe = Pe(i)-Pe(i-L);
+%   end
+%   
+%   if GPS_Time_UNIX(i)-GPS_Time_UNIX(i-L) == 0
+%       Ground_Speed_Cal(i) = 1;
+%   else
+%       for count = i-L:i
+%       Ground_Speed_Cal(count)=sqrt((Delta_Pn)^2+(Delta_Pe)^2)/(GPS_Time_UNIX(i)-GPS_Time_UNIX(i-L));
+%       end
+%   end
+%  end
 %%
 %Calculate Course Angle
 Course_Ang_Cal = zeros(length(Pe),1);
@@ -96,25 +97,11 @@ Course_Ang_Cal = zeros(length(Pe),1);
     end
   
         for count = i-K:i
-            Course_ang = atan2(Delta_Pn,Delta_Pe);
+            Course_ang = pi/2 - atan2(Delta_Pn,Delta_Pe);
             
             if Course_ang < 0
-                Course_ang = -Course_ang + pi/2;
-            
-            elseif Course_ang*(180/pi) == 180.0 
-                Course_ang = 1.5*pi;
-            else
-                    if Delta_Pe < 0
-                        Course_ang = 2*pi-(Course_ang-pi/2);
-                    end
-                    if Delta_Pe > 0
-                        Course_ang = pi - Course_ang;
-                    end
-             end
-            
-        
-        
-            
+                Course_ang = Course_ang + 2*pi;
+            end
             Course_Ang_Cal(count)=Course_ang;
         end
  end
@@ -154,8 +141,7 @@ ylabel('Alt|Error')
 hold off
 
 subplot(4,3,10)
-plot(Time(5:length(Ground_Speed_Cal)-L),Grnd_Spd_Est(5:length(Ground_Speed_Cal)-L)-Ground_Speed_Cal(5:end-L),'g')
-%plot(Time,Grnd_Spd_Est,'g')
+plot(Time,Grnd_Spd_Est-Ground_Speed,'g')
 hold on
 plot(Time,Grnd_Spd_Est_cov,'r')
 plot(Time,-Grnd_Spd_Est_cov,'r')

@@ -95,7 +95,7 @@ double* dcmToRpy(Mat dcm)
 
 double* mainVO(int8_t* inputData) {
 	bool DISPLAY = true;  ////////////////////////////////////////////////////////////////////////////////////////////////////////Display
-	bool DEBUGGING = false;
+	bool DEBUGGING = true;
 
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -166,7 +166,7 @@ double* mainVO(int8_t* inputData) {
 	if (useFeatures) {
 		//detect features
 		bool nonmaxSuppression = true;
-		int fastThreshold = 15;  // increase to get more features does not equal num of features/////////////////////////////////////////
+		int fastThreshold = 15;  // decrease to get more features does not equal num of features/////////////////////////////////////////
 		vector<KeyPoint> keyPoints;
 		FAST(prevGray, keyPoints, fastThreshold, nonmaxSuppression);
 		numPoints = keyPoints.size();
@@ -178,8 +178,8 @@ double* mainVO(int8_t* inputData) {
 		//evenly distribute first set of points
 		int xlim = gray.cols;
 		int ylim = gray.rows;
-		int dx = xlim / 10;
-		int dy = ylim / 10;
+		int dx = xlim / 22;//////////////////////////////////////////////////////////////////////////////Original was 10 for both
+		int dy = ylim / 20;
 		for (int j = dx; j < xlim - dx; j += dx) {
 			for (int k = dy; k < ylim - dy; k += dy) {
 				float x = j;
@@ -197,7 +197,7 @@ double* mainVO(int8_t* inputData) {
 
 	//calculate location of points in next frame
 	TermCriteria termcrit(TermCriteria::COUNT | TermCriteria::EPS, 20, 0.03);
-	Size winSize(31, 31);
+	Size winSize(51, 51);//////////////////////////////////////////////////////////size of the search level at each pyramind level org 31
 	vector<uchar> status;
 	vector<float> err;
 	calcOpticalFlowPyrLK(prevGray, gray, points[0], points[1], status, err,
@@ -224,7 +224,7 @@ double* mainVO(int8_t* inputData) {
 	double focal = (fx + fy) / 2;
 	int method = RANSAC; //RANSAC or MEDS (LMedS)
 	double prob = 0.9999; //confidence level//////////////////////////////////////////////////////////////////////////////
-	double threshold = 20; //RANSAC threshold (distance from epipolar line) was 0.2 original
+	double threshold = .5; //RANSAC threshold (distance from epipolar line) was 0.2 original
 	Mat inliers;
 	Mat E = findEssentialMat(points[0], points[1], focal, pp, method, prob,
 			threshold, inliers);
@@ -439,10 +439,26 @@ double* mainVO(int8_t* inputData) {
 	//print out for debugging
 	int indexD = 24;
 	if (DEBUGGING) {
-		cout << endl << "DEBUGGING00" << "\t";
-		cout << points[0][indexD].x << "\t" << points[0][indexD].y << "\t";
-		cout << points[1][indexD].x << "\t" << points[1][indexD].y << "\t";
-		cout << "pixel coordinates" << "\t" << "END";
+		static double translationPixels[2] = { 0, 0 };
+            //accumulate the translation in every direction
+            int numInliers = 0;
+            int numOutliers = 0;
+            for (int i = 0; i < numPoints; i++) {
+                if (inliers.at<bool>(i)) {
+                    translationPixels[0] += points[0][i].x-points[1][i].x;
+                    translationPixels[1] += points[0][i].y-points[1][i].y;
+                    numInliers++;
+                } else {
+                    numOutliers++;
+                }
+            }
+                translationPixels[0] /= numInliers;
+                translationPixels[1] /= numInliers;
+
+            cout << endl << "DEBUGGING00" << "\t";
+            cout << translationPixels[0] << "\t" << translationPixels[1] << "\t";
+            cout << '0' << "\t" << '0' << "\t";
+            cout << "pixel coordinates" << "\t" << "END";
 
 		cout << endl << "DEBUGGING01" << "\t";
 		cout << pointsNorm[0][indexD].x << "\t" << pointsNorm[0][indexD].y

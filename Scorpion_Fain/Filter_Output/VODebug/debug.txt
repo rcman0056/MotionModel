@@ -1,0 +1,787 @@
+/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/java -Didea.launcher.port=7537 -Didea.launcher.bin.path=/home/suas/IDEA/bin -Dfile.encoding=UTF-8 -classpath /usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/compilefontconfig.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/dnsns.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/icedtea-sound.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/java-atk-wrapper.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/localedata.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/sunjce_provider.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/sunpkcs11.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/zipfs.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/javazic.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/management-agent.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/rhino.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/rt.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/out/production/Scorpion_Fain:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/lib/kotlin-runtime.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/lib/kotlin-reflect.jar:/home/suas/IDEA/jars/scorpion-all-dev.jar:/usr/local/share/java/lcm.jar:/home/suas/IDEA/jars/pixhawk_fain.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/aspn-messages-lcm.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/out/production/utilities:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/out/production/VOAll:/home/suas/IDEA/lib/idea_rt.jar com.intellij.rt.execution.application.AppMain FAIN_Main
+Jan 12, 2017 12:40:22 PM com.github.fommil.netlib.BLAS <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemBLAS
+Jan 12, 2017 12:40:22 PM com.github.fommil.netlib.BLAS <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefBLAS
+LCM: Disabling IPV6 support
+LCM: TTL set to 1.
+2--------------------#For Output Above----------------------------
+
+Jan 12, 2017 12:40:27 PM com.github.fommil.netlib.LAPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemLAPACK
+Jan 12, 2017 12:40:27 PM com.github.fommil.netlib.LAPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefLAPACK
+3--------------------#For Output Above----------------------------
+
+4--------------------#For Output Above----------------------------
+
+ex: java.io.EOFException: LCMDataInputStream needed 8 bytes, only 0 available.
+5--------------------#For Output Above----------------------------
+
+6--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.024203777313232422
+YawVoInput = 259.219931859591
+
+Number of initial features: 369
+Number of inliers:	365
+DEBUGGING00	-14.5253	-22.2181	0	0	pixel coordinates	END
+DEBUGGING01	0.255536	-0.374139	0.891471	0.26612	-0.358021	0.894987	normalized coordinates	END
+DEBUGGING02	0.240243	-0.374139	0.895714	0.188248	-0.397951	0.897885	unscaled nav coordinates	END
+DEBUGGING03	0.460762	0.455855	thetas	END
+DEBUGGING04	145.575	145.223	depth vectors	END
+DEBUGGING05	37.1997	-54.4654	129.776	38.6469	-51.9929	129.973	camera coordinates	END
+DEBUGGING06	34.9734	-54.4654	130.394	27.338	-57.7917	130.394	scaled NED coordinates	END
+DEBUGGING07	7.63542	3.32636	1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.982328	0.187039	-0.00693358	-0.187015	0.982349	0.00393149	0.00754654	-0.00256533	0.999968	second camToNav	END
+DEBUGGING10	1	342	23	num inliers	END
+DEBUGGING11	1.88909	1.55725	9.8156e-07	final translation vector	END
+
+(java:7591): Gtk-WARNING **: Unable to locate theme engine in module_path: "pixmap",
+init done 
+opengl support available 
+GrdSpd=22.033850571611776Course_ang_deg=410.49980108310547Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796888420108E9
+GrdSpeed=14.246426699866895	4.997837880844235
+CourseAng=2.4322537100725425E-5	2.999999902497863
+
+7--------------------#For Output Above----------------------------
+
+8--------------------#For Output Above----------------------------
+
+9--------------------#For Output Above----------------------------
+
+10--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.12888073921203613
+YawVoInput = 260.70339249631456
+DEBUGGING13	1.27723e-313	0	6.93722e-310	6.93722e-310	0	6.93724e-310	4.94066e-324	1.56275e-313	6.93722e-310	cam1Tocam2	END
+Number of initial features: 322
+Number of inliers:	311
+DEBUGGING00	-39.0815	-28.3597	0	0	pixel coordinates	END
+DEBUGGING01	0.262067	-0.359782	0.895476	0.291766	-0.337519	0.89496	normalized coordinates	END
+DEBUGGING02	0.246705	-0.359782	0.89983	0.204143	-0.370082	0.906292	unscaled nav coordinates	END
+DEBUGGING03	0.451417	0.43637	thetas	END
+DEBUGGING04	145.192	144.157	depth vectors	END
+DEBUGGING05	38.0501	-52.2375	130.016	42.0601	-48.6557	129.015	camera coordinates	END
+DEBUGGING06	35.8196	-52.2375	130.648	29.4287	-53.3498	130.648	scaled NED coordinates	END
+DEBUGGING07	6.39093	1.11233	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.98633	0.161543	-0.032527	-0.161257	0.986849	0.0112271	0.0339128	-0.00582842	0.999408	second camToNav	END
+DEBUGGING10	1	278	33	num inliers	END
+DEBUGGING11	1.17628	-1.14569	-1.61132e-07	final translation vector	END
+GrdSpd=14.778253853112956Course_ang_deg=134.24539327808463Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796888752815E9
+GrdSpeed=14.246693006030634	4.997716305516328
+CourseAng=2.904497930122084E-5	2.999999113735456
+
+11--------------------#For Output Above----------------------------
+
+12--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.06619882583618164
+YawVoInput = 261.85907442535193
+DEBUGGING13	6.93702e-310	6.93724e-310	2.03235e-314	2.12229e-314	6.93722e-310	8.48798e-314	1.27742e-313	2.122e-314	1.01856e-312	cam1Tocam2	END
+Number of initial features: 291
+Number of inliers:	291
+DEBUGGING00	3.24166	-25.4003	0	0	pixel coordinates	END
+DEBUGGING01	0.248889	-0.341585	0.906297	0.243172	-0.323	0.914625	normalized coordinates	END
+DEBUGGING02	0.233344	-0.341585	0.910423	0.119939	-0.335059	0.934532	unscaled nav coordinates	END
+DEBUGGING03	0.42649	0.363855	thetas	END
+DEBUGGING04	144.255	140.533	depth vectors	END
+DEBUGGING05	35.9035	-49.2753	130.738	34.1738	-45.3923	128.535	camera coordinates	END
+DEBUGGING06	33.661	-49.2753	131.333	16.8555	-47.087	131.333	scaled NED coordinates	END
+DEBUGGING07	16.8055	-2.18831	1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.986591	0.141603	-0.0811635	-0.140383	0.989884	0.0205668	0.0832548	-0.00889698	0.996489	second camToNav	END
+DEBUGGING10	1	261	30	num inliers	END
+DEBUGGING11	13.0195	-3.10735	8.17862e-07	final translation vector	END
+GrdSpd=120.46654368723172Course_ang_deg=103.42363631706749Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796889076905E9
+GrdSpeed=14.29983796017632	5.0032044966186024
+CourseAng=0.0019065548715514243	2.999995987876627
+
+13--------------------#For Output Above----------------------------
+
+14--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.045289039611816406
+YawVoInput = 263.0030712429685
+DEBUGGING13	2.64378e+180	8.47666e+165	8.54659e+194	5.02421e+175	1.16979e+166	1.71096e+214	2.70047e+262	4.61317e+204	2.21105e+214	cam1Tocam2	END
+Number of initial features: 310
+Number of inliers:	310
+DEBUGGING00	8.30439	-19.0815	0	0	pixel coordinates	END
+DEBUGGING01	0.23055	-0.327161	0.916413	0.220494	-0.312996	0.923805	normalized coordinates	END
+DEBUGGING02	0.214834	-0.327161	0.920224	0.0967181	-0.309079	0.946106	unscaled nav coordinates	END
+DEBUGGING03	0.402144	0.329805	thetas	END
+DEBUGGING04	143.122	139.207	depth vectors	END
+DEBUGGING05	32.9967	-46.824	131.159	30.6942	-43.5712	128.6	camera coordinates	END
+DEBUGGING06	30.7474	-46.824	131.704	13.4638	-43.0259	131.704	scaled NED coordinates	END
+DEBUGGING07	17.2836	-3.79807	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.98847	0.121794	-0.0899672	-0.119527	0.992372	0.0301848	0.0929573	-0.0190832	0.995487	second camToNav	END
+DEBUGGING10	1	304	6	num inliers	END
+DEBUGGING11	13.7576	-4.79143	-4.75031e-08	final translation vector	END
+GrdSpd=131.1134124546322Course_ang_deg=109.20194316218998Image DT= 0.33333277702331543
+
+An Update happened for the VO to
+1.478796889358644E9
+GrdSpeed=14.358417006504732	5.0108128425846346
+CourseAng=0.004792930113519242	2.9999898793664417
+
+15--------------------#For Output Above----------------------------
+
+16--------------------#For Output Above----------------------------
+
+17--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.046536922454833984
+YawVoInput = 264.1266944515245
+DEBUGGING13	2.07365e+25	9.9682e+160	1.97068e+156	1.43238e+161	8.53624e+136	1.64877e+127	6.79748e+136	9.12111e+136	1.34672e+132	cam1Tocam2	END
+Number of initial features: 313
+Number of inliers:	309
+DEBUGGING00	29.2371	-15.0338	0	0	pixel coordinates	END
+DEBUGGING01	0.272171	-0.309008	0.911283	0.272518	-0.294129	0.916091	normalized coordinates	END
+DEBUGGING02	0.256537	-0.309008	0.915807	0.180575	-0.301407	0.936241	unscaled nav coordinates	END
+DEBUGGING03	0.413283	0.359023	thetas	END
+DEBUGGING04	144.068	140.924	depth vectors	END
+DEBUGGING05	39.2112	-44.5183	131.287	38.4043	-41.4497	129.099	camera coordinates	END
+DEBUGGING06	36.9588	-44.5183	131.939	25.4474	-42.4754	131.939	scaled NED coordinates	END
+DEBUGGING07	11.5114	-2.0429	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.992605	0.10232	-0.0653131	-0.101186	0.994658	0.0204409	0.0670557	-0.0136809	0.997655	second camToNav	END
+DEBUGGING10	0	272	37	num inliers	END
+DEBUGGING11	12.5855	-3.10124	6.16909e-07	final translation vector	END
+GrdSpd=116.65817553670433Course_ang_deg=103.84264318154477Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796889693096E9
+GrdSpeed=14.40978405203678	5.0151008562182575
+CourseAng=0.007707915050077622	2.9999817559463766
+
+18--------------------#For Output Above----------------------------
+
+19--------------------#For Output Above----------------------------
+
+20--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.1221170425415039
+YawVoInput = 264.61282299926927
+DEBUGGING13	1.0678e+161	3.43818e+175	1.62934e+156	2.56737e+151	8.92472e+165	4.94434e+170	7.00128e+141	1.07959e+190	1.30411e+190	cam1Tocam2	END
+Number of initial features: 312
+Number of inliers:	306
+DEBUGGING00	34.9853	-13.7549	0	0	pixel coordinates	END
+DEBUGGING01	0.157411	-0.301984	0.940228	0.121138	-0.290517	0.949171	normalized coordinates	END
+DEBUGGING02	0.141298	-0.301984	0.942784	0.0601457	-0.276288	0.959191	unscaled nav coordinates	END
+DEBUGGING03	0.339914	0.286669	thetas	END
+DEBUGGING04	140.306	137.906	depth vectors	END
+DEBUGGING05	22.0857	-42.3702	131.92	16.7057	-40.0641	130.897	camera coordinates	END
+DEBUGGING06	19.825	-42.3702	132.278	8.29447	-38.1019	132.278	scaled NED coordinates	END
+DEBUGGING07	11.5305	-4.26838	1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.994974	0.0938626	-0.0348881	-0.0930054	0.995341	0.0254348	0.0371129	-0.0220622	0.999068	second camToNav	END
+DEBUGGING10	1	243	63	num inliers	END
+DEBUGGING11	9.1275	-3.0958	-1.85841e-07	final translation vector	END
+GrdSpd=86.74412833362616Course_ang_deg=108.73552769393851Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.4787968901298E9
+GrdSpeed=14.446100436245734	5.015290837922178
+CourseAng=0.0098680224168923	2.999972833709194
+
+21--------------------#For Output Above----------------------------
+
+22--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.11481285095214844
+YawVoInput = 265.3964018179824
+DEBUGGING13	3.16096e+180	1.2774e-313	0	6.93722e-310	6.93722e-310	6.93724e-310	1.4822e-323	6.93724e-310	1.03657e-317	cam1Tocam2	END
+Number of initial features: 344
+Number of inliers:	337
+DEBUGGING00	5.48149	-15.9847	0	0	pixel coordinates	END
+DEBUGGING01	0.26862	-0.282069	0.921021	0.261889	-0.269819	0.926613	normalized coordinates	END
+DEBUGGING02	0.25282	-0.282069	0.925483	0.236514	-0.25608	0.937275	unscaled nav coordinates	END
+DEBUGGING03	0.388487	0.356067	thetas	END
+DEBUGGING04	143.092	141.292	depth vectors	END
+DEBUGGING05	38.4374	-40.3618	131.791	37.0028	-38.1232	130.923	camera coordinates	END
+DEBUGGING06	36.1765	-40.3618	132.429	33.4174	-36.1819	132.429	scaled NED coordinates	END
+DEBUGGING07	2.75907	-4.17984	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.996773	0.0802096	-0.00311739	-0.0800442	0.996129	0.0363236	0.00601883	-0.0359569	0.999335	second camToNav	END
+DEBUGGING10	1	332	5	num inliers	END
+DEBUGGING11	0.418759	-4.64345	1.14845e-06	final translation vector	END
+GrdSpd=41.96074386583699Course_ang_deg=174.8468561724967Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796890407658E9
+GrdSpeed=14.460081580550394	5.023021061748952
+CourseAng=0.010820277305687784	2.999960849942495
+
+23--------------------#For Output Above----------------------------
+
+24--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.049991607666015625
+YawVoInput = 266.74899787056296
+DEBUGGING13	3.10531e+175	1.98659e+185	8.46765e+165	4.94433e+170	3.63451e+175	3.65396e+233	-4.36708e-306	-9.72643e-263	-3.66033e-166	cam1Tocam2	END
+Number of initial features: 317
+Number of inliers:	257
+DEBUGGING00	-39.2396	-26.229	0	0	pixel coordinates	END
+DEBUGGING01	0.282592	-0.266612	0.921444	0.31739	-0.241941	0.916912	normalized coordinates	END
+DEBUGGING02	0.266782	-0.266612	0.926145	0.305344	-0.223345	0.925679	unscaled nav coordinates	END
+DEBUGGING03	0.386735	0.387969	thetas	END
+DEBUGGING04	143.127	143.199	depth vectors	END
+DEBUGGING05	40.4464	-38.1593	131.883	45.4499	-34.6457	131.301	camera coordinates	END
+DEBUGGING06	38.1836	-38.1593	132.556	43.7248	-31.9827	132.556	scaled NED coordinates	END
+DEBUGGING07	-5.54127	-6.17654	-3.05176e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.99839	0.0566663	0.00237149	-0.0567157	0.997617	0.0392848	-0.000139713	-0.0393561	0.999225	second camToNav	END
+DEBUGGING10	1	211	46	num inliers	END
+DEBUGGING11	-6.20457	-6.09792	2.94709e-07	final translation vector	END
+GrdSpd=78.29550128933091Course_ang_deg=225.4966910448958Image DT= 0.33333325386047363
+
+An Update happened for the VO to
+1.478796890674093E9
+GrdSpeed=14.49241050707325	5.033761703762713
+CourseAng=0.013369609836907987	2.9999448930004875
+
+25--------------------#For Output Above----------------------------
+
+26--------------------#For Output Above----------------------------
+
+27--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.06105923652648926
+YawVoInput = 267.0177635178145
+DEBUGGING13	2.37783e+180	7.51286e+199	9.67766e+107	4.44208e+141	1.75616e+156	5.5943e+141	1.97152e+156	4.23506e+175	3.0096e+151	cam1Tocam2	END
+Number of initial features: 289
+Number of inliers:	267
+DEBUGGING00	37.3462	-30.3224	0	0	pixel coordinates	END
+DEBUGGING01	0.227198	-0.252487	0.940548	0.221427	-0.224264	0.94904	normalized coordinates	END
+DEBUGGING02	0.21107	-0.252487	0.944299	0.162332	-0.197258	0.966818	unscaled nav coordinates	END
+DEBUGGING03	0.335339	0.258329	thetas	END
+DEBUGGING04	140.463	137.192	depth vectors	END
+DEBUGGING05	31.913	-35.4652	132.113	30.3779	-30.7671	130.2	camera coordinates	END
+DEBUGGING06	29.6476	-35.4652	132.639	22.2706	-27.0622	132.639	scaled NED coordinates	END
+DEBUGGING07	7.37697	-8.40301	-1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.997426	0.0519906	-0.0493815	-0.0500552	0.997959	0.0396522	0.0513422	-0.0370783	0.997993	second camToNav	END
+DEBUGGING10	0	208	59	num inliers	END
+DEBUGGING11	10.9408	-7.51646	6.61653e-07	final translation vector	END
+GrdSpd=119.46622124823455Course_ang_deg=124.48945438280596Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796891116471E9
+GrdSpeed=14.545355821195475	5.0361407111279695
+CourseAng=0.01774973260932853	2.9999274738708026
+
+28--------------------#For Output Above----------------------------
+
+29--------------------#For Output Above----------------------------
+
+30--------------------#For Output Above----------------------------
+
+31--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.10369658470153809
+YawVoInput = 267.12602514558733
+DEBUGGING13	4.16092e+112	7.00274e+141	5.24862e+170	4.63398e+199	-1.45489e-272	-1.8706e-243	4.91686e+291	4.45764e+204	1.21933e+248	cam1Tocam2	END
+Number of initial features: 277
+Number of inliers:	250
+DEBUGGING00	18.1145	-25.8035	0	0	pixel coordinates	END
+DEBUGGING01	0.263391	-0.223003	0.93856	0.249143	-0.200839	0.947413	normalized coordinates	END
+DEBUGGING02	0.247292	-0.223003	0.94293	0.235738	-0.187012	0.953653	unscaled nav coordinates	END
+DEBUGGING03	0.339475	0.305645	thetas	END
+DEBUGGING04	140.72	139.138	depth vectors	END
+DEBUGGING05	37.0644	-31.381	132.074	34.6652	-27.9443	131.821	camera coordinates	END
+DEBUGGING06	34.7989	-31.381	132.689	32.8	-26.0204	132.689	scaled NED coordinates	END
+DEBUGGING07	1.99886	-5.36052	1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.998738	0.0501207	-0.00319238	-0.0500148	0.998373	0.0274018	0.00456058	-0.0272075	0.999619	second camToNav	END
+DEBUGGING10	1	244	6	num inliers	END
+DEBUGGING11	1.4695	-4.96119	-5.98243e-08	final translation vector	END
+GrdSpd=46.568294091926Course_ang_deg=163.50080631293233Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.47879689145072E9
+GrdSpeed=14.561433343933713	5.031971849646102
+CourseAng=0.019065965589595505	2.99991057138101
+
+32--------------------#For Output Above----------------------------
+
+33--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.014514446258544922
+YawVoInput = 267.1239778484013
+DEBUGGING13	3.29167e+146	4.03721e+175	3.17134e+151	4.43216e+175	1.30345e+190	5.95675e+228	6.53774e+286	-1.26282e-296	6.99799e+228	cam1Tocam2	END
+Number of initial features: 265
+Number of inliers:	260
+DEBUGGING00	32.3406	-55.4424	0	0	pixel coordinates	END
+DEBUGGING01	0.178446	-0.205647	0.96222	0.178134	-0.152302	0.972148	normalized coordinates	END
+DEBUGGING02	0.161954	-0.205647	0.965132	0.194065	-0.137481	0.971307	unscaled nav coordinates	END
+DEBUGGING03	0.264848	0.24013	thetas	END
+DEBUGGING04	137.504	136.63	depth vectors	END
+DEBUGGING05	24.5371	-28.2773	132.309	24.3385	-20.8091	132.825	camera coordinates	END
+DEBUGGING06	22.2693	-28.2773	132.71	26.5152	-18.7841	132.71	scaled NED coordinates	END
+DEBUGGING07	-4.24589	-9.49323	-1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.99844	0.0501587	0.0245317	-0.0507544	0.998416	0.0242979	-0.023274	-0.025505	0.999404	second camToNav	END
+DEBUGGING10	0	219	41	num inliers	END
+DEBUGGING11	-1.31845	-8.27986	2.78426e-07	final translation vector	END
+GrdSpd=75.4577010804004Course_ang_deg=189.04760687013402Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796891780058E9
+GrdSpeed=14.59192570249461	5.024955012165682
+CourseAng=0.0214645323278531	2.9998950498171606
+
+34--------------------#For Output Above----------------------------
+
+35--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.06848335266113281
+YawVoInput = 266.78030614844596
+DEBUGGING13	8.45821e+252	6.77658e+286	1.90823e+301	4.28519e+291	6.1426e+257	3.32865e+238	1.38588e+219	5.38969e+228	3.12603e+209	cam1Tocam2	END
+Number of initial features: 272
+Number of inliers:	272
+DEBUGGING00	35.475	-46.2875	0	0	pixel coordinates	END
+DEBUGGING01	0.178297	-0.153564	0.97192	0.173945	-0.106708	0.978957	normalized coordinates	END
+DEBUGGING02	0.161639	-0.153564	0.974829	0.22877	-0.0889832	0.969405	unscaled nav coordinates	END
+DEBUGGING03	0.224845	0.248	thetas	END
+DEBUGGING04	136.015	136.775	depth vectors	END
+DEBUGGING05	24.251	-20.8869	132.195	23.7914	-14.595	133.897	camera coordinates	END
+DEBUGGING06	21.9852	-20.8869	132.591	31.2901	-12.1707	132.591	scaled NED coordinates	END
+DEBUGGING07	-9.30484	-8.71621	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.996449	0.0561364	0.0627528	-0.0579941	0.997919	0.0281836	-0.0610401	-0.0317228	0.997631	second camToNav	END
+DEBUGGING10	0	220	52	num inliers	END
+DEBUGGING11	-7.00937	-7.52587	2.0934e-07	final translation vector	END
+GrdSpd=92.56027839551817Course_ang_deg=222.96486639336572Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796892058966E9
+GrdSpeed=14.630920395145205	5.017922705035708
+CourseAng=0.02439471604417221	2.9998809189641307
+
+36--------------------#For Output Above----------------------------
+
+37--------------------#For Output Above----------------------------
+
+38--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.12282943725585938
+YawVoInput = 266.4591115237595
+DEBUGGING13	3.02168e+209	1.00009e+195	3.02329e+209	2.0471e+214	3.02369e+209	2.04868e+214	2.92136e+209	4.45641e+204	1.6439e+214	cam1Tocam2	END
+Number of initial features: 261
+Number of inliers:	252
+DEBUGGING00	-17.5896	-32.0127	0	0	pixel coordinates	END
+DEBUGGING01	0.190728	-0.107565	0.975732	0.208914	-0.0768881	0.974907	normalized coordinates	END
+DEBUGGING02	0.174002	-0.107565	0.978853	0.304393	-0.0660291	0.950255	unscaled nav coordinates	END
+DEBUGGING03	0.20602	0.316742	thetas	END
+DEBUGGING04	135.108	139.174	depth vectors	END
+DEBUGGING05	25.7688	-14.5329	131.829	29.0754	-10.7008	135.682	camera coordinates	END
+DEBUGGING06	23.5091	-14.5329	132.251	42.3636	-9.18953	132.251	scaled NED coordinates	END
+DEBUGGING07	-18.8545	-5.34337	-1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.992619	0.0617304	0.104387	-0.0646485	0.9976	0.0248028	-0.102605	-0.0313682	0.994227	second camToNav	END
+DEBUGGING10	1	236	16	num inliers	END
+DEBUGGING11	-21.0295	-4.86798	-6.37689e-08	final translation vector	END
+GrdSpd=194.2705433511877Course_ang_deg=256.9665395373662Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796892442018E9
+GrdSpeed=14.720653451483198	5.008555168543991
+CourseAng=0.03062142443272651	2.999868898279491
+
+39--------------------#For Output Above----------------------------
+
+40--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.09178352355957031
+YawVoInput = 265.4688021544301
+DEBUGGING13	1.86265e+243	5.76725e+228	6.77359e+223	1.34175e+219	9.64018e+194	3.98243e+204	1.2099e+219	1.91402e+214	1.0008e+195	cam1Tocam2	END
+Number of initial features: 228
+Number of inliers:	228
+DEBUGGING00	2.74318	-37.2176	0	0	pixel coordinates	END
+DEBUGGING01	0.180867	-0.0759016	0.980574	0.179572	-0.040389	0.982915	normalized coordinates	END
+DEBUGGING02	0.164061	-0.0759016	0.983526	0.255165	-0.0608616	0.96498	unscaled nav coordinates	END
+DEBUGGING03	0.181767	0.265428	thetas	END
+DEBUGGING04	133.987	136.562	depth vectors	END
+DEBUGGING05	24.2338	-10.1698	131.384	24.5228	-5.5156	134.229	camera coordinates	END
+DEBUGGING06	21.9819	-10.1698	131.779	34.8458	-8.31137	131.779	scaled NED coordinates	END
+DEBUGGING07	-12.8638	-1.85844	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.993551	0.0790019	0.0813307	-0.078728	0.996874	-0.00657374	-0.0815958	0.000128342	0.996665	second camToNav	END
+DEBUGGING10	1	221	7	num inliers	END
+DEBUGGING11	-14.7725	-0.953506	-6.21687e-07	final translation vector	END
+GrdSpd=133.22976877797797Course_ang_deg=266.30691734835756Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796892827545E9
+GrdSpeed=14.779386948061541	4.996419268115949
+CourseAng=0.03418418914815557	2.999859855869452
+
+41--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.03984189033508301
+YawVoInput = 264.76055422712676
+DEBUGGING13	1.03816e+195	1.73297e+185	1.13638e+190	4.42983e+175	1.81795e+185	3.1635e+180	3.82688e+204	3.81288e+180	1.6836e+156	cam1Tocam2	END
+Number of initial features: 201
+Number of inliers:	196
+DEBUGGING00	-12.3453	-42.9293	0	0	pixel coordinates	END
+DEBUGGING01	-0.0299251	-0.0365691	0.998883	-0.0157158	-0.0007799	0.999876	normalized coordinates	END
+DEBUGGING02	-0.0470141	-0.0365691	0.998225	0.0589991	-0.011672	0.99819	unscaled nav coordinates	END
+DEBUGGING03	0.0595973	0.0601789	thetas	END
+DEBUGGING04	131.505	131.51	depth vectors	END
+DEBUGGING05	-3.93531	-4.80904	131.359	-2.06678	-0.102565	131.494	camera coordinates	END
+DEBUGGING06	-6.18262	-4.80904	131.272	7.75897	-1.53499	131.272	scaled NED coordinates	END
+DEBUGGING07	-13.9416	-3.27405	-1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.993017	0.0913168	0.0746856	-0.0906466	0.995807	-0.0123215	-0.0754976	0.00546549	0.997131	second camToNav	END
+DEBUGGING10	1	181	15	num inliers	END
+DEBUGGING11	-16.209	-0.460423	-1.26798e-06	final translation vector	END
+GrdSpd=145.94000934366787Course_ang_deg=268.3729236976694Image DT= 0.33333277702331543
+
+An Update happened for the VO to
+1.478796893104915E9
+GrdSpeed=14.844050919571139	4.983349587301417
+CourseAng=0.037330080469231315	2.99985410024549
+
+42--------------------#For Output Above----------------------------
+
+43--------------------#For Output Above----------------------------
+
+44--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.0328218936920166
+YawVoInput = 263.3958573245859
+DEBUGGING13	6.79901e+199	1.43376e+161	3.16299e+180	7.36559e+170	1.73397e+185	6.55605e+199	2.90415e+180	1.35915e+190	1.36291e+161	cam1Tocam2	END
+Number of initial features: 169
+Number of inliers:	169
+DEBUGGING00	0.280023	-42.5692	0	0	pixel coordinates	END
+DEBUGGING01	0.236643	0.00406628	0.971588	0.238731	0.0441513	0.970081	normalized coordinates	END
+DEBUGGING02	0.219982	0.00406628	0.975495	0.306616	0.00259255	0.95183	unscaled nav coordinates	END
+DEBUGGING03	0.221834	0.311647	thetas	END
+DEBUGGING04	134.225	137.562	depth vectors	END
+DEBUGGING05	31.7633	0.545795	130.411	32.8403	6.07354	133.446	camera coordinates	END
+DEBUGGING06	29.527	0.545795	130.936	42.1786	0.356636	130.936	scaled NED coordinates	END
+DEBUGGING07	-12.6516	0.18916	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.991107	0.115006	0.066932	-0.114293	0.993343	-0.0144108	-0.0681437	0.00663279	0.997653	second camToNav	END
+DEBUGGING10	1	158	11	num inliers	END
+DEBUGGING11	-14.2296	0.808744	1.15087e-06	final translation vector	END
+GrdSpd=128.27360218534088Course_ang_deg=273.25291657111126Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796893442735E9
+GrdSpeed=14.899388593242138	4.970543630311193
+CourseAng=0.039121411256197815	2.999851605038084
+
+45--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.03685879707336426
+YawVoInput = 261.03754868273506
+DEBUGGING13	2.3305e+185	4.03721e+175	1.90326e+185	7.80662e+194	4.43294e+175	6.45985e+170	2.6443e+180	1.1512e+161	2.7755e+180	cam1Tocam2	END
+Number of initial features: 156
+Number of inliers:	156
+DEBUGGING00	5.02852	-38.5775	0	0	pixel coordinates	END
+DEBUGGING01	0.260061	0.0443467	0.964573	0.257098	0.0812584	0.962963	normalized coordinates	END
+DEBUGGING02	0.243517	0.0443467	0.968882	0.325184	0.0179287	0.945481	unscaled nav coordinates	END
+DEBUGGING03	0.250122	0.331729	thetas	END
+DEBUGGING04	134.74	138.075	depth vectors	END
+DEBUGGING05	35.0406	5.97526	129.966	35.4987	11.2197	132.961	camera coordinates	END
+DEBUGGING06	32.8114	5.97526	130.547	44.8997	2.4755	130.547	scaled NED coordinates	END
+DEBUGGING07	-12.0883	3.49975	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.985887	0.155773	0.0613281	-0.1546	0.987699	-0.0234513	-0.0642268	0.013639	0.997842	second camToNav	END
+DEBUGGING10	1	150	6	num inliers	END
+DEBUGGING11	-13.6663	4.08649	-6.02679e-07	final translation vector	END
+GrdSpd=128.37824996354328Course_ang_deg=286.64766079905957Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796893660178E9
+GrdSpeed=14.95475620784092	4.962814078444896
+CourseAng=0.040113300432322245	2.9998508406684077
+
+46--------------------#For Output Above----------------------------
+
+47--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.13340067863464355
+YawVoInput = 258.6122602296571
+DEBUGGING13	2.90568e+180	5.85362e+170	1.50845e+214	3.16198e+180	3.17519e+151	1.46802e+156	1.02455e+190	3.01023e+151	2.48489e+151	cam1Tocam2	END
+Number of initial features: 159
+Number of inliers:	152
+DEBUGGING00	-33.2912	-30.008	0	0	pixel coordinates	END
+DEBUGGING01	0.276279	0.0868615	0.957144	0.306233	0.114842	0.945004	normalized coordinates	END
+DEBUGGING02	0.259859	0.0868615	0.961732	0.382475	0.0294227	0.923497	unscaled nav coordinates	END
+DEBUGGING03	0.277541	0.393697	thetas	END
+DEBUGGING04	135.32	140.922	depth vectors	END
+DEBUGGING05	37.3859	11.7541	129.52	43.155	16.1838	133.172	camera coordinates	END
+DEBUGGING06	35.164	11.7541	130.141	53.8991	4.14631	130.141	scaled NED coordinates	END
+DEBUGGING07	-18.7351	7.60774	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.978242	0.197435	0.0637365	-0.196251	0.98025	-0.0243944	-0.067294	0.0113553	0.997669	second camToNav	END
+DEBUGGING10	1	124	28	num inliers	END
+DEBUGGING11	-20.691	7.92362	-4.86032e-09	final translation vector	END
+GrdSpd=199.40730428012697Course_ang_deg=290.95431894451286Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796894089828E9
+GrdSpeed=15.044753170214724	4.958885265858306
+CourseAng=0.039736808635704876	2.999850798985284
+
+48--------------------#For Output Above----------------------------
+
+49--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.017517805099487305
+YawVoInput = 258.2831379277717
+DEBUGGING13	2.18356e+243	4.61441e+204	1.52645e+190	1.69396e+190	9.85873e+165	1.71438e+161	3.03433e+180	4.83177e+175	2.64582e+180	cam1Tocam2	END
+Number of initial features: 121
+Number of inliers:	120
+DEBUGGING00	-23.6494	-34.0116	0	0	pixel coordinates	END
+DEBUGGING01	0.25445	0.102578	0.96163	0.249567	0.13226	0.959283	normalized coordinates	END
+DEBUGGING02	0.237957	0.102578	0.965844	0.2993	0.0594715	0.952304	unscaled nav coordinates	END
+DEBUGGING03	0.262116	0.310097	thetas	END
+DEBUGGING04	134.535	136.448	depth vectors	END
+DEBUGGING05	34.2325	13.8003	129.373	34.0529	18.0467	130.892	camera coordinates	END
+DEBUGGING06	32.0136	13.8003	129.94	40.8388	8.11477	129.94	scaled NED coordinates	END
+DEBUGGING07	-8.82523	5.68556	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.978726	0.203056	0.0293822	-0.202517	0.979068	-0.0203057	-0.0328904	0.0139233	0.999362	second camToNav	END
+DEBUGGING10	0	84	36	num inliers	END
+DEBUGGING11	-14.4479	6.95921	9.08203e-07	final translation vector	END
+GrdSpd=144.32962536759388Course_ang_deg=295.7190013223619Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796894419317E9
+GrdSpeed=15.108653740483865	4.956805833126082
+CourseAng=0.039312777874405604	2.999850691358519
+
+50--------------------#For Output Above----------------------------
+
+51--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.18037986755371094
+YawVoInput = 257.78626499891
+DEBUGGING13	8.51937e+281	1.24989e+306	-1.66135e-301	1.27717e-313	0	6.93724e-310	6.93716e-310	6.93724e-310	6.93722e-310	cam1Tocam2	END
+Number of initial features: 95
+Number of inliers:	92
+DEBUGGING00	-16.1274	-33.8862	0	0	pixel coordinates	END
+DEBUGGING01	0.232676	0.134376	0.963226	0.22491	0.163727	0.960525	normalized coordinates	END
+DEBUGGING02	0.216159	0.134376	0.967067	0.235843	0.108013	0.96577	unscaled nav coordinates	END
+DEBUGGING03	0.257353	0.262402	thetas	END
+DEBUGGING04	134.252	134.432	depth vectors	END
+DEBUGGING05	31.2373	18.0402	129.315	30.2352	22.0102	129.126	camera coordinates	END
+DEBUGGING06	29.0198	18.0402	129.831	31.705	14.5205	129.831	scaled NED coordinates	END
+DEBUGGING07	-2.68522	3.51973	-1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.977176	0.211551	-0.0193334	-0.211675	0.977329	-0.0045742	0.0179274	0.0085622	0.999803	second camToNav	END
+DEBUGGING10	1	68	24	num inliers	END
+DEBUGGING11	-7.24254	5.63634	1.13533e-06	final translation vector	END
+GrdSpd=82.59575728496281Course_ang_deg=307.89101606903125Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796894695111E9
+GrdSpeed=15.141855531838498	4.955073940528434
+CourseAng=0.03896889045104119	2.999850431577542
+
+52--------------------#For Output Above----------------------------
+
+53--------------------#For Output Above----------------------------
+
+54--------------------#For Output Above----------------------------
+
+55--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.1722736358642578
+YawVoInput = 257.54444391658313
+DEBUGGING13	6.74322e+257	3.02467e+267	4.41692e+262	5.34346e+286	3.66148e+291	1.48862e+282	6.77752e+286	7.99998e+252	1.34228e+219	cam1Tocam2	END
+Number of initial features: 91
+Number of inliers:	91
+DEBUGGING00	-2.70139	-19.8526	0	0	pixel coordinates	END
+DEBUGGING01	0.331645	0.175431	0.92695	0.332347	0.19344	0.923107	normalized coordinates	END
+DEBUGGING02	0.315734	0.175431	0.932489	0.329929	0.113096	0.937207	unscaled nav coordinates	END
+DEBUGGING03	0.369552	0.356263	thetas	END
+DEBUGGING04	139.149	138.449	depth vectors	END
+DEBUGGING05	46.1482	24.4111	128.985	46.0132	26.7815	127.803	camera coordinates	END
+DEBUGGING06	43.9342	24.4111	129.755	45.6784	15.6581	129.755	scaled NED coordinates	END
+DEBUGGING07	-1.74417	8.75304	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.975686	0.215665	-0.0390591	-0.215993	0.976385	-0.00432304	0.0372045	0.0126544	0.999228	second camToNav	END
+DEBUGGING10	1	83	8	num inliers	END
+DEBUGGING11	-2.89769	7.10211	1.97519e-07	final translation vector	END
+GrdSpd=69.03459327129907Course_ang_deg=337.8043646074365Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796895130387E9
+GrdSpeed=15.168415464874293	4.9532781161555395
+CourseAng=0.03862612401817229	2.9998500268584
+
+56--------------------#For Output Above----------------------------
+
+57--------------------#For Output Above----------------------------
+
+58--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.11353468894958496
+YawVoInput = 257.87923140497384
+DEBUGGING13	2.28899e+243	8.9093e+252	8.5222e+281	5.8435e+257	3.82883e+262	5.84467e+257	-9.76932e-292	-2.53571e-306	4.61913e+262	cam1Tocam2	END
+Number of initial features: 82
+Number of inliers:	80
+DEBUGGING00	-21.8206	-19.9625	0	0	pixel coordinates	END
+DEBUGGING01	0.36209	0.190834	0.912399	0.378857	0.207393	0.901918	normalized coordinates	END
+DEBUGGING02	0.346424	0.190834	0.918462	0.373346	0.125231	0.919201	unscaled nav coordinates	END
+DEBUGGING03	0.406622	0.40475	thetas	END
+DEBUGGING04	141.251	141.138	depth vectors	END
+DEBUGGING05	51.1457	26.9555	128.878	53.471	29.2709	127.295	camera coordinates	END
+DEBUGGING06	48.9328	26.9555	129.734	52.6931	17.6748	129.734	scaled NED coordinates	END
+DEBUGGING07	-3.76032	9.28076	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.976691	0.209968	-0.0446012	-0.210077	0.977682	0.0022795	0.0440844	0.0071433	0.999002	second camToNav	END
+DEBUGGING10	1	62	18	num inliers	END
+DEBUGGING11	-4.66657	5.70142	-1.71958e-06	final translation vector	END
+GrdSpd=66.30944492443416Course_ang_deg=320.6999498651182Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796895405636E9
+GrdSpeed=15.193983405709004	4.950004321768614
+CourseAng=0.03839369997562039	2.9998498202007786
+
+59--------------------#For Output Above----------------------------
+
+60--------------------#For Output Above----------------------------
+
+61--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.0017306804656982422
+YawVoInput = 258.42591537560276
+DEBUGGING13	1.57083e+243	2.67428e+238	1.07565e+253	5.23585e+257	1.75638e+243	4.94022e+257	9.25112e+281	3.83112e+262	1.89838e+272	cam1Tocam2	END
+Number of initial features: 55
+Number of inliers:	55
+DEBUGGING00	23.0758	-24.1222	0	0	pixel coordinates	END
+DEBUGGING01	0.277858	0.251133	0.927215	0.255814	0.27425	0.927009	normalized coordinates	END
+DEBUGGING02	0.261951	0.251133	0.931834	0.252115	0.227395	0.940601	unscaled nav coordinates	END
+DEBUGGING03	0.371363	0.346401	thetas	END
+DEBUGGING04	139.302	138.003	depth vectors	END
+DEBUGGING05	38.7061	34.9832	129.163	35.3032	37.8474	127.93	camera coordinates	END
+DEBUGGING06	36.4902	34.9832	129.806	34.7926	31.3813	129.806	scaled NED coordinates	END
+DEBUGGING07	1.69753	3.60196	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.977991	0.200635	-0.0572736	-0.200348	0.979666	0.0107594	0.0582677	0.000952033	0.998301	second camToNav	END
+DEBUGGING10	1	49	6	num inliers	END
+DEBUGGING11	1.80093	4.77836	1.21052e-06	final translation vector	END
+GrdSpd=45.958340995967674Course_ang_deg=380.65108471635415Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.47879689573629E9
+GrdSpeed=15.209795005086676	4.946504766395497
+CourseAng=0.0383970740120163	2.999849820079887
+
+62--------------------#For Output Above----------------------------
+
+63--------------------#For Output Above----------------------------
+
+64--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.11233329772949219
+YawVoInput = 258.85951894284113
+DEBUGGING13	2.50236e+243	2.18272e+243	4.33099e+233	1.91243e+214	2.89568e+267	6.44999e+257	2.51027e+267	1.02893e+253	-2.35631e-306	cam1Tocam2	END
+Number of initial features: 68
+Number of inliers:	68
+DEBUGGING00	8.6001	-14.9283	0	0	pixel coordinates	END
+DEBUGGING01	0.419324	0.226722	0.87907	0.411584	0.236776	0.880077	normalized coordinates	END
+DEBUGGING02	0.404219	0.226722	0.886117	0.397774	0.170907	0.901425	unscaled nav coordinates	END
+DEBUGGING03	0.481897	0.447747	thetas	END
+DEBUGGING04	146.46	143.973	depth vectors	END
+DEBUGGING05	61.414	33.2057	128.748	59.2568	34.0893	126.707	camera coordinates	END
+DEBUGGING06	59.2018	33.2057	129.78	57.2685	24.6059	129.78	scaled NED coordinates	END
+DEBUGGING07	1.93328	8.59982	1.52588e-05	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.979439	0.193208	-0.058057	-0.192343	0.98112	0.020187	0.0608612	-0.00860509	0.998109	second camToNav	END
+DEBUGGING10	1	59	9	num inliers	END
+DEBUGGING11	0.250877	3.38269	2.79141e-07	final translation vector	END
+GrdSpd=30.527856425768274Course_ang_deg=364.24158124989356Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796896016127E9
+GrdSpeed=15.217903143023198	4.944345843166275
+CourseAng=0.03846162336894013	2.9998496424268635
+
+65--------------------#For Output Above----------------------------
+
+66--------------------#For Output Above----------------------------
+
+67--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = -0.10648798942565918
+YawVoInput = 260.6933317109499
+DEBUGGING13	5.83761e+257	1.49956e+248	2.31454e+238	1.25385e+219	5.53614e+257	4.62066e+262	3.00434e+238	3.43289e+262	1.89838e+272	cam1Tocam2	END
+Number of initial features: 58
+Number of inliers:	58
+DEBUGGING00	7.56049	-17.6956	0	0	pixel coordinates	END
+DEBUGGING01	0.31433	0.273364	0.909103	0.306475	0.290573	0.906444	normalized coordinates	END
+DEBUGGING02	0.298726	0.273364	0.914349	0.324769	0.244523	0.913637	unscaled nav coordinates	END
+DEBUGGING03	0.416899	0.418653	thetas	END
+DEBUGGING04	141.901	142.012	depth vectors	END
+DEBUGGING05	44.6038	38.7908	129.003	43.5231	41.2649	128.726	camera coordinates	END
+DEBUGGING06	42.3897	38.7908	129.747	46.1211	34.7252	129.747	scaled NED coordinates	END
+DEBUGGING07	-3.73141	4.06557	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.986465	0.161718	-0.027082	-0.161557	0.986831	0.00804203	0.0280259	-0.0035579	0.999601	second camToNav	END
+DEBUGGING10	1	55	3	num inliers	END
+DEBUGGING11	-3.02462	1.91292	-1.38209e-06	final translation vector	END
+GrdSpd=32.209050525208895Course_ang_deg=302.31134846265724Image DT= 0.33333277702331543
+
+An Update happened for the VO to
+1.478796896447985E9
+GrdSpeed=15.227297327663523	4.945509832574855
+CourseAng=0.0386625610149655	2.999848243043263
+
+68--------------------#For Output Above----------------------------
+
+69--------------------#For Output Above----------------------------
+
+70--------------------#For Output Above----------------------------
+
+Dt btwn RPY and Image Valid = 0.015465974807739258
+YawVoInput = 261.22514709993743
+DEBUGGING13	1.2196e+248	9.83289e+252	1.35972e+248	2.55873e+238	3.01072e+296	3.41463e+267	2.56096e+238	2.55905e+238	6.29331e+286	cam1Tocam2	END
+Number of initial features: 42
+Number of inliers:	42
+DEBUGGING00	1.46278	-14.386	0	0	pixel coordinates	END
+DEBUGGING01	0.193746	0.314559	0.929255	0.191817	0.327632	0.925129	normalized coordinates	END
+DEBUGGING02	0.177816	0.314559	0.932434	0.209571	0.301605	0.930115	unscaled nav coordinates	END
+DEBUGGING03	0.369704	0.376069	thetas	END
+DEBUGGING04	139.131	139.477	depth vectors	END
+DEBUGGING05	26.956	43.7648	129.288	26.7542	45.6972	129.035	camera coordinates	END
+DEBUGGING06	24.7396	43.7648	129.73	29.2304	42.0671	129.73	scaled NED coordinates	END
+DEBUGGING07	-4.49078	1.69773	0	translation vector	END
+DEBUGGING08	0.999854	1.83697e-16	-0.0171125	-1.8367e-16	1	3.14352e-18	0.0171125	0	0.999854	first camToNav	END
+DEBUGGING09	0.987768	0.152552	-0.0322993	-0.152384	0.988292	0.00760857	0.0330818	-0.00259362	0.999449	second camToNav	END
+DEBUGGING10	1	40	2	num inliers	END
+DEBUGGING11	-2.19598	1.38899	-1.56043e-06	final translation vector	END
+GrdSpd=23.385567641038087Course_ang_deg=302.3139154366394Image DT= 0.33333301544189453
+
+An Update happened for the VO to
+1.478796896718149E9
+GrdSpeed=15.231505154757423	4.94428044351661
+CourseAng=0.03877173218483772	2.9998464514520804
+
+71--------------------#For Output Above----------------------------
+
+Writing results to binary file...
+...results written
+Writing results to binary file...
+...results written
+DEBUGGING13	3.82872e+204	1.21961e+248	2.84155e+238	5.95676e+228	6.74555e+257	6.29888e+286	1.12429e+224	6.44173e+257	1.12148e+253	cam1Tocam2	END
+Process finished with exit code 0
+

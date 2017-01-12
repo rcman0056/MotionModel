@@ -28,16 +28,17 @@ import scorpion.filters.sensor.containers.Measurement
 var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
 
 
-var Export_Data = zeros(1, 24) //used to export the filter output data
+var Export_Data = zeros(1, 30) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn =true
 var AltitudeUpdateOn = true
 var VOUpdateOn = true
+var Num_Images_skipped = 0 //Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
 var RangeUpdateOn = false
-var SimulatedRangeUpdateOn = true
+var SimulatedRangeUpdateOn = false
 var SimulatedRangeUpdateTwoOn = false
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "OneLoopMM"
+var Save_Name = "testVO"
 
 // Main Function
 object FAIN_Main {
@@ -45,36 +46,34 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 1090 //1090 FOR ONELOOP 1790 for longloop
+        var Length_Of_Run = 70 //1090 FOR ONELOOP 1790 for longloop
 
 
 
-        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4), 0.0, zeros(1, 4),
-                zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false)
+        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4),zeros(1, 5), 0.0, zeros(1, 4),
+                zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, false)
 
         //Set simulated range values for an aircraft that circles clockwise at a point starting at 1,0 on the unit circle with a given radius and ground speed.
-        LCMMeasurements.simulated_range_CenterNEU = mat[0,0,3048] //X Y Z 10K ft = 3048m
-        LCMMeasurements.simulated_range_ground_speed = 76.0 // m/s  76=170 MPH   stall speed C-130 =115mph
-        LCMMeasurements.simulated_range_radius = 3048.0 // m
+        LCMMeasurements.simulated_range_CenterNEU = mat[200,200,2000] //X Y Z 10K ft = 3048m
+        LCMMeasurements.simulated_range_ground_speed = 100.0 // m/s  76=170 MPH   stall speed C-130 =115mph  120m/s =270mph
+        LCMMeasurements.simulated_range_radius = 1000.0 // m
 
 
         //Set simulated range values for an aircraft that circles at a point with a given radius and ground speed.
         // When trying to have two aircraft fly the same path but at different locations around the radius set this value below
         LCMMeasurements.Circumference_Offset_rads = Math.PI/2  //Must be a double in radians. Math.PI/2 = plane starts at 0,1 on the unit circle flying clockwise
-        LCMMeasurements.simulated_range_CenterNEU_Two = mat[0,0,3048] //X Y Z 10K ft = 3048m
-        LCMMeasurements.simulated_range_ground_speed_Two = 76.0 // m/s  76=170 MPH   stall speed C-130 =115mph
-        LCMMeasurements.simulated_range_radius_Two = 500.0 // m
+        LCMMeasurements.simulated_range_CenterNEU_Two = mat[200,200,2000] //X Y Z 10K ft = 3048m
+        LCMMeasurements.simulated_range_ground_speed_Two = 100.0 // m/s  76=170 MPH   stall speed C-130 =115mph
+        LCMMeasurements.simulated_range_radius_Two = 1000.0 // m
 
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
-        var Image_data = FainImagePreMeasurements(IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0,
+        var Image_data = FainImagePreMeasurements(Num_Images_skipped,Num_Images_skipped,IntArray((1280 * 960 + 2).toInt()), IntArray((1280 * 960 + 2).toInt()), 0.0, 0.0,
                 zeros(3, 3), zeros(3, 3), false, false, zeros(3, 3))
         //DCM from a Perfect Cam to Body Frame
-        var Corrected_Cam_To_Body_DCM = mat[0, -1, 0 end 1, 0, 0 end 0, 0, 1]
-
+        var Cam_To_Body_DCM = mat[0, -1, 0 end 1, 0, 0 end 0, 0, 1]
+        var Body_To_Corrected_Body = rpyToDcm( mat[-1.263,0.456,0]*Math.PI/180).T //Adjust for camera misalignment using the body frame
         //Cam to Body * Cam to Corrected Cam
-        Image_data.Cam_To_Body_DCM = Corrected_Cam_To_Body_DCM * mat[0.999725309234785, -0.0220425040105579, 0.00796455223834097 end
-                0.0220432031669384, 0.999757019077206, 0 end
-                -0.00796261700408846, 0.000175564243123444, 0.99996828245082]
+        Image_data.Cam_To_Body_DCM = Body_To_Corrected_Body*Cam_To_Body_DCM
         val filter = StandardSensorEKF(Time(0.0), //Set time filter start here at 0.0
                 buffer = Buffer())
 
@@ -159,11 +158,57 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
 
-        if (VOUpdateOn == true) {
+        if (VOUpdateOn == true &&  -15*180/Math.PI < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 15*180/Math.PI) {
+
+            //handle first image received and store to first image
+            if(Image_data.First_Image_Received == false){
+                var Camera = (rawopticalcameraimage(p2))
+                var Image = Camera.data
+
+                var Valid_Time_TAI = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9)//Add seconds and nano secs fields
+                // var Valid_Time2 = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
+
+                //Difference between TAI(PTP) and UTC(UNIX) is 36 Seconds  http://tycho.usno.navy.mil/leapsec.html
+                //As of June 30 2015, and until the leap second of December 31 2016 TAI is ahead of UTC by 36 seconds.
+                var Valid_Time_UTC = Valid_Time_TAI + 36
+
+
+
+                Image_data.New_Image_Time_Valid = Valid_Time_UTC
+
+                var width = Camera.width
+                var height = Camera.height
+
+                //Create Data type for Image processor
+                //Byte Array [height width row0 row1 row2....row(height)]
+                var NewImage = IntArray(((1280 * 960) + 2).toInt())
+
+                NewImage[0] = height
+                NewImage[1] = width
+                for (i in 0..height - 1) {
+                    var big_index = 2 + (width * i)
+                    for (a in 0..width - 1) {
+
+                        NewImage[big_index + a] = Image[i][a].toInt()
+                    }
+                }
+
+                //Calculate DCMs The Image received is on average .1 seconds behind(diff btwn Valid time and received time) so the current RPY is stored as the RPY updates at .1 secs
+                var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
+                var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_current[1], LCMMeasurements.Image_TimeRPY_current[2],  X[6]]).T //LCMMeasurements.Image_TimeRPY_current[3]]).T //Roll, Pitch, Not Filter Yaw
+                //var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_current[1], 0,  270*Math.PI/180]).T
+                Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
+                //Handle the case of the first image
+                Image_data.Old_Image = NewImage
+                Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
+                Image_data.Old_Image_DCM = Image_data.New_Image_DCM
+                Image_data.First_Image_Received = true
+            }
+
+            if(Image_data.Skip_Images_Count == 0 && Image_data.First_Image_Received == true){
+                Image_data.Skip_Images_Count = Image_data.Skip_Images
             var Camera = (rawopticalcameraimage(p2))
-
             var Image = Camera.data
-
 
             var Valid_Time_TAI = Camera.valid_t_sec + Camera.valid_t_nsec * pow(10, -9)//Add seconds and nano secs fields
             // var Valid_Time2 = Camera.arrival_t_sec + Camera.arrival_t_nsec * pow(10, -9)
@@ -171,6 +216,9 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
             //Difference between TAI(PTP) and UTC(UNIX) is 36 Seconds  http://tycho.usno.navy.mil/leapsec.html
             //As of June 30 2015, and until the leap second of December 31 2016 TAI is ahead of UTC by 36 seconds.
             var Valid_Time_UTC = Valid_Time_TAI + 36
+var Valid_RPY_dt = Valid_Time_UTC -  LCMMeasurements.Image_TimeRPY_delayed[0]
+
+                println("Dt btwn RPY and Image Valid = " + Valid_RPY_dt.toString())
             var dt = Valid_Time_UTC - Image_data.Old_Image_Time_Valid
 
             Image_data.New_Image_Time_Valid = Valid_Time_UTC
@@ -194,11 +242,12 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
             //Calculate DCMs The Image received is on average .1 seconds behind(diff btwn Valid time and received time) so the current RPY is stored as the RPY updates at .1 secs
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
-            var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2], LCMMeasurements.Image_TimeRPY_delayed[3]]) //Roll, Pitch, Not Filter Yaw
+            //var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2], LCMMeasurements.Image_TimeRPY_delayed[3]]).T //Roll, Pitch, Not Filter Yaw
+                var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2],  LCMMeasurements.Image_TimeRPY_delayed[3]]).T
             Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
+                var YawVoInput = LCMMeasurements.Image_TimeRPY_delayed[3]*180/Math.PI
 
-            if (Image_data.First_Image_Received == true) {
-
+                println("YawVoInput = " + YawVoInput.toString())
 
                 //Run Image Processor     h= agl [fx fy], focal center [cx cy]
                 //fc = [ 998.09342   1005.01966 ];
@@ -214,10 +263,10 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
                 var cc = doubleArrayOf(670.90144, 466.79380)
 
 
-                var useFeatures = false //=> FAST then uses a lucas-kanade Tracker uses features found in first image by FAST to located and find differenc ein second image
+                var useFeatures = true //=> FAST then uses a lucas-kanade Tracker uses features found in first image by FAST to located and find difference in second image
                 //useFeatures = false //=> optical flow
 
-                var inertialAiding = true //=> use both provided DCM's
+                var inertialAiding = false //=> use both provided DCM's
                 //inertialAiding = false => calculate the rotation between frames
                 val params = booleanArrayOf(useFeatures,inertialAiding)
                 PreprocessorOptical_Flow.runVO(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
@@ -227,6 +276,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
                 var VxVyVz = PreprocessorOptical_Flow.getDebugData().asRowVector()
                 LCMMeasurements.Image_dt_velocityXYZ = mat[dt,VxVyVz[0],VxVyVz[1],VxVyVz[2]]
+                LCMMeasurements.Image_time_dt_VxVyVz = mat[Image_data.Old_Image_Time_Valid,dt,VxVyVz[0],VxVyVz[1],VxVyVz[2]]
 
                 //println(LCMMeasurements.Image_dt_velocityXYZ.toString())
 
@@ -246,11 +296,8 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
                 Input_LCM_Time.image_update_time_flag = true
 
             } else {
-                //Handle the case of the first image
-                Image_data.Old_Image = NewImage
-                Image_data.Old_Image_Time_Valid = Image_data.New_Image_Time_Valid
-                Image_data.Old_Image_DCM = Image_data.New_Image_DCM
-                Image_data.First_Image_Received = true
+               Image_data.Skip_Images_Count = Image_data.Skip_Images_Count -1
+                println("Image Skipped")
             }
 
 
@@ -269,6 +316,7 @@ class Subscribe_Pixhawk1(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         LCMMeasurements.GPS_lat = pixhawk1.global_relative_frame[1]
         LCMMeasurements.GPS_lon = pixhawk1.global_relative_frame[2]
         LCMMeasurements.GPS_height_agl = pixhawk1.global_relative_frame[3]
+        LCMMeasurements.GPS_ground_speed=pixhawk1.groundspeed[1]
 
 
 
@@ -371,9 +419,11 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         //Set RPY for VO
         LCMMeasurements.Image_TimeRPY_current = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
 
-
-        LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
-
+if (LCMMeasurements.Image_TimeRPY_current[0] - LCMMeasurements.Image_TimeRPY_delayed[0] >.21) { /////////////////////////////////////////////////
+    //LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
+    var K = filter.getStateBlockEstimate("motionmodel").asRowVector()
+    LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], K[6]]
+}
         if (SavePixhawkData == true) {
             var PixhawkRow = SavePixhawkData(pixhawk2)
             Export_Pixhawk = vstack(Export_Pixhawk, PixhawkRow)
@@ -512,7 +562,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                         current_gps[3]]
 
                 // var current_data = mat[time_filter.time, X States,GPS _Data,P Covariance after sqrt taken]
-                var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P,mat[LCMMeasurements.heading])
+                var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P,mat[LCMMeasurements.heading],mat[LCMMeasurements.GPS_ground_speed],LCMMeasurements.Image_time_dt_VxVyVz)
                 Export_Data = vstack(Export_Data, current_data)
                 println(Export_Data.numRows().toString() + "--------------------#For Output Above----------------------------" + '\n')
 
@@ -663,7 +713,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.simulated_range_time),
                 measurementData = mat[LCMMeasurements.simulated_range],//not used as z is calculated in the processor
                 auxData = LCMMeasurements,
-                measurementCov = mat[10 * 10])
+                measurementCov = mat[5 * 5])
 
         filter.update(SimulatedRangeMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
@@ -688,7 +738,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.simulated_range_time_Two),
                 measurementData = mat[LCMMeasurements.simulated_range],//not used as z is calculated in the processor
                 auxData = LCMMeasurements,
-                measurementCov = mat[10 * 10])
+                measurementCov = mat[5 * 5])
 
         filter.update(SimulatedRangeMeasurementTwo)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
@@ -713,7 +763,7 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
                 timeValidity = Time(Input_LCM_Time.image_update_time),
                 measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
                 auxData = null,
-                measurementCov = mat[100*100, 0 end 0, 90*90*(Math.PI/2)])
+                measurementCov = mat[100*100, 0 end 0, 360*360*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
