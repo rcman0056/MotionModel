@@ -2,7 +2,7 @@
 %close all
 %clear all
 Save_Name = 'testVO';
-Title_Super =['VO Velocity Check Inverted' Save_Name];
+Title_Super =['VO Velocity Check Use 2nd DCM is False ' Save_Name];
 FigNum=11;
 %Pull in data byte array for filter and convert
 
@@ -10,7 +10,7 @@ filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/Samp
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
-numCols = 30; %Set num of cols in data bytearray so matlab can parse the data
+numCols = 34; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
 %Pull in data byte array for pixhawk data and convert
@@ -60,6 +60,10 @@ VO_Vy=data(:,29);
 VO_Vz=data(:,30);
 VO_Time=data(:,26);
 VO_dt=data(:,27);
+RPY_Time=data(:,31);
+roll=data(:,32);
+pitch=data(:,33);
+yaw=data(:,34);
 
 
 GPS_Vx = zeros(length(Pe),1);

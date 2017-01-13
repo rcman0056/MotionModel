@@ -94,8 +94,8 @@ double* dcmToRpy(Mat dcm)
 }
 
 double* mainVO(int8_t* inputData) {
-	bool DISPLAY = true;  ////////////////////////////////////////////////////////////////////////////////////////////////////////Display
-	bool DEBUGGING = true;
+	bool DISPLAY = false;  ////////////////////////////////////////////////////////////////////////////////////////////////////////Display
+	bool DEBUGGING = false;
 
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -166,7 +166,7 @@ double* mainVO(int8_t* inputData) {
 	if (useFeatures) {
 		//detect features
 		bool nonmaxSuppression = true;
-		int fastThreshold = 15;  // decrease to get more features does not equal num of features/////////////////////////////////////////
+		int fastThreshold = 6;  // decrease to get more features does not equal num of features/////////////////////////////////////////
 		vector<KeyPoint> keyPoints;
 		FAST(prevGray, keyPoints, fastThreshold, nonmaxSuppression);
 		numPoints = keyPoints.size();
@@ -197,11 +197,11 @@ double* mainVO(int8_t* inputData) {
 
 	//calculate location of points in next frame
 	TermCriteria termcrit(TermCriteria::COUNT | TermCriteria::EPS, 20, 0.03);
-	Size winSize(51, 51);//////////////////////////////////////////////////////////size of the search level at each pyramind level org 31
+	Size winSize(31, 31);//////////////////////////////////////////////////////////size of the search level at each pyramind level org 31
 	vector<uchar> status;
 	vector<float> err;
 	calcOpticalFlowPyrLK(prevGray, gray, points[0], points[1], status, err,
-			winSize, 3, termcrit, 0, 0.001);
+			winSize, 3, termcrit, 0, 0.001);////////////////////////////////////////////min Eigen value was 0.001
 
 	//remove bad points
 	int numBadPoints = 0;
@@ -224,7 +224,7 @@ double* mainVO(int8_t* inputData) {
 	double focal = (fx + fy) / 2;
 	int method = RANSAC; //RANSAC or MEDS (LMedS)
 	double prob = 0.9999; //confidence level//////////////////////////////////////////////////////////////////////////////
-	double threshold = .5; //RANSAC threshold (distance from epipolar line) was 0.2 original
+	double threshold = .1; //RANSAC threshold (distance from epipolar line) was 0.2 original
 	Mat inliers;
 	Mat E = findEssentialMat(points[0], points[1], focal, pp, method, prob,
 			threshold, inliers);

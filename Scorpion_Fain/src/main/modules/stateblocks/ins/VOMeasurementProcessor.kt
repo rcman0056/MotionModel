@@ -60,6 +60,11 @@ class VOMeasurementProcessor : MeasurementProcessor {
 
 
         var Ground_Speed = pow((Vx * Vx) + (Vy * Vy), .5) / dt
+
+//Used to handle the outragous Ground speeds from VO....super simple filter
+        if (Ground_Speed > 20.0){Ground_Speed = 20.0}
+
+
         var Course_ang = Math.atan2(Vy,Vx)
         Course_ang = Math.PI/2 - Course_ang
 
@@ -78,10 +83,11 @@ class VOMeasurementProcessor : MeasurementProcessor {
         // Correct course angle to be inline with the current filter course angle to handle wrapping beyond 0 and 2PI
 
 
-        var z = mat[Ground_Speed end Course_ang]
+        var z = mat[Ground_Speed ]//end Course_ang]
         // Constructs a 1x1 matrix for H using the parameter HValue we received before
-        var H = mat[0, 0, 1, 0, 0, 0, 0, 0, 0 end
-                    0, 0, 0, 1, 0, 0, 0, 0, 0]
+        //var H = mat[0, 0, 1, 0, 0, 0, 0, 0, 0 end
+        //            0, 0, 0, 1, 0, 0, 0, 0, 0]
+        var H = mat[0, 0, 1, 0, 0, 0, 0, 0, 0]
         // Use the measurement container's covariance
         var R = meas.measurementCov  //sigma^2
 

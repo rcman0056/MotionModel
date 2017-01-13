@@ -1,16 +1,16 @@
 
-%close all
-%clear all
-Save_Name = 'testVO';
-Title_Super =['Qdmm = [.5,3,3,1,1] and  Run =' Save_Name];
-FigNum=3;
-%Pull in data byte array for filter and convert
+close all
+clear all
+Save_Name = 'oneloopmmVoRR';
 
+
+%Pull in data byte array for filter and convert
+FigNum =1;
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
-numCols = 30; %Set num of cols in data bytearray so matlab can parse the data
+numCols = 34; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
 %Pull in data byte array for pixhawk data and convert
@@ -54,6 +54,8 @@ Yaw_est_cov=data(:,21);
 Alt_est_cov=data(:,22);
 Alt_vv_est_cov=data(:,23);
 Ground_Speed=data(:,25);
+
+TWO_DRMS = 2*sqrt((Pn_est-Pn).^2+(Pe_est-Pe).^2);
 %Calculate Ground speeds
 %  Ground_Speed_Cal = zeros(length(Pe),1);
 %  L=10;
@@ -110,18 +112,19 @@ Course_Ang_Cal = zeros(length(Pe),1);
  
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure(FigNum)
+figure('units','normalized','outerposition',[0 0 1 1])
 %%%%%%%%%%%
 %Error = Est -Truth
 %Time Value
-Time=Filter_Time-Filter_Time(1);
+Time=(Filter_Time-Filter_Time(1))*.5;%error in time but run was ~67secs not 2x67. So quick fix
 
 subplot(4,3,1)
 plot(Time,Pn_est-Pn,'g')
 hold on
 plot(Time,Pn_est_cov,'r')
 plot(Time,-Pn_est_cov,'r')
-ylabel('Pn|Error')
+ylabel('Pn|Error(m)')
+xlabel('Time(s)')
 hold off
 
 subplot(4,3,4)
@@ -129,7 +132,8 @@ plot(Time,Pe_est-Pe,'g')
 hold on
 plot(Time,Pe_est_cov,'r')
 plot(Time,-Pe_est_cov,'r')
-ylabel('Pe|Error')
+ylabel('Pe|Error(m)')
+xlabel('Time(s)')
 hold off
 
 subplot(4,3,7)
@@ -137,7 +141,8 @@ plot(Time,Alt_est-Alt,'g')
 hold on
 plot(Time,Alt_est_cov,'r')
 plot(Time,-Alt_est_cov,'r')
-ylabel('Alt|Error')
+ylabel('Alt|Error(m)')
+xlabel('Time(s)')
 hold off
 
 subplot(4,3,10)
@@ -145,15 +150,27 @@ plot(Time,Grnd_Spd_Est-Ground_Speed,'g')
 hold on
 plot(Time,Grnd_Spd_Est_cov,'r')
 plot(Time,-Grnd_Spd_Est_cov,'r')
-ylabel('GrndSpeed|Error')
+ylabel('GrndSpeed|Error(m/s)')
+xlabel('Time(s)')
 hold off
 
+
+CourseAng_Error = Course_ang_Est(5:length(Course_Ang_Cal)-K)-Course_Ang_Cal(5:end-K);
+for i= 1:length(CourseAng_Error)
+    if CourseAng_Error(i) > 180
+        CourseAng_Error(i) = 360 - CourseAng_Error(i);
+    end
+    if CourseAng_Error(i) < -180
+        CourseAng_Error(i) = 360 + CourseAng_Error(i);
+    end
+end
 subplot(4,3,2)
-plot(Time(5:length(Course_Ang_Cal)-K),Course_ang_Est(5:length(Course_Ang_Cal)-K)-Course_Ang_Cal(5:end-K),'g')
+plot(Time(5:length(Course_Ang_Cal)-K),CourseAng_Error,'g')
 hold on
 plot(Time,Course_ang_Est_cov,'r')
 plot(Time,-Course_ang_Est_cov,'r')
-ylabel('CourseAng(deg)|Error')
+ylabel('CourseAng|Error(deg)')
+xlabel('Time(s)')
 hold off
 
 subplot(4,3,5)
@@ -161,7 +178,8 @@ plot(Time,Wn_est,'g')
 hold on
 plot(Time,Wn_est_cov+Wn_est,'r')
 plot(Time,-Wn_est_cov+Wn_est,'r')
-ylabel('WindNorth')
+ylabel('WindNorth(m/s)')
+xlabel('Time(s)')
 hold off
 
 subplot(4,3,8)
@@ -169,24 +187,36 @@ plot(Time,We_est,'g')
 hold on
 plot(Time,We_est_cov+We_est,'r')
 plot(Time,-We_est_cov+We_est,'r')
-ylabel('WindEast')
+ylabel('WindEast(m/s)')
+xlabel('Time(s)')
 hold off
+
+% subplot(4,3,11)
+% plot(Time,Yaw_est,'g')
+% hold on
+% plot(data_pix(2:end,5)-Filter_Time(1),data_pix(2:end,6))
+% plot(Time,Yaw_est_cov,'r')
+% plot(Time,-Yaw_est_cov,'r')
+% ylabel('Yaw')
+% hold off
+
+Yaw_Error = Yaw_est-Heading;
+for i= 1:length(Yaw_Error)
+    if Yaw_Error(i) > 180
+        Yaw_Error(i) = 360 - Yaw_Error(i);
+    end
+    if Yaw_Error(i) < -180
+        Yaw_Error(i) = 360 + Yaw_Error(i);
+    end
+end
 
 subplot(4,3,11)
-plot(Time,Yaw_est,'g')
-hold on
-plot(data_pix(2:end,5)-Filter_Time(1),data_pix(2:end,6))
-plot(Time,Yaw_est_cov,'r')
-plot(Time,-Yaw_est_cov,'r')
-ylabel('Yaw')
-hold off
-
-subplot(4,3,6)
-plot(Time,Yaw_est-Heading,'g')
+plot(Time,Yaw_Error,'g')
 hold on
 plot(Time,Yaw_est_cov,'r')
 plot(Time,-Yaw_est_cov,'r')
-ylabel('Yaw|Error')
+ylabel('Yaw|Error(deg)')
+xlabel('Time(s)')
 hold off
 
 subplot(4,3,3)
@@ -194,7 +224,16 @@ plot(Time,Alt_vv_est,'g')
 hold on
 plot(Time,Alt_est_cov,'r')
 plot(Time,-Alt_est_cov,'r')
-ylabel('AltVV')
+ylabel('AltVV(m/s)')
+xlabel('Time(s)')
+hold off
+
+subplot(4,3,6)
+plot(Time,TWO_DRMS,'g')
+hold on
+
+ylabel('2DRMS(m)')
+xlabel('Time(s)')
 hold off
 
 %Overhead
@@ -203,7 +242,11 @@ plot(data(:,13),data(:,12),'r')
 hold on
 plot(data(:,3),data(:,2),'g')
 axis equal
+xlabel('East(m)')
+ylabel('North(m)')
 
-suptitle(Title_Super)
+%suptitle(Title_Super)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+saveas(gcf,['Figures/',Save_Name],'epsc')
+savefig(['Figures/',Save_Name])

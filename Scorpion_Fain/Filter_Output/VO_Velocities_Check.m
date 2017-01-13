@@ -2,15 +2,15 @@
 %close all
 %clear all
 Save_Name = 'testVO';
-Title_Super =['VO Velocity Check Use 2nd DCM is False' Save_Name];
-FigNum=11;
+Title_Super =['VO Velocity Check Use 2nd DCM is False ' Save_Name];
+FigNum=12;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
 fid = fopen(filename, 'r');
 data = fread(fid,'double',0,'b');
 fclose(fid);
-numCols = 30; %Set num of cols in data bytearray so matlab can parse the data
+numCols = 34; %Set num of cols in data bytearray so matlab can parse the data
 data = reshape(data,numCols,[])';
  
 %Pull in data byte array for pixhawk data and convert
@@ -60,6 +60,33 @@ VO_Vy=data(:,29);
 VO_Vz=data(:,30);
 VO_Time=data(:,26);
 VO_dt=data(:,27);
+RPY_Time=data(:,31);
+roll=radtodeg(data(:,32));
+pitch=radtodeg(data(:,33));
+yaw=radtodeg(data(:,34));
+RPY_Time = RPY_Time - RPY_Time(1)
+
+% figure(50)
+% subplot(3,1,1)
+% plot(RPY_Time,roll,'g')
+% hold on
+% 
+% ylabel('Vx')
+% xlabel('VO = G|GPS = r')
+% hold off
+% 
+% subplot(3,1,2)
+% plot(RPY_Time,pitch,'g')
+% hold on
+% 
+% ylabel('Vy')
+% hold off
+% 
+% subplot(3,1,3)
+% plot(RPY_Time,yaw,'g')
+% hold on
+% ylabel('Vz')
+% hold off
 
 
 GPS_Vx = zeros(length(Pe),1);

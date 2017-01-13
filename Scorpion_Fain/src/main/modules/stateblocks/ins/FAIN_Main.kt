@@ -28,17 +28,17 @@ import scorpion.filters.sensor.containers.Measurement
 var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
 
 
-var Export_Data = zeros(1, 30) //used to export the filter output data
+var Export_Data = zeros(1, 34) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn =true
 var AltitudeUpdateOn = true
 var VOUpdateOn = true
-var Num_Images_skipped = 0 //Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
+var Num_Images_skipped = 3//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
 var RangeUpdateOn = false
-var SimulatedRangeUpdateOn = false
-var SimulatedRangeUpdateTwoOn = false
+var SimulatedRangeUpdateOn = true
+var SimulatedRangeUpdateTwoOn = true
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "testVO"
+var Save_Name = "oneloopmmVoRR"
 
 // Main Function
 object FAIN_Main {
@@ -46,24 +46,24 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 70 //1090 FOR ONELOOP 1790 for longloop
+        var Length_Of_Run = 1000 //1090 FOR ONELOOP 1790 for longloop
+//70
 
 
-
-        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4),zeros(1, 5), 0.0, zeros(1, 4),
-                zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, false)
+        var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4),zeros(1, 5), 0.0, zeros(1, 4),zeros(1, 4),zeros(1, 4),
+                zeros(1, 4),zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, false)
 
         //Set simulated range values for an aircraft that circles clockwise at a point starting at 1,0 on the unit circle with a given radius and ground speed.
-        LCMMeasurements.simulated_range_CenterNEU = mat[200,200,2000] //X Y Z 10K ft = 3048m
-        LCMMeasurements.simulated_range_ground_speed = 100.0 // m/s  76=170 MPH   stall speed C-130 =115mph  120m/s =270mph
+        LCMMeasurements.simulated_range_CenterNEU = mat[0,3000,2000] //X Y Z 10K ft = 3048m
+        LCMMeasurements.simulated_range_ground_speed = 120.0 // m/s  76=170 MPH   stall speed C-130 =115mph  120m/s =270mph
         LCMMeasurements.simulated_range_radius = 1000.0 // m
 
 
         //Set simulated range values for an aircraft that circles at a point with a given radius and ground speed.
         // When trying to have two aircraft fly the same path but at different locations around the radius set this value below
-        LCMMeasurements.Circumference_Offset_rads = Math.PI/2  //Must be a double in radians. Math.PI/2 = plane starts at 0,1 on the unit circle flying clockwise
-        LCMMeasurements.simulated_range_CenterNEU_Two = mat[200,200,2000] //X Y Z 10K ft = 3048m
-        LCMMeasurements.simulated_range_ground_speed_Two = 100.0 // m/s  76=170 MPH   stall speed C-130 =115mph
+        LCMMeasurements.Circumference_Offset_rads = 0.0 //Math.PI/2  //Must be a double in radians. Math.PI/2 = plane starts at 0,1 on the unit circle flying clockwise
+        LCMMeasurements.simulated_range_CenterNEU_Two = mat[3000,0,2000] //X Y Z 10K ft = 3048m
+        LCMMeasurements.simulated_range_ground_speed_Two = 120.0 // m/s  76=170 MPH   stall speed C-130 =115mph
         LCMMeasurements.simulated_range_radius_Two = 1000.0 // m
 
         var Input_LCM_Time = InputLCMTimeCheck  //used to check for time of first LCM message
@@ -175,6 +175,30 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
 
                 Image_data.New_Image_Time_Valid = Valid_Time_UTC
+                //Calculate the interpolated RPY where Y is just the current Filter Yaw set in FAIN_Main Pixhawk2 LCM Recieve
+                if(Image_data.New_Image_Time_Valid > LCMMeasurements.Image_TimeRPY_current[0] && Image_data.New_Image_Time_Valid < LCMMeasurements.Image_TimeRPY_delayed_1[0]) {
+
+                    var Time_Ratio = (Image_data.New_Image_Time_Valid-LCMMeasurements.Image_TimeRPY_current[0])/(LCMMeasurements.Image_TimeRPY_delayed_1[0]-LCMMeasurements.Image_TimeRPY_current[0])
+                    var Roll_interpolated =  LCMMeasurements.Image_TimeRPY_current[1] + (LCMMeasurements.Image_TimeRPY_delayed_1[1]-LCMMeasurements.Image_TimeRPY_current[1])*Time_Ratio
+                    var Pitch_interpolated =  LCMMeasurements.Image_TimeRPY_current[2] + (LCMMeasurements.Image_TimeRPY_delayed_1[2]-LCMMeasurements.Image_TimeRPY_current[2])*Time_Ratio
+                    LCMMeasurements.Image_TimeRPY_delayed[1] = Roll_interpolated
+                    LCMMeasurements.Image_TimeRPY_delayed[2] = Pitch_interpolated
+                }
+                else if(Image_data.New_Image_Time_Valid > LCMMeasurements.Image_TimeRPY_delayed_1[0] && Image_data.New_Image_Time_Valid < LCMMeasurements.Image_TimeRPY_delayed_2[0]){
+                    var Time_Ratio = (Image_data.New_Image_Time_Valid-LCMMeasurements.Image_TimeRPY_delayed_1[0])/(LCMMeasurements.Image_TimeRPY_delayed_2[0]-LCMMeasurements.Image_TimeRPY_delayed_1[0])
+                    var Roll_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_1[1] + (LCMMeasurements.Image_TimeRPY_delayed_2[1]-LCMMeasurements.Image_TimeRPY_delayed_1[1])*Time_Ratio
+                    var Pitch_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_1[2] + (LCMMeasurements.Image_TimeRPY_delayed_2[2]-LCMMeasurements.Image_TimeRPY_delayed_1[2])*Time_Ratio
+                    LCMMeasurements.Image_TimeRPY_delayed[1] = Roll_interpolated
+                    LCMMeasurements.Image_TimeRPY_delayed[2] = Pitch_interpolated
+                }
+                else if(Image_data.New_Image_Time_Valid > LCMMeasurements.Image_TimeRPY_delayed_2[0] && Image_data.New_Image_Time_Valid < LCMMeasurements.Image_TimeRPY_delayed_3[0]){
+                    var Time_Ratio = (Image_data.New_Image_Time_Valid-LCMMeasurements.Image_TimeRPY_delayed_2[0])/(LCMMeasurements.Image_TimeRPY_delayed_3[0]-LCMMeasurements.Image_TimeRPY_delayed_2[0])
+                    var Roll_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_2[1] + (LCMMeasurements.Image_TimeRPY_delayed_3[1]-LCMMeasurements.Image_TimeRPY_delayed_2[1])*Time_Ratio
+                    var Pitch_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_2[2] + (LCMMeasurements.Image_TimeRPY_delayed_3[2]-LCMMeasurements.Image_TimeRPY_delayed_2[2])*Time_Ratio
+                    LCMMeasurements.Image_TimeRPY_delayed[1] = Roll_interpolated
+                    LCMMeasurements.Image_TimeRPY_delayed[2] = Pitch_interpolated
+                }
+                else{LCMMeasurements.Image_TimeRPY_delayed=LCMMeasurements.Image_TimeRPY_delayed_2}
 
                 var width = Camera.width
                 var height = Camera.height
@@ -216,12 +240,37 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
             //Difference between TAI(PTP) and UTC(UNIX) is 36 Seconds  http://tycho.usno.navy.mil/leapsec.html
             //As of June 30 2015, and until the leap second of December 31 2016 TAI is ahead of UTC by 36 seconds.
             var Valid_Time_UTC = Valid_Time_TAI + 36
-var Valid_RPY_dt = Valid_Time_UTC -  LCMMeasurements.Image_TimeRPY_delayed[0]
+           // var Valid_RPY_dt = Valid_Time_UTC -  LCMMeasurements.Image_TimeRPY_delayed[0]
 
-                println("Dt btwn RPY and Image Valid = " + Valid_RPY_dt.toString())
+                //println("Dt btwn RPY and Image Valid = " + Valid_RPY_dt.toString())
             var dt = Valid_Time_UTC - Image_data.Old_Image_Time_Valid
 
             Image_data.New_Image_Time_Valid = Valid_Time_UTC
+
+                //Calculate the interpolated RPY where Y is just the current Filter Yaw set in FAIN_Main Pixhawk2 LCM Recieve
+                if(Image_data.New_Image_Time_Valid < LCMMeasurements.Image_TimeRPY_current[0] && Image_data.New_Image_Time_Valid > LCMMeasurements.Image_TimeRPY_delayed_1[0]) {
+
+                    var Time_Ratio = (Image_data.New_Image_Time_Valid-LCMMeasurements.Image_TimeRPY_current[0])/(LCMMeasurements.Image_TimeRPY_delayed_1[0]-LCMMeasurements.Image_TimeRPY_current[0])
+                    var Roll_interpolated =  LCMMeasurements.Image_TimeRPY_current[1] + (LCMMeasurements.Image_TimeRPY_delayed_1[1]-LCMMeasurements.Image_TimeRPY_current[1])*Time_Ratio
+                    var Pitch_interpolated =  LCMMeasurements.Image_TimeRPY_current[2] + (LCMMeasurements.Image_TimeRPY_delayed_1[2]-LCMMeasurements.Image_TimeRPY_current[2])*Time_Ratio
+                    LCMMeasurements.Image_TimeRPY_delayed[1] = Roll_interpolated
+                    LCMMeasurements.Image_TimeRPY_delayed[2] = Pitch_interpolated
+                }
+                else if(Image_data.New_Image_Time_Valid < LCMMeasurements.Image_TimeRPY_delayed_1[0] && Image_data.New_Image_Time_Valid > LCMMeasurements.Image_TimeRPY_delayed_2[0]){
+                    var Time_Ratio = (Image_data.New_Image_Time_Valid-LCMMeasurements.Image_TimeRPY_delayed_1[0])/(LCMMeasurements.Image_TimeRPY_delayed_2[0]-LCMMeasurements.Image_TimeRPY_delayed_1[0])
+                    var Roll_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_1[1] + (LCMMeasurements.Image_TimeRPY_delayed_2[1]-LCMMeasurements.Image_TimeRPY_delayed_1[1])*Time_Ratio
+                    var Pitch_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_1[2] + (LCMMeasurements.Image_TimeRPY_delayed_2[2]-LCMMeasurements.Image_TimeRPY_delayed_1[2])*Time_Ratio
+                    LCMMeasurements.Image_TimeRPY_delayed[1] = Roll_interpolated
+                    LCMMeasurements.Image_TimeRPY_delayed[2] = Pitch_interpolated
+                }
+                else if(Image_data.New_Image_Time_Valid < LCMMeasurements.Image_TimeRPY_delayed_2[0] && Image_data.New_Image_Time_Valid > LCMMeasurements.Image_TimeRPY_delayed_3[0]){
+                    var Time_Ratio = (Image_data.New_Image_Time_Valid-LCMMeasurements.Image_TimeRPY_delayed_2[0])/(LCMMeasurements.Image_TimeRPY_delayed_3[0]-LCMMeasurements.Image_TimeRPY_delayed_2[0])
+                    var Roll_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_2[1] + (LCMMeasurements.Image_TimeRPY_delayed_3[1]-LCMMeasurements.Image_TimeRPY_delayed_2[1])*Time_Ratio
+                    var Pitch_interpolated =  LCMMeasurements.Image_TimeRPY_delayed_2[2] + (LCMMeasurements.Image_TimeRPY_delayed_3[2]-LCMMeasurements.Image_TimeRPY_delayed_2[2])*Time_Ratio
+                    LCMMeasurements.Image_TimeRPY_delayed[1] = Roll_interpolated
+                    LCMMeasurements.Image_TimeRPY_delayed[2] = Pitch_interpolated
+                }
+                else{LCMMeasurements.Image_TimeRPY_delayed=LCMMeasurements.Image_TimeRPY_delayed_2}
 
             var width = Camera.width
             var height = Camera.height
@@ -244,10 +293,10 @@ var Valid_RPY_dt = Valid_Time_UTC -  LCMMeasurements.Image_TimeRPY_delayed[0]
             var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
             //var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2], LCMMeasurements.Image_TimeRPY_delayed[3]]).T //Roll, Pitch, Not Filter Yaw
                 var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2],  LCMMeasurements.Image_TimeRPY_delayed[3]]).T
-            Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
-                var YawVoInput = LCMMeasurements.Image_TimeRPY_delayed[3]*180/Math.PI
+                Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
+                //var YawVoInput = LCMMeasurements.Image_TimeRPY_delayed[3]*180/Math.PI
 
-                println("YawVoInput = " + YawVoInput.toString())
+               // println("YawVoInput = " + YawVoInput.toString())
 
                 //Run Image Processor     h= agl [fx fy], focal center [cx cy]
                 //fc = [ 998.09342   1005.01966 ];
@@ -266,7 +315,7 @@ var Valid_RPY_dt = Valid_Time_UTC -  LCMMeasurements.Image_TimeRPY_delayed[0]
                 var useFeatures = true //=> FAST then uses a lucas-kanade Tracker uses features found in first image by FAST to located and find difference in second image
                 //useFeatures = false //=> optical flow
 
-                var inertialAiding = false //=> use both provided DCM's
+                var inertialAiding = true //=> use both provided DCM's
                 //inertialAiding = false => calculate the rotation between frames
                 val params = booleanArrayOf(useFeatures,inertialAiding)
                 PreprocessorOptical_Flow.runVO(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
@@ -419,10 +468,13 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         //Set RPY for VO
         LCMMeasurements.Image_TimeRPY_current = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
 
-if (LCMMeasurements.Image_TimeRPY_current[0] - LCMMeasurements.Image_TimeRPY_delayed[0] >.21) { /////////////////////////////////////////////////
+if (LCMMeasurements.Image_TimeRPY_current[0] != LCMMeasurements.Image_TimeRPY_delayed_1[0] ) { /////////////////////////////////////////////////
     //LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
     var K = filter.getStateBlockEstimate("motionmodel").asRowVector()
-    LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], K[6]]
+    LCMMeasurements.Image_TimeRPY_delayed_3 = mat[LCMMeasurements.Image_TimeRPY_delayed_2[0], LCMMeasurements.Image_TimeRPY_delayed_2[1], LCMMeasurements.Image_TimeRPY_delayed_2[2], K[6]]
+    LCMMeasurements.Image_TimeRPY_delayed_2 = mat[LCMMeasurements.Image_TimeRPY_delayed_1[0], LCMMeasurements.Image_TimeRPY_delayed_1[1], LCMMeasurements.Image_TimeRPY_delayed_1[2], K[6]]
+    LCMMeasurements.Image_TimeRPY_delayed_1 = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], K[6]]
+
 }
         if (SavePixhawkData == true) {
             var PixhawkRow = SavePixhawkData(pixhawk2)
@@ -562,7 +614,7 @@ if (LCMMeasurements.Image_TimeRPY_current[0] - LCMMeasurements.Image_TimeRPY_del
                         current_gps[3]]
 
                 // var current_data = mat[time_filter.time, X States,GPS _Data,P Covariance after sqrt taken]
-                var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P,mat[LCMMeasurements.heading],mat[LCMMeasurements.GPS_ground_speed],LCMMeasurements.Image_time_dt_VxVyVz)
+                var current_data = hstack(mat[time_filter.time], X, current_gps_NE_AGL, P,mat[LCMMeasurements.heading],mat[LCMMeasurements.GPS_ground_speed],LCMMeasurements.Image_time_dt_VxVyVz,LCMMeasurements.Image_TimeRPY_current)
                 Export_Data = vstack(Export_Data, current_data)
                 println(Export_Data.numRows().toString() + "--------------------#For Output Above----------------------------" + '\n')
 
@@ -763,7 +815,7 @@ if (LCMMeasurements.Image_TimeRPY_current[0] - LCMMeasurements.Image_TimeRPY_del
                 timeValidity = Time(Input_LCM_Time.image_update_time),
                 measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
                 auxData = null,
-                measurementCov = mat[100*100, 0 end 0, 360*360*(Math.PI/2)])
+                measurementCov = mat[10*10])//, 0 end 0, 360*360*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()
