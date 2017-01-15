@@ -38,7 +38,7 @@ var RangeUpdateOn = false
 var SimulatedRangeUpdateOn = true
 var SimulatedRangeUpdateTwoOn = true
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "oneloopmmVoRR"
+var Save_Name = "longloopmmVoRR"
 
 // Main Function
 object FAIN_Main {
@@ -46,7 +46,7 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 1000 //1090 FOR ONELOOP 1790 for longloop
+        var Length_Of_Run = 1700 //1090 FOR ONELOOP 1790 for longloop
 //70
 
 

@@ -1,8 +1,14 @@
 
 close all
 clear all
-Save_Name = 'oneloopmmVoRR';
 
+Files1 = {'oneloopmm'; 'oneloopmmR'; 'oneloopmmRR'; 'oneloopmmVo'; 'oneloopmmVoR'; 'oneloopmmVoRR';...
+    'longloopmm'; 'longloopmmR'; 'longloopmmRR'; 'longloopmmVo'; 'longloopmmVoR'; 'longloopmmVoRR'};
+
+for i = 1:length(Files1)
+    Save_Name = char(Files1(i));
+
+Fontsize = 12;
 
 %Pull in data byte array for filter and convert
 FigNum =1;
@@ -47,15 +53,15 @@ Heading=data(:,24);
 Pn_est_cov=data(:,15);
 Pe_est_cov=data(:,16);
 Grnd_Spd_Est_cov=data(:,17);
-Course_ang_Est_cov=data(:,18);
+Course_ang_Est_cov=wrapTo360(data(:,18)*(180/pi));
 Wn_est_cov=data(:,19);
 We_est_cov=data(:,20);
-Yaw_est_cov=data(:,21);
+Yaw_est_cov=wrapTo360(data(:,21)*(180/pi));
 Alt_est_cov=data(:,22);
 Alt_vv_est_cov=data(:,23);
 Ground_Speed=data(:,25);
 
-TWO_DRMS = 2*sqrt((Pn_est-Pn).^2+(Pe_est-Pe).^2);
+
 %Calculate Ground speeds
 %  Ground_Speed_Cal = zeros(length(Pe),1);
 %  L=10;
@@ -112,7 +118,8 @@ Course_Ang_Cal = zeros(length(Pe),1);
  
 %Plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure('units','normalized','outerposition',[0 0 1 1])
+A = figure('units','normalized','outerposition',[0 0 1 1])
+
 %%%%%%%%%%%
 %Error = Est -Truth
 %Time Value
@@ -123,7 +130,7 @@ plot(Time,Pn_est-Pn,'g')
 hold on
 plot(Time,Pn_est_cov,'r')
 plot(Time,-Pn_est_cov,'r')
-ylabel('Pn|Error(m)')
+ylabel('Pn|Error(m)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -132,7 +139,7 @@ plot(Time,Pe_est-Pe,'g')
 hold on
 plot(Time,Pe_est_cov,'r')
 plot(Time,-Pe_est_cov,'r')
-ylabel('Pe|Error(m)')
+ylabel('Pe|Error(m)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -141,7 +148,7 @@ plot(Time,Alt_est-Alt,'g')
 hold on
 plot(Time,Alt_est_cov,'r')
 plot(Time,-Alt_est_cov,'r')
-ylabel('Alt|Error(m)')
+ylabel('Alt|Error(m)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -150,7 +157,7 @@ plot(Time,Grnd_Spd_Est-Ground_Speed,'g')
 hold on
 plot(Time,Grnd_Spd_Est_cov,'r')
 plot(Time,-Grnd_Spd_Est_cov,'r')
-ylabel('GrndSpeed|Error(m/s)')
+ylabel('GrndSpeed|Error(m/s)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -169,7 +176,7 @@ plot(Time(5:length(Course_Ang_Cal)-K),CourseAng_Error,'g')
 hold on
 plot(Time,Course_ang_Est_cov,'r')
 plot(Time,-Course_ang_Est_cov,'r')
-ylabel('CourseAng|Error(deg)')
+ylabel('CourseAng|Error(deg)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -178,7 +185,7 @@ plot(Time,Wn_est,'g')
 hold on
 plot(Time,Wn_est_cov+Wn_est,'r')
 plot(Time,-Wn_est_cov+Wn_est,'r')
-ylabel('WindNorth(m/s)')
+ylabel('WindNorth(m/s)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -187,7 +194,7 @@ plot(Time,We_est,'g')
 hold on
 plot(Time,We_est_cov+We_est,'r')
 plot(Time,-We_est_cov+We_est,'r')
-ylabel('WindEast(m/s)')
+ylabel('WindEast(m/s)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
@@ -215,38 +222,49 @@ plot(Time,Yaw_Error,'g')
 hold on
 plot(Time,Yaw_est_cov,'r')
 plot(Time,-Yaw_est_cov,'r')
-ylabel('Yaw|Error(deg)')
+ylabel('Yaw|Error(deg)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
 subplot(4,3,3)
-plot(Time,Alt_vv_est,'g')
+ALT_est = plot(Time,Alt_vv_est,'g')
 hold on
-plot(Time,Alt_est_cov,'r')
+ALT_cov = plot(Time,Alt_est_cov,'r')
 plot(Time,-Alt_est_cov,'r')
-ylabel('AltVV(m/s)')
+ylabel('AltVV(m/s)','FontSize',Fontsize,'FontWeight','bold')
 xlabel('Time(s)')
 hold off
 
-subplot(4,3,6)
-plot(Time,TWO_DRMS,'g')
-hold on
-
-ylabel('2DRMS(m)')
-xlabel('Time(s)')
-hold off
+% subplot(4,3,6)
+% plot(Time,TWO_DRMS,'g')
+% hold on
+% 
+% ylabel('2DRMS(m)','FontSize',Fontsize,'FontWeight','bold')
+% xlabel('Time(s)')
+% hold off
 
 %Overhead
-subplot(4,3,[9,12])
-plot(data(:,13),data(:,12),'r')
+subplot(4,3,[6,9,12])
+Truth_pos = plot(data(:,13),data(:,12),'b')
 hold on
 plot(data(:,3),data(:,2),'g')
 axis equal
-xlabel('East(m)')
-ylabel('North(m)')
+xlabel('East(m)','FontSize',Fontsize,'FontWeight','bold')
+ylabel('North(m)','FontSize',Fontsize,'FontWeight','bold')
 
+legend = legend([Truth_pos,ALT_est,ALT_cov],'Truth 2D Position','Estimate','1-\sigma Covariance','Location','southeast')
+legend.FontSize = 12;
 %suptitle(Title_Super)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 saveas(gcf,['Figures/',Save_Name],'epsc')
 savefig(['Figures/',Save_Name])
+
+North_sigma = std(Pn_est-Pn);
+East_sigma = std(Pe_est-Pe);
+TWO_DRMS = 2*sqrt(North_sigma^2+East_sigma^2);
+
+clearvars -except North_sigma East_sigma TWO_DRMS Save_Name Files1
+save (['Figures/',Save_Name,'.mat'])
+pause(1)
+end

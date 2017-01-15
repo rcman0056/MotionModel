@@ -221,11 +221,11 @@ class MotionModelBlock(override var label: String) : StateBlock {
                 //Q[0,0] = 1*dt
                 //Q[1,1] = 1*dt
                 //Q[2,2] = 100*dt
-                //Q[3,3] = 10*Math.PI/180*dt
+                //Q[3,3] = 1*Math.PI/180*dt
                 //Q[3,3] = 1*dt
                 //Q[4,4] = 1*dt
                 //Q[5,5] = 1*dt
-                //Q[6,6] = 1*dt
+                //Q[6,6] = 1*Math.PI/180*dt
         //B = abs(B)
         //calculate Qd_mm
         var Qd_mm = B*Q_ud*B.T+Q
