@@ -94,8 +94,8 @@ double* dcmToRpy(Mat dcm)
 }
 
 double* mainVO(int8_t* inputData) {
-	bool DISPLAY = false;  ////////////////////////////////////////////////////////////////////////////////////////////////////////Display
-	bool DEBUGGING = false;
+	bool DISPLAY = true;  ////////////////////////////////////////////////////////////////////////////////////////////////////////Display
+	bool DEBUGGING = true;
 
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -235,10 +235,11 @@ double* mainVO(int8_t* inputData) {
 	 cout<<"\t"<<inliers.at<bool>(i);
 	 }
 	 */
-
+     //correctMatches(E, points[0], points[1], points[0], points[1]);
 	 double cam1Tocam2[3][3];
 
 	if (inertialAiding) {
+	/////////////////////////////////////////////////////////////////////////////
 	}
 	else{
 		//calculate the rotation from decomposing the Essential Matrix

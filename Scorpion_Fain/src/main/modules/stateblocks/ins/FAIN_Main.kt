@@ -46,7 +46,7 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 1700 //1090 FOR ONELOOP 1790 for longloop
+        var Length_Of_Run = 1700 //1000 FOR ONELOOP 1700 for longloop
 //70
 
 

@@ -1,9 +1,9 @@
 %VO Velocities Comparison to Velocites from Calculated GPS Position
 %close all
 %clear all
-Save_Name = 'testVO';
-Title_Super =['VO Velocity Check Use 2nd DCM is False ' Save_Name];
-FigNum=12;
+Save_Name = 'longloopmmVoRR';
+Title_Super =['VO Velocity Check  ' Save_Name];
+FigNum=13;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];

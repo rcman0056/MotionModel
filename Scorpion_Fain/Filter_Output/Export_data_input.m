@@ -267,4 +267,5 @@ TWO_DRMS = 2*sqrt(North_sigma^2+East_sigma^2);
 clearvars -except North_sigma East_sigma TWO_DRMS Save_Name Files1
 save (['Figures/',Save_Name,'.mat'])
 pause(1)
+close all
 end
