@@ -32,13 +32,16 @@ var Export_Data = zeros(1, 34) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn =true
 var AltitudeUpdateOn = true
-var VOUpdateOn = true
-var Num_Images_skipped = 3//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
+var VOUpdateOn = false
+var VOUpdateSimOn = true
+var GPS_SKIP = 0
+//Set this to zero if using VO sim
+var Num_Images_skipped = 0//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
 var RangeUpdateOn = false
-var SimulatedRangeUpdateOn = true
-var SimulatedRangeUpdateTwoOn = true
+var SimulatedRangeUpdateOn = false
+var SimulatedRangeUpdateTwoOn = false
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "longloopmmVoRR"
+var Save_Name = "oneloopmmSimVo"
 
 // Main Function
 object FAIN_Main {
@@ -46,12 +49,12 @@ object FAIN_Main {
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
-        var Length_Of_Run = 1700 //1000 FOR ONELOOP 1700 for longloop
+        var Length_Of_Run = 1000 //1000 FOR ONELOOP 1700 for longloop
 //70
 
 
         var LCMMeasurements = FainMeasurements(0.0, 0.0, 0.0,0.0, 0.0, 0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,zeros(1,3),0.0,0.0,0.0, 0.0, 0.0, 0.0, zeros(1, 4),zeros(1, 5), 0.0, zeros(1, 4),zeros(1, 4),zeros(1, 4),
-                zeros(1, 4),zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, false)
+                zeros(1, 4),zeros(1, 4), 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, false,zeros(1,3),zeros(1,3), GPS_SKIP)
 
         //Set simulated range values for an aircraft that circles clockwise at a point starting at 1,0 on the unit circle with a given radius and ground speed.
         LCMMeasurements.simulated_range_CenterNEU = mat[0,3000,2000] //X Y Z 10K ft = 3048m
@@ -158,8 +161,20 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
     // comments
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
 
-        if (VOUpdateOn == true &&  -15*180/Math.PI < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 15*180/Math.PI) {
+        //handle the simulated VO
+        if (VOUpdateSimOn == true && LCMMeasurements.VelocityTruth_Time_Vx_Vy[1] != 0.0 && -7*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 7*Math.PI/180){
+            LCMMeasurements.Image_dt_velocityXYZ = mat[0,LCMMeasurements.VelocityTruth_Time_Vx_Vy[1],LCMMeasurements.VelocityTruth_Time_Vx_Vy[2],0]
+            Input_LCM_Time.image_update_time_flag = true
+            LCMMeasurements.Image_time_dt_VxVyVz = mat[0,0,LCMMeasurements.VelocityTruth_Time_Vx_Vy[1],LCMMeasurements.VelocityTruth_Time_Vx_Vy[2],0]
+        }
 
+
+
+
+
+        if (VOUpdateOn == true &&  -20*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 20*Math.PI/180) {
+var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
+            println("Roll = " + Roll_prt)
             //handle first image received and store to first image
             if(Image_data.First_Image_Received == false){
                 var Camera = (rawopticalcameraimage(p2))
@@ -342,8 +357,13 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
                 LCMMeasurements.Image_velocity_time = Image_data.New_Image_Time_Valid //This time is not used but to keep consistency of times in LCMMeasurements
 
-                Input_LCM_Time.image_update_time_flag = true
-
+                var Vx = LCMMeasurements.Image_time_dt_VxVyVz[2]
+                var Vy = LCMMeasurements.Image_time_dt_VxVyVz[3]
+                var dt_1 = LCMMeasurements.Image_time_dt_VxVyVz[1]
+                var Grd_spd = pow((Vx * Vx) + (Vy * Vy), .5) / dt_1
+                if (Grd_spd < 20){
+                Input_LCM_Time.image_update_time_flag = true}
+                else{println("VO Skipped due to Grd Speed to high")}
             } else {
                Image_data.Skip_Images_Count = Image_data.Skip_Images_Count -1
                 println("Image Skipped")
@@ -351,6 +371,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
 
         }
+        else{println("VO Skipped due to Roll or VO Sim is set")}
     }
 }
 
@@ -365,7 +386,7 @@ class Subscribe_Pixhawk1(var filter: StandardSensorEKF, var LCMMeasurements: Fai
         LCMMeasurements.GPS_lat = pixhawk1.global_relative_frame[1]
         LCMMeasurements.GPS_lon = pixhawk1.global_relative_frame[2]
         LCMMeasurements.GPS_height_agl = pixhawk1.global_relative_frame[3]
-        LCMMeasurements.GPS_ground_speed=pixhawk1.groundspeed[1]
+        LCMMeasurements.GPS_ground_speed = pixhawk1.groundspeed[1]
 
 
 
@@ -375,10 +396,43 @@ class Subscribe_Pixhawk1(var filter: StandardSensorEKF, var LCMMeasurements: Fai
             LCMMeasurements.GPS_origin_lat = LCMMeasurements.GPS_lat
             LCMMeasurements.GPS_origin_lon = LCMMeasurements.GPS_lon
             LCMMeasurements.GPS_origin_alt = LCMMeasurements.GPS_height_agl
+
+
+            var current_gps = mat[LCMMeasurements.GPS_Linux_time, LCMMeasurements.GPS_lat, LCMMeasurements.GPS_lon, LCMMeasurements.GPS_height_agl]
+            //Convert to NEU using first received GPS value as origin
+            var current_gps_NE_AGL = mat[current_gps[0],
+                    deltaLatToNorth((current_gps[1] - LCMMeasurements.GPS_origin_lat) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]), //Diff in rads,Current lat,Estimated ALT
+                    deltaLonToEast((current_gps[2] - LCMMeasurements.GPS_origin_lon) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]),
+                    current_gps[3]]
+
+
+            LCMMeasurements.Velocity_GPS_Time_Lat_Lon = mat[current_gps_NE_AGL[0], current_gps_NE_AGL[1], current_gps_NE_AGL[2]]
         }
 
+
+        //Calculate Estimated Vx and Vy based on GPS by comparing past NED with current NED GPS coords
+if (LCMMeasurements.Velocity_GPS_Time_Lat_Lon[0] < LCMMeasurements.GPS_Linux_time){
+
+    if (LCMMeasurements.Velocity_GPS_skip == 0){
+        var current_gps = mat[LCMMeasurements.GPS_Linux_time, LCMMeasurements.GPS_lat, LCMMeasurements.GPS_lon, LCMMeasurements.GPS_height_agl]
+        //Convert to NEU using first received GPS value as origin
+        var current_gps_NE_AGL = mat[current_gps[0],
+                deltaLatToNorth((current_gps[1] - LCMMeasurements.GPS_origin_lat) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]), //Diff in rads,Current lat,Estimated ALT
+                deltaLonToEast((current_gps[2] - LCMMeasurements.GPS_origin_lon) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]),
+                current_gps[3]]
+
+        //Calculate Estimated Vx and Vy based on GPS
+        var dt = LCMMeasurements.GPS_Linux_time - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[0]
+        var Vx = (current_gps_NE_AGL[1] - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[1])/dt
+        var Vy = (current_gps_NE_AGL[2] - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[2])/dt
+
+    LCMMeasurements.Velocity_GPS_Time_Lat_Lon = mat[LCMMeasurements.GPS_Linux_time,current_gps_NE_AGL[1],current_gps_NE_AGL[2]]
+    LCMMeasurements.VelocityTruth_Time_Vx_Vy = mat[LCMMeasurements.GPS_Linux_time,Vx,Vy]
+LCMMeasurements.Velocity_GPS_skip = GPS_SKIP
+
     }
-}
+        else {LCMMeasurements.Velocity_GPS_skip = LCMMeasurements.Velocity_GPS_skip - 1}}
+}}
 
 class Subscribe_Range(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, Input_LCM_Time: InputLCMTimeCheck) : LCMSubscriber {
 
@@ -471,9 +525,9 @@ class Subscribe_Pixhawk2(var filter: StandardSensorEKF, var LCMMeasurements: Fai
 if (LCMMeasurements.Image_TimeRPY_current[0] != LCMMeasurements.Image_TimeRPY_delayed_1[0] ) { /////////////////////////////////////////////////
     //LCMMeasurements.Image_TimeRPY_delayed = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
     var K = filter.getStateBlockEstimate("motionmodel").asRowVector()
-    LCMMeasurements.Image_TimeRPY_delayed_3 = mat[LCMMeasurements.Image_TimeRPY_delayed_2[0], LCMMeasurements.Image_TimeRPY_delayed_2[1], LCMMeasurements.Image_TimeRPY_delayed_2[2], K[6]]
-    LCMMeasurements.Image_TimeRPY_delayed_2 = mat[LCMMeasurements.Image_TimeRPY_delayed_1[0], LCMMeasurements.Image_TimeRPY_delayed_1[1], LCMMeasurements.Image_TimeRPY_delayed_1[2], K[6]]
-    LCMMeasurements.Image_TimeRPY_delayed_1 = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], K[6]]
+    LCMMeasurements.Image_TimeRPY_delayed_3 = mat[LCMMeasurements.Image_TimeRPY_delayed_2[0], LCMMeasurements.Image_TimeRPY_delayed_2[1], LCMMeasurements.Image_TimeRPY_delayed_2[2], LCMMeasurements.Image_TimeRPY_delayed_2[3]]
+    LCMMeasurements.Image_TimeRPY_delayed_2 = mat[LCMMeasurements.Image_TimeRPY_delayed_1[0], LCMMeasurements.Image_TimeRPY_delayed_1[1], LCMMeasurements.Image_TimeRPY_delayed_1[2], LCMMeasurements.Image_TimeRPY_delayed_1[3]]
+    LCMMeasurements.Image_TimeRPY_delayed_1 = mat[pixhawk2.attitude[0], pixhawk2.attitude[1], pixhawk2.attitude[2], pixhawk2.attitude[3]]
 
 }
         if (SavePixhawkData == true) {
@@ -493,7 +547,7 @@ if (LCMMeasurements.Image_TimeRPY_current[0] != LCMMeasurements.Image_TimeRPY_de
         //Upon getting an Image update just apply it to the current filter time. Otherwise need a delayed state filter
         if (Input_LCM_Time.LCM_start_time_flag == true) {
 
-            if (Input_LCM_Time.image_update_time_flag == true && VOUpdateOn == true) {
+            if (Input_LCM_Time.image_update_time_flag == true && (VOUpdateOn == true || VOUpdateSimOn == true)) {
                 //Set VOUpdate time to current filter time. Averages a .1~.25 second delay of when the image is recieved and the valid time for the images.
                 Input_LCM_Time.image_update_time = filter.curTime.time
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)

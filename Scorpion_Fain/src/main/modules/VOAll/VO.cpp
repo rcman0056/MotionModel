@@ -38,7 +38,7 @@ static void displayResults(Mat& prevImage, Mat& image, vector<Point2f>* points,
 		for (int i = 0; i < points[1].size(); i++) {
 			circle(nextColorImage, points[1][i], 3, Scalar(0, 200, 0), 3, 8);
 		}
-		waitKey(0);
+		waitKey(5);
 		//display second image with translated points
 		imshow("LK Demo", nextColorImage);
 		waitKey(waitTime);
@@ -94,8 +94,9 @@ double* dcmToRpy(Mat dcm)
 }
 
 double* mainVO(int8_t* inputData) {
-	bool DISPLAY = true;  ////////////////////////////////////////////////////////////////////////////////////////////////////////Display
+	bool DISPLAY = true;
 	bool DEBUGGING = true;
+	bool UNDISTORT_IMAGES = false;
 
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -163,25 +164,70 @@ double* mainVO(int8_t* inputData) {
 	vector<Point2f> points[2];
 	int numPoints;
 
+	//undistort image
+	if (UNDISTORT_IMAGES){
+	Mat cameraMatrix = (Mat_<double>(3,3) << fx, 0, cx, 0, fy, cy, 0, 0, 1);
+	Mat distCoeffs  = (Mat_<double>(5,1) << -0.2655, 0.3841, -0.0020, -0.0030, 0);
+	Mat undistortGray, undistortPrevGray;
+	undistort( gray,  undistortGray, cameraMatrix, distCoeffs, cameraMatrix );
+	undistort( prevGray,  undistortPrevGray, cameraMatrix, distCoeffs, cameraMatrix );
+	gray = undistortGray;
+	prevGray = undistortPrevGray;
+	}
+
 	if (useFeatures) {
+
 		//detect features
-		bool nonmaxSuppression = true;
-		int fastThreshold = 6;  // decrease to get more features does not equal num of features/////////////////////////////////////////
-		vector<KeyPoint> keyPoints;
-		FAST(prevGray, keyPoints, fastThreshold, nonmaxSuppression);
-		numPoints = keyPoints.size();
-		cout<<endl<<"Number of initial features: "<<numPoints;
+		bool nonmaxSuppression = false;
+		int fastThreshold = 50; ///was 30
+		vector<KeyPoint> keyPoints1,keyPoints2;
+		//FAST(prevGray, keyPoints1, fastThreshold, nonmaxSuppression);
+		//FAST(gray, keyPoints2, fastThreshold, nonmaxSuppression);
+
+
+		//AKAZE descriptors
+        Mat descriptors1, descriptors2;
+        Ptr<AKAZE> akaze = AKAZE::create();
+        //akaze->set("threshold", 3e-4);
+        akaze->setThreshold(5e-5); //smaller is more loose threshold 5e-3
+        akaze->detectAndCompute(prevGray, noArray(), keyPoints1, descriptors1);
+        akaze->detectAndCompute(gray, noArray(), keyPoints2, descriptors2);
+        //akaze->compute(prevGray,keyPoints1,descriptors1);
+        //akaze->compute(gray,keyPoints2,descriptors2);
+
+        BFMatcher matcher(NORM_HAMMING);
+        vector<vector<DMatch> > matches;
+        matcher.knnMatch(descriptors1, descriptors2, matches, 2);
+
+        //use FLANN matcher to match descriptors
+
+        //FlannBasedMatcher matcher;
+        //vector< DMatch > matches;
+        //matcher.match( descriptors1, descriptors2, matches);
+        float inlier_threshold = 0.8;
+        //cout<<endl<<"Initial number of matches is "<<matches.size();
+		numPoints = keyPoints1.size();
 		for (int i = 0; i < numPoints; i++) {
-			points[0].push_back(keyPoints[i].pt);
+		    int trainIndex = matches[i][0].trainIdx;
+		    int queryIndex = matches[i][0].queryIdx;
+		    //int trainIndex = matches[i].trainIdx;
+		    //int queryIndex = matches[i].queryIdx;
+		    if(matches[i][0].distance < inlier_threshold * matches[i][1].distance){
+		    //if(matches[i].distance < inlier_threshold * matches[i].distance){
+		        points[0].push_back(keyPoints1[queryIndex].pt);
+		        points[1].push_back(keyPoints2[trainIndex].pt);
+		    }
 		}
+		//cout<<endl<<"Final number of matches is "<<points[0].size();
+
 	} else {
 		//evenly distribute first set of points
 		int xlim = gray.cols;
 		int ylim = gray.rows;
-		int dx = xlim / 22;//////////////////////////////////////////////////////////////////////////////Original was 10 for both
+		int dx = xlim / 22;
 		int dy = ylim / 20;
-		for (int j = dx; j < xlim - dx; j += dx) {
-			for (int k = dy; k < ylim - dy; k += dy) {
+		for (int j = 0; j < xlim - 1; j += dx) {
+			for (int k = 0; k < ylim - 1; k += dy) {
 				float x = j;
 				float y = k;
 				Point2f point = Point2f(x, y);
@@ -192,54 +238,51 @@ double* mainVO(int8_t* inputData) {
 				points[0].push_back(tmp[0]);
 			}
 		}
+		numPoints = points[0].size();
+			//calculate location of points in next frame
+        	TermCriteria termcrit(TermCriteria::COUNT | TermCriteria::EPS, 20, 0.03);
+        	Size winSize(31, 31);
+        	vector<uchar> status;
+        	vector<float> err;
+        	calcOpticalFlowPyrLK(prevGray, gray, points[0], points[1], status, err,
+        			winSize, 3, termcrit, 0, 0.001);
+        	//remove bad points
+        	int numBadPoints = 0;
+        	for (int i = 0; i < numPoints-numBadPoints; i++) {
+        		bool failed = status.at(i) == 0;
+        		bool runOffImage = (points[1][i].x < 0) || (points[1][i].y < 0)
+        				|| (points[1][i].x > nx) || (points[1][i].y > ny);
+        		bool badPoint = runOffImage || failed;
+        		if (badPoint) {
+        			//status.at(i+numBadPoints) = 0;
+        			status.erase(status.begin() + (i - numBadPoints));
+        			points[0].erase(points[0].begin() + (i - numBadPoints));
+        			points[1].erase(points[1].begin() + (i - numBadPoints));
+        			numBadPoints++;
+        		}
+        	}
 	}
 	numPoints = points[0].size();
-
-	//calculate location of points in next frame
-	TermCriteria termcrit(TermCriteria::COUNT | TermCriteria::EPS, 20, 0.03);
-	Size winSize(31, 31);//////////////////////////////////////////////////////////size of the search level at each pyramind level org 31
-	vector<uchar> status;
-	vector<float> err;
-	calcOpticalFlowPyrLK(prevGray, gray, points[0], points[1], status, err,
-			winSize, 3, termcrit, 0, 0.001);////////////////////////////////////////////min Eigen value was 0.001
-
-	//remove bad points
-	int numBadPoints = 0;
-	for (int i = 0; i < numPoints; i++) {
-		bool failed = status.at(i) == 0;
-		bool runOffImage = (points[1][i].x < 0) || (points[1][i].y < 0)
-				|| (points[1][i].x > nx) || (points[1][i].y > ny);
-		bool badPoint = runOffImage || failed;
-		if (badPoint) {
-			status.at(i) = 0;
-			points[0].erase(points[0].begin() + (i - numBadPoints));
-			points[1].erase(points[1].begin() + (i - numBadPoints));
-			numBadPoints++;
-		}
-
-	}
-
 	//Use RANSAC to find E matrix and to reject outliers
 	Point2d pp(cx, cy);
 	double focal = (fx + fy) / 2;
 	int method = RANSAC; //RANSAC or MEDS (LMedS)
-	double prob = 0.9999; //confidence level//////////////////////////////////////////////////////////////////////////////
-	double threshold = .1; //RANSAC threshold (distance from epipolar line) was 0.2 original
+	double prob = 0.9999; //confidence level
+	double threshold = 0.2; //RANSAC threshold (distance from epipolar line)
 	Mat inliers;
 	Mat E = findEssentialMat(points[0], points[1], focal, pp, method, prob,
 			threshold, inliers);
 	numPoints = inliers.rows;
-	cout << endl << "Number of inliers:" << "\t" << numPoints;
+	//cout << endl << "Number of features:" << "\t" << numPoints;
 	/*
 	 for (int i = 0; i<numPoints;i++){
 	 cout<<"\t"<<inliers.at<bool>(i);
 	 }
 	 */
-     //correctMatches(E, points[0], points[1], points[0], points[1]);
+
 	 double cam1Tocam2[3][3];
 
 	if (inertialAiding) {
-	/////////////////////////////////////////////////////////////////////////////
 	}
 	else{
 		//calculate the rotation from decomposing the Essential Matrix
@@ -259,31 +302,15 @@ double* mainVO(int8_t* inputData) {
 		double* rpy2 = dcmToRpy(R2);
 		//cout<<endl<<"RPY: "<<rpy1[0]<<rpy1[1]<<rpy1[2];
 
-		cout<<endl<<"RPY1: "<<rpy1[0]<<" "<<rpy1[1]<<" "<<rpy1[2];
-        cout<<endl<<"RPY2: "<<rpy2[0]<<" "<<rpy2[1]<<" "<<rpy2[2];
+		//cout<<endl<<"RPY1: "<<rpy1[0]<<" "<<rpy1[1]<<" "<<rpy1[2];
+        //cout<<endl<<"RPY2: "<<rpy2[0]<<" "<<rpy2[1]<<" "<<rpy2[2];
 
         int R1Score = 0;
         int R2Score = 0;
 
-        for(int i = 0;i<3;i++){
-		if (abs(rpy1[i])>abs(rpy2[i])){
-		    R = R2;
-		    cout<<endl<<"R2 selected";
-		    R2Score++;
-		}
-		else{
-		    R = R1;
-		    cout<<endl<<"R1 selected";
-		    R1Score++;
-		}
 
-		if(R2Score>R1Score){
-		    R = R2;
-		}
-		else{
-            R = R1;
-		}
-}
+
+
 
 		//use recovered rotation to calculate the DCM from the first camera frame to the nav frame
 		for (int i = 0; i < 3; i++) {
@@ -297,7 +324,7 @@ double* mainVO(int8_t* inputData) {
 			}
 		}
 
-
+if(DEBUGGING){
 				cout << endl << "DEBUGGING12" << "\t";
         		cout << R1.at<double>(0,0) << "\t" << R1.at<double>(0,1) << "\t" << R1.at<double>(0,2) << "\t";
         		cout << R1.at<double>(1,0) << "\t" << R1.at<double>(1,1) << "\t" << R1.at<double>(1,2) << "\t";
@@ -309,6 +336,7 @@ double* mainVO(int8_t* inputData) {
         		cout << R2.at<double>(1,0) << "\t" << R2.at<double>(1,1) << "\t" << R2.at<double>(1,2) << "\t";
         		cout << R2.at<double>(2,0) << "\t" << R2.at<double>(2,1) << "\t" << R2.at<double>(2,2) << "\t";
         		cout << "cam1 to cam2" << "\t" << "END";
+        		}
 	}
 
 	//calculate the normalized points
@@ -440,26 +468,27 @@ double* mainVO(int8_t* inputData) {
 	//print out for debugging
 	int indexD = 24;
 	if (DEBUGGING) {
-		static double translationPixels[2] = { 0, 0 };
-            //accumulate the translation in every direction
-            int numInliers = 0;
-            int numOutliers = 0;
-            for (int i = 0; i < numPoints; i++) {
-                if (inliers.at<bool>(i)) {
-                    translationPixels[0] += points[0][i].x-points[1][i].x;
-                    translationPixels[1] += points[0][i].y-points[1][i].y;
-                    numInliers++;
-                } else {
-                    numOutliers++;
-                }
-            }
-                translationPixels[0] /= numInliers;
-                translationPixels[1] /= numInliers;
 
-            cout << endl << "DEBUGGING00" << "\t";
-            cout << translationPixels[0] << "\t" << translationPixels[1] << "\t";
-            cout << '0' << "\t" << '0' << "\t";
-            cout << "pixel coordinates" << "\t" << "END";
+	static double translationPixels[2] = { 0, 0 };
+    	//accumulate the translation in every direction
+    	int numInliers = 0;
+    	int numOutliers = 0;
+    	for (int i = 0; i < numPoints; i++) {
+    		if (inliers.at<bool>(i)) {
+    			translationPixels[0] += points[0][i].x-points[1][i].x;
+    			translationPixels[1] += points[0][i].y-points[1][i].y;
+    			numInliers++;
+    		} else {
+    			numOutliers++;
+    		}
+    	}
+    		translationPixels[0] /= numInliers;
+        	translationPixels[1] /= numInliers;
+
+		cout << endl << "DEBUGGING00" << "\t";
+		cout << translationPixels[0] << "\t" << translationPixels[1] << "\t";
+		cout << '0' << "\t" << '0' << "\t";
+		cout << "pixel coordinates" << "\t" << "END";
 
 		cout << endl << "DEBUGGING01" << "\t";
 		cout << pointsNorm[0][indexD].x << "\t" << pointsNorm[0][indexD].y
@@ -550,7 +579,7 @@ double* mainVO(int8_t* inputData) {
 	 namedWindow( "LK Demo", WINDOW_NORMAL   ); //create resizable window
 	 //resizeWindow("LK Demo", nx/2,ny/2); //resize window to half of image resolution
 	 displayResults(prevGray, gray, points,inliers);
-	 waitKey(100);
+	 waitKey(5);
 	 }
 
 	//clean up stuff

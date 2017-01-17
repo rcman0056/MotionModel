@@ -1,9 +1,9 @@
 %VO Velocities Comparison to Velocites from Calculated GPS Position
 %close all
 %clear all
-Save_Name = 'longloopmmVoRR';
+Save_Name = 'oneloopmmSimVo';
 Title_Super =['VO Velocity Check  ' Save_Name];
-FigNum=13;
+FigNum=14;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
@@ -66,27 +66,6 @@ pitch=radtodeg(data(:,33));
 yaw=radtodeg(data(:,34));
 RPY_Time = RPY_Time - RPY_Time(1)
 
-% figure(50)
-% subplot(3,1,1)
-% plot(RPY_Time,roll,'g')
-% hold on
-% 
-% ylabel('Vx')
-% xlabel('VO = G|GPS = r')
-% hold off
-% 
-% subplot(3,1,2)
-% plot(RPY_Time,pitch,'g')
-% hold on
-% 
-% ylabel('Vy')
-% hold off
-% 
-% subplot(3,1,3)
-% plot(RPY_Time,yaw,'g')
-% hold on
-% ylabel('Vz')
-% hold off
 
 
 GPS_Vx = zeros(length(Pe),1);
@@ -122,8 +101,28 @@ GPS_Vz = zeros(length(Pe),1);
             GPS_Vz(count)=Delta_Alt/GPS_dt;
         end
  end
+figure(50)
+subplot(3,1,1)
+plot(RPY_Time,roll,'g')
+hold on
 
+ylabel('Vx')
+xlabel('VO = G|GPS = r')
+hold off
 
+subplot(3,1,2)
+plot(RPY_Time,pitch,'g')
+hold on
+
+ylabel('Vy')
+hold off
+
+subplot(3,1,3)
+plot(RPY_Time,yaw,'g')
+hold on
+ylabel('Vz')
+hold off
+title('RPY')
 Time=Filter_Time-Filter_Time(1);
 figure(FigNum)
 

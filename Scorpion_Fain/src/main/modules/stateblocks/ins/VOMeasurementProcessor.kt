@@ -50,7 +50,7 @@ class VOMeasurementProcessor : MeasurementProcessor {
 
     // Generates z, h, H, and R for the filter to use during updates.
     override fun generateModel(meas: Measurement, xhat: Matrix<Double>, P: Matrix<Double>): MeasurementModel {
-
+        var Ground_Speed = mat[0.0]
         var data = meas.measurementData
         var dt = data[0]
 
@@ -58,11 +58,14 @@ class VOMeasurementProcessor : MeasurementProcessor {
         var Vy = data[2]
         var Vz = data[3] //Not used but could be used as an Alt update....Vz/dt
 
-
-        var Ground_Speed = pow((Vx * Vx) + (Vy * Vy), .5) / dt
+        if (dt==0.0){
+             Ground_Speed = mat[pow((Vx * Vx) + (Vy * Vy), .5)]
+            Ground_Speed += ((sqrt(meas.measurementCov)-2)*rand(1))}//Handle Simulated VO
+        else{
+            Ground_Speed = mat[pow((Vx * Vx) + (Vy * Vy), .5) / dt ] }//Handle Real VO
 
 //Used to handle the outragous Ground speeds from VO....super simple filter
-        if (Ground_Speed > 20.0){Ground_Speed = 20.0}
+        //if (Ground_Speed > 20.0){Ground_Speed = 20.0}
 
 
         var Course_ang = Math.atan2(Vy,Vx)
@@ -83,7 +86,7 @@ class VOMeasurementProcessor : MeasurementProcessor {
         // Correct course angle to be inline with the current filter course angle to handle wrapping beyond 0 and 2PI
 
 
-        var z = mat[Ground_Speed ]//end Course_ang]
+        var z = Ground_Speed//end Course_ang]
         // Constructs a 1x1 matrix for H using the parameter HValue we received before
         //var H = mat[0, 0, 1, 0, 0, 0, 0, 0, 0 end
         //            0, 0, 0, 1, 0, 0, 0, 0, 0]

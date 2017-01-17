@@ -1,9 +1,9 @@
 %VO Velocities Comparison to Velocites from Calculated GPS Position
 %close all
 %clear all
-Save_Name = 'testVO';
-Title_Super =['VO Velocity Check Use 2nd DCM is False ' Save_Name];
-FigNum=11;
+Save_Name = 'testVO_0skip';
+Title_Super =['VO Velocity Check  ' Save_Name];
+FigNum=13;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
@@ -61,9 +61,11 @@ VO_Vz=data(:,30);
 VO_Time=data(:,26);
 VO_dt=data(:,27);
 RPY_Time=data(:,31);
-roll=data(:,32);
-pitch=data(:,33);
-yaw=data(:,34);
+roll=radtodeg(data(:,32));
+pitch=radtodeg(data(:,33));
+yaw=radtodeg(data(:,34));
+RPY_Time = RPY_Time - RPY_Time(1)
+
 
 
 GPS_Vx = zeros(length(Pe),1);

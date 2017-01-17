@@ -51,7 +51,10 @@ data class FainMeasurements(  var range: Double,
                               var GPS_origin_lat: Double,
                               var GPS_origin_lon: Double,
                               var GPS_origin_alt: Double,
-                              var GPS_origin_received: Boolean){
+                              var GPS_origin_received: Boolean,
+                              var VelocityTruth_Time_Vx_Vy: Matrix<Double>,
+                              var Velocity_GPS_Time_Lat_Lon: Matrix<Double>,
+                              var Velocity_GPS_skip: Int){
 
 
 
