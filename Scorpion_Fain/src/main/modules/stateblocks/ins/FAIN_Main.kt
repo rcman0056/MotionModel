@@ -38,10 +38,10 @@ var GPS_SKIP = 0
 //Set this to zero if using VO sim
 var Num_Images_skipped = 0//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
 var RangeUpdateOn = false
-var SimulatedRangeUpdateOn = false
-var SimulatedRangeUpdateTwoOn = false
+var SimulatedRangeUpdateOn = true
+var SimulatedRangeUpdateTwoOn = true
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "oneloopmmSimVo"
+var Save_Name = "oneloopmmSimVoRR"
 
 // Main Function
 object FAIN_Main {

@@ -2,7 +2,7 @@
 close all
 clear all
 
-Files1 = {'oneloopmm'; 'oneloopmmR'; 'oneloopmmRR'; 'oneloopmmVo'; 'oneloopmmVoR'; 'oneloopmmVoRR';...
+Files1 = {'oneloopmm'; 'oneloopmmR'; 'oneloopmmRR'; 'oneloopmmVo'; 'oneloopmmVoR'; 'oneloopmmVoRR'; 'oneloopmmSimVo';'oneloopmmSimVoR';'oneloopmmSimVoRR';...
     'longloopmm'; 'longloopmmR'; 'longloopmmRR'; 'longloopmmVo'; 'longloopmmVoR'; 'longloopmmVoRR'};
 
 for i = 1:length(Files1)
