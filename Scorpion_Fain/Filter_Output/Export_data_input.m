@@ -3,7 +3,7 @@ close all
 clear all
 
 Files1 = {'oneloopmm'; 'oneloopmmR'; 'oneloopmmRR'; 'oneloopmmVo'; 'oneloopmmVoR'; 'oneloopmmVoRR'; 'oneloopmmSimVo';'oneloopmmSimVoR';'oneloopmmSimVoRR';...
-    'longloopmm'; 'longloopmmR'; 'longloopmmRR'; 'longloopmmVo'; 'longloopmmVoR'; 'longloopmmVoRR'};
+    'longloopmm'; 'longloopmmR'; 'longloopmmRR'; 'longloopmmVo'; 'longloopmmVoR'; 'longloopmmVoRR';'longloopmmSimVo';'longloopmmSimVoR';'longloopmmSimVoRR'};
 
 for i = 1:length(Files1)
     Save_Name = char(Files1(i));
@@ -245,7 +245,7 @@ hold off
 
 %Overhead
 subplot(4,3,[6,9,12])
-Truth_pos = plot(data(:,13),data(:,12),'b')
+Truth_pos = plot(data(:,13),data(:,12),'m')
 hold on
 plot(data(:,3),data(:,2),'g')
 axis equal

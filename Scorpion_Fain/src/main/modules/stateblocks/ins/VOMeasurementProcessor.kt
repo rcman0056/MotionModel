@@ -59,8 +59,8 @@ class VOMeasurementProcessor : MeasurementProcessor {
         var Vz = data[3] //Not used but could be used as an Alt update....Vz/dt
 
         if (dt==0.0){
-             Ground_Speed = mat[pow((Vx * Vx) + (Vy * Vy), .5)]
-            Ground_Speed += ((sqrt(meas.measurementCov)-2)*rand(1))}//Handle Simulated VO
+             Ground_Speed = mat[Vy]
+             Ground_Speed += (sqrt(meas.measurementCov)*rand(1))}//Handle Simulated VO
         else{
             Ground_Speed = mat[pow((Vx * Vx) + (Vy * Vy), .5) / dt ] }//Handle Real VO
 

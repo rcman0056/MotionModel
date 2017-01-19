@@ -33,15 +33,16 @@ var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on
 var HeadingUpdateOn =true
 var AltitudeUpdateOn = true
 var VOUpdateOn = false
-var VOUpdateSimOn = true
+var VOUpdateSimOn = true  // set meas.cov to 5 in VO update at bottom
 var GPS_SKIP = 0
-//Set this to zero if using VO sim
-var Num_Images_skipped = 0//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
+
+
+var Num_Images_skipped = 2//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
 var RangeUpdateOn = false
-var SimulatedRangeUpdateOn = true
-var SimulatedRangeUpdateTwoOn = true
+var SimulatedRangeUpdateOn = false
+var SimulatedRangeUpdateTwoOn = false
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "oneloopmmSimVoRR"
+var Save_Name = "oneloopmmSimVo"
 
 // Main Function
 object FAIN_Main {
@@ -162,7 +163,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
 
         //handle the simulated VO
-        if (VOUpdateSimOn == true && LCMMeasurements.VelocityTruth_Time_Vx_Vy[1] != 0.0 && -7*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 7*Math.PI/180){
+        if (VOUpdateSimOn == true && LCMMeasurements.VelocityTruth_Time_Vx_Vy[2] != 0.0 && -15*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 15*Math.PI/180){
             LCMMeasurements.Image_dt_velocityXYZ = mat[0,LCMMeasurements.VelocityTruth_Time_Vx_Vy[1],LCMMeasurements.VelocityTruth_Time_Vx_Vy[2],0]
             Input_LCM_Time.image_update_time_flag = true
             LCMMeasurements.Image_time_dt_VxVyVz = mat[0,0,LCMMeasurements.VelocityTruth_Time_Vx_Vy[1],LCMMeasurements.VelocityTruth_Time_Vx_Vy[2],0]
@@ -172,7 +173,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
 
 
-        if (VOUpdateOn == true &&  -20*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 20*Math.PI/180) {
+        if (VOUpdateOn == true &&  -7*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 7*Math.PI/180) {
 var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
             println("Roll = " + Roll_prt)
             //handle first image received and store to first image
@@ -361,7 +362,7 @@ var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
                 var Vy = LCMMeasurements.Image_time_dt_VxVyVz[3]
                 var dt_1 = LCMMeasurements.Image_time_dt_VxVyVz[1]
                 var Grd_spd = pow((Vx * Vx) + (Vy * Vy), .5) / dt_1
-                if (Grd_spd < 20){
+                if (Grd_spd < 28){
                 Input_LCM_Time.image_update_time_flag = true}
                 else{println("VO Skipped due to Grd Speed to high")}
             } else {
@@ -411,27 +412,29 @@ class Subscribe_Pixhawk1(var filter: StandardSensorEKF, var LCMMeasurements: Fai
 
 
         //Calculate Estimated Vx and Vy based on GPS by comparing past NED with current NED GPS coords
-if (LCMMeasurements.Velocity_GPS_Time_Lat_Lon[0] < LCMMeasurements.GPS_Linux_time){
+//if (LCMMeasurements.Velocity_GPS_Time_Lat_Lon[0] < LCMMeasurements.GPS_Linux_time){
 
-    if (LCMMeasurements.Velocity_GPS_skip == 0){
-        var current_gps = mat[LCMMeasurements.GPS_Linux_time, LCMMeasurements.GPS_lat, LCMMeasurements.GPS_lon, LCMMeasurements.GPS_height_agl]
+//    if (LCMMeasurements.Velocity_GPS_skip == 0){
+//        var current_gps = mat[LCMMeasurements.GPS_Linux_time, LCMMeasurements.GPS_lat, LCMMeasurements.GPS_lon, LCMMeasurements.GPS_height_agl]
         //Convert to NEU using first received GPS value as origin
-        var current_gps_NE_AGL = mat[current_gps[0],
-                deltaLatToNorth((current_gps[1] - LCMMeasurements.GPS_origin_lat) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]), //Diff in rads,Current lat,Estimated ALT
-                deltaLonToEast((current_gps[2] - LCMMeasurements.GPS_origin_lon) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]),
-                current_gps[3]]
+//        var current_gps_NE_AGL = mat[current_gps[0],
+//                deltaLatToNorth((current_gps[1] - LCMMeasurements.GPS_origin_lat) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]), //Diff in rads,Current lat,Estimated ALT
+//                deltaLonToEast((current_gps[2] - LCMMeasurements.GPS_origin_lon) * Math.PI / 180, current_gps[1] * Math.PI / 180, current_gps[3]),
+//                current_gps[3]]
 
         //Calculate Estimated Vx and Vy based on GPS
-        var dt = LCMMeasurements.GPS_Linux_time - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[0]
-        var Vx = (current_gps_NE_AGL[1] - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[1])/dt
-        var Vy = (current_gps_NE_AGL[2] - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[2])/dt
-
-    LCMMeasurements.Velocity_GPS_Time_Lat_Lon = mat[LCMMeasurements.GPS_Linux_time,current_gps_NE_AGL[1],current_gps_NE_AGL[2]]
+//        var dt = LCMMeasurements.GPS_Linux_time - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[0]
+//        var Vx = (current_gps_NE_AGL[1] - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[1])/dt
+//        var Vy = (current_gps_NE_AGL[2] - LCMMeasurements.Velocity_GPS_Time_Lat_Lon[2])/dt
+        var Vy = LCMMeasurements.GPS_ground_speed
+        var Vx = 0
+//    LCMMeasurements.Velocity_GPS_Time_Lat_Lon = mat[LCMMeasurements.GPS_Linux_time,current_gps_NE_AGL[1],current_gps_NE_AGL[2]]
     LCMMeasurements.VelocityTruth_Time_Vx_Vy = mat[LCMMeasurements.GPS_Linux_time,Vx,Vy]
-LCMMeasurements.Velocity_GPS_skip = GPS_SKIP
+//LCMMeasurements.Velocity_GPS_skip = GPS_SKIP
 
-    }
-        else {LCMMeasurements.Velocity_GPS_skip = LCMMeasurements.Velocity_GPS_skip - 1}}
+ //   }
+ //       else {LCMMeasurements.Velocity_GPS_skip = LCMMeasurements.Velocity_GPS_skip - 1}}
+//}
 }}
 
 class Subscribe_Range(var filter: StandardSensorEKF, var LCMMeasurements: FainMeasurements, Input_LCM_Time: InputLCMTimeCheck) : LCMSubscriber {
@@ -869,7 +872,7 @@ if (LCMMeasurements.Image_TimeRPY_current[0] != LCMMeasurements.Image_TimeRPY_de
                 timeValidity = Time(Input_LCM_Time.image_update_time),
                 measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
                 auxData = null,
-                measurementCov = mat[10*10])//, 0 end 0, 360*360*(Math.PI/2)])
+                measurementCov = mat[1*1])//, 0 end 0, 360*360*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

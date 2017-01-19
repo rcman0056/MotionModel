@@ -94,8 +94,8 @@ double* dcmToRpy(Mat dcm)
 }
 
 double* mainVO(int8_t* inputData) {
-	bool DISPLAY = true;
-	bool DEBUGGING = true;
+	bool DISPLAY = false;
+	bool DEBUGGING = false;
 	bool UNDISTORT_IMAGES = false;
 
 	//first split up bytes into ints, doubles, DCM's, and images

@@ -1,9 +1,9 @@
 %VO Velocities Comparison to Velocites from Calculated GPS Position
 %close all
 %clear all
-Save_Name = 'oneloopmmSimVo';
+Save_Name = 'testVo6';
 Title_Super =['VO Velocity Check  ' Save_Name];
-FigNum=14;
+FigNum=15;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
