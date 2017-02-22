@@ -188,14 +188,48 @@ plot(xStuff,firstCamToSecondCam3(:,3),'LineWidth',2)
 figure
 xStuff = 1:length(firstCamToSecondCam);
 subplot(3,1,1)
-plot(xStuff,firstCamToSecondCam2(:,1),'LineWidth',3)
+plot(xStuff,firstCamToSecondCam2(:,1)*(180/pi),'LineWidth',3)
 title('Attitude of first camera relative to second')
 legend('R')
 subplot(3,1,2)
 hold on
-plot(xStuff,firstCamToSecondCam2(:,2),'LineWidth',3)
+plot(xStuff,firstCamToSecondCam2(:,2)*(180/pi),'LineWidth',3)
 subplot(3,1,3)
-plot(xStuff,firstCamToSecondCam2(:,3),'LineWidth',3)
+plot(xStuff,firstCamToSecondCam2(:,3)*(180/pi),'LineWidth',3)
+
+RPY=[0.4676290,-0.0873091592,-100.384458194;...
+    2.031331944,-0.52959609,-100.38445819;...
+    4.308089229,-0.36508197,-100.384458194;...
+    5.271391013,-1.072821544,-100.38445819;...
+    3.9795331216,-0.63751528562,-100.384458194;...
+    4.42239143544,-0.6339352548,-100.38445819;];
+for i = 1:5
+RPY_Cam1_to_Cam2(i,:) = RPY(i+1,:)-RPY(i,:);
+end
+
+%estimated from pixhawk - OPENCV estimation
+R_roll=firstCamToSecondCam2(2:end,1)*(180/pi);
+R_pitch=firstCamToSecondCam2(2:end,2)*(180/pi);
+R_yaw=firstCamToSecondCam2(2:end,3)*(180/pi);
+figure
+xStuff = 1:length(firstCamToSecondCam)-1;
+subplot(3,1,1)
+plot(xStuff,RPY_Cam1_to_Cam2(:,1)-R_roll,'--^','LineWidth',2)
+ylabel('Roll(deg)')
+axis([0.5 5.5 -2 5])
+
+
+subplot(3,1,2)
+hold on
+plot(xStuff,RPY_Cam1_to_Cam2(:,2)-R_pitch,'--^','LineWidth',2)
+axis([0.5 5.5 -1 0.5])
+ylabel('Pitch(deg)')
+subplot(3,1,3)
+plot(xStuff,RPY_Cam1_to_Cam2(:,3)-R_yaw,'--^','LineWidth',2)
+axis([0.5 5.5 -2 1])
+ylabel('Yaw(deg)')
+xlabel('Image Compares')
+
 
 
 

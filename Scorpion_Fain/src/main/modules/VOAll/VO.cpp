@@ -94,9 +94,9 @@ double* dcmToRpy(Mat dcm)
 }
 
 double* mainVO(int8_t* inputData) {
-	bool DISPLAY = false;
-	bool DEBUGGING = false;
-	bool UNDISTORT_IMAGES = false;
+	bool DISPLAY = true;
+	bool DEBUGGING = true;
+	bool UNDISTORT_IMAGES = true;
 
 	//first split up bytes into ints, doubles, DCM's, and images
 	int index = 0;
@@ -167,7 +167,7 @@ double* mainVO(int8_t* inputData) {
 	//undistort image
 	if (UNDISTORT_IMAGES){
 	Mat cameraMatrix = (Mat_<double>(3,3) << fx, 0, cx, 0, fy, cy, 0, 0, 1);
-	Mat distCoeffs  = (Mat_<double>(5,1) << -0.2655, 0.3841, -0.0020, -0.0030, 0);
+	Mat distCoeffs  = (Mat_<double>(5,1) << -0.391873, 0.234790, 0,0, 0);
 	Mat undistortGray, undistortPrevGray;
 	undistort( gray,  undistortGray, cameraMatrix, distCoeffs, cameraMatrix );
 	undistort( prevGray,  undistortPrevGray, cameraMatrix, distCoeffs, cameraMatrix );
@@ -189,7 +189,7 @@ double* mainVO(int8_t* inputData) {
         Mat descriptors1, descriptors2;
         Ptr<AKAZE> akaze = AKAZE::create();
         //akaze->set("threshold", 3e-4);
-        akaze->setThreshold(5e-5); //smaller is more loose threshold 5e-3
+        akaze->setThreshold(5e-5); //smaller is more loose threshold 5e-3 /////////////////////////////////////was 5e-6///////////////////////////////////////////////
         akaze->detectAndCompute(prevGray, noArray(), keyPoints1, descriptors1);
         akaze->detectAndCompute(gray, noArray(), keyPoints2, descriptors2);
         //akaze->compute(prevGray,keyPoints1,descriptors1);
@@ -307,6 +307,8 @@ double* mainVO(int8_t* inputData) {
 
         int R1Score = 0;
         int R2Score = 0;
+
+
 
 
 

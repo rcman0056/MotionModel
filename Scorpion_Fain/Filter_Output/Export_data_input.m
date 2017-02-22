@@ -5,8 +5,9 @@ clear all
 Files1 = {'oneloopmm'; 'oneloopmmR'; 'oneloopmmRR'; 'oneloopmmVo'; 'oneloopmmVoR'; 'oneloopmmVoRR'; 'oneloopmmSimVo';'oneloopmmSimVoR';'oneloopmmSimVoRR';...
     'longloopmm'; 'longloopmmR'; 'longloopmmRR'; 'longloopmmVo'; 'longloopmmVoR'; 'longloopmmVoRR';'longloopmmSimVo';'longloopmmSimVoR';'longloopmmSimVoRR'};
 
-for i = 1:length(Files1)
+for i = 1%:length(Files1)
     Save_Name = char(Files1(i));
+    Save_Name = 'oneloopmmVOR_Check2'
 
 Fontsize = 12;
 
@@ -257,15 +258,15 @@ legend.FontSize = 12;
 %suptitle(Title_Super)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-saveas(gcf,['Figures/',Save_Name],'epsc')
-savefig(['Figures/',Save_Name])
+%saveas(gcf,['Figures/',Save_Name],'epsc')
+%savefig(['Figures/',Save_Name])
 
 North_sigma = std(Pn_est-Pn);
 East_sigma = std(Pe_est-Pe);
-TWO_DRMS = 2*sqrt(North_sigma^2+East_sigma^2);
+TWO_DRMS = 2*sqrt(North_sigma.^2+East_sigma.^2);
 
-clearvars -except North_sigma East_sigma TWO_DRMS Save_Name Files1
-save (['Figures/',Save_Name,'.mat'])
+%clearvars -except North_sigma East_sigma TWO_DRMS Save_Name Files1
+%save (['Figures/',Save_Name,'.mat'])
 pause(1)
-close all
+%close all
 end

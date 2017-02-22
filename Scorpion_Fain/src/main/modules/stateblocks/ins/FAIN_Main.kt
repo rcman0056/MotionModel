@@ -32,21 +32,20 @@ var Export_Data = zeros(1, 34) //used to export the filter output data
 var Export_Pixhawk = zeros(1, 6) // used to export Pixhawk data. Size depends on data wanted
 var HeadingUpdateOn =true
 var AltitudeUpdateOn = true
-var VOUpdateOn = false
-var VOUpdateSimOn = true  // set meas.cov to 5 in VO update at bottom
+var VOUpdateOn = true
+var VOUpdateSimOn = false  // set meas.cov to 5 in VO update at bottom
 var GPS_SKIP = 0
 
 
-var Num_Images_skipped = 2//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
+var Num_Images_skipped = 0//Number of images to skip IE 2 means it will skip two images before processing. it will compare image 1 and 4.
 var RangeUpdateOn = false
-var SimulatedRangeUpdateOn = false
+var SimulatedRangeUpdateOn = true
 var SimulatedRangeUpdateTwoOn = false
 var SavePixhawkData = true //used to plot True Heading not true GPS data
-var Save_Name = "oneloopmmSimVo"
+var Save_Name = "oneloopmmVORR_2"
 
 // Main Function
 object FAIN_Main {
-
     @JvmStatic
     fun main(args: Array<String>) {
         var P_count = 0.0
@@ -163,7 +162,7 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
     override fun messageReceived(p0: LCM, channel: String, p2: LCMDataInputStream) {
 
         //handle the simulated VO
-        if (VOUpdateSimOn == true && LCMMeasurements.VelocityTruth_Time_Vx_Vy[2] != 0.0 && -15*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 15*Math.PI/180){
+        if (VOUpdateSimOn == true && LCMMeasurements.VelocityTruth_Time_Vx_Vy[2] != 0.0 && -30*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 30*Math.PI/180){
             LCMMeasurements.Image_dt_velocityXYZ = mat[0,LCMMeasurements.VelocityTruth_Time_Vx_Vy[1],LCMMeasurements.VelocityTruth_Time_Vx_Vy[2],0]
             Input_LCM_Time.image_update_time_flag = true
             LCMMeasurements.Image_time_dt_VxVyVz = mat[0,0,LCMMeasurements.VelocityTruth_Time_Vx_Vy[1],LCMMeasurements.VelocityTruth_Time_Vx_Vy[2],0]
@@ -173,9 +172,9 @@ class Subscribe_Cam(var filter: StandardSensorEKF, var LCMMeasurements: FainMeas
 
 
 
-        if (VOUpdateOn == true &&  -7*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 7*Math.PI/180) {
-var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
-            println("Roll = " + Roll_prt)
+        if (VOUpdateOn == true &&  -10*Math.PI/180 < LCMMeasurements.Image_TimeRPY_current[1] &&  LCMMeasurements.Image_TimeRPY_current[1]< 10*Math.PI/180) {
+//var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
+           // println("Roll = " + Roll_prt)
             //handle first image received and store to first image
             if(Image_data.First_Image_Received == false){
                 var Camera = (rawopticalcameraimage(p2))
@@ -310,6 +309,12 @@ var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
             //var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2], LCMMeasurements.Image_TimeRPY_delayed[3]]).T //Roll, Pitch, Not Filter Yaw
                 var Body_To_Nav_DCM = rpyToDcm(mat[LCMMeasurements.Image_TimeRPY_delayed[1], LCMMeasurements.Image_TimeRPY_delayed[2],  LCMMeasurements.Image_TimeRPY_delayed[3]]).T
                 Image_data.New_Image_DCM = Body_To_Nav_DCM * Image_data.Cam_To_Body_DCM
+
+                var Roll_1 =LCMMeasurements.Image_TimeRPY_delayed[1]*(180/Math.PI)
+                var Pitch_1 = LCMMeasurements.Image_TimeRPY_delayed[2]*(180/Math.PI)
+                var Yaw_1 = LCMMeasurements.Image_TimeRPY_delayed[3]*(180/Math.PI)
+
+                println("DATASIMVO   " + Roll_1.toString() + "," + Pitch_1.toString() + "," + Yaw_1.toString() + ":")
                 //var YawVoInput = LCMMeasurements.Image_TimeRPY_delayed[3]*180/Math.PI
 
                // println("YawVoInput = " + YawVoInput.toString())
@@ -324,16 +329,21 @@ var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
                 //                  filterVel: Matrix<Double>, processor: String, measCov: Matrix<Double>): Measurement {
 
                 var Height_AGL = X[7]
-                var fc = doubleArrayOf(998.09342, 1005.01966)
-                var cc = doubleArrayOf(670.90144, 466.79380)
+                //var fc = doubleArrayOf(998.09342, 1005.01966)
+                //var cc = doubleArrayOf(670.90144, 466.79380)
+
+                var fc = doubleArrayOf(1026.30, 1023.331)
+                var cc = doubleArrayOf(678.015, 463.498)
 
 
-                var useFeatures = true //=> FAST then uses a lucas-kanade Tracker uses features found in first image by FAST to located and find difference in second image
+
+                var useFeatures = true //=> AKAZE
                 //useFeatures = false //=> optical flow
 
-                var inertialAiding = true //=> use both provided DCM's
+                var inertialAiding = false //=> use both provided DCM's
                 //inertialAiding = false => calculate the rotation between frames
                 val params = booleanArrayOf(useFeatures,inertialAiding)
+                println("dt=" + dt.toString()+" " +"Height=" + Height_AGL.toString())
                 PreprocessorOptical_Flow.runVO(dt, Image_data.Old_Image, NewImage, Height_AGL, fc, cc, Image_data.Old_Image_DCM,
                         Image_data.New_Image_DCM, filter.curTime, zeros(3, 1), "Blank", zeros(3, 3),params)
 
@@ -362,7 +372,7 @@ var Roll_prt = LCMMeasurements.Image_TimeRPY_current[1]*180/Math.PI
                 var Vy = LCMMeasurements.Image_time_dt_VxVyVz[3]
                 var dt_1 = LCMMeasurements.Image_time_dt_VxVyVz[1]
                 var Grd_spd = pow((Vx * Vx) + (Vy * Vy), .5) / dt_1
-                if (Grd_spd < 28){
+                if (Grd_spd < 32){
                 Input_LCM_Time.image_update_time_flag = true}
                 else{println("VO Skipped due to Grd Speed to high")}
             } else {
@@ -704,17 +714,17 @@ if (LCMMeasurements.Image_TimeRPY_current[0] != LCMMeasurements.Image_TimeRPY_de
 
             if (Input_LCM_Time.simulated_range_time_flag == true && Input_LCM_Time.simulated_range_time >= filter.curTime.time && SimulatedRangeUpdateOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
-                Input_LCM_Time = SimulatedRangeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = true)
+                Input_LCM_Time = SimulatedRangeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
             }
 
             if (Input_LCM_Time.simulated_range_time_Two_flag == true && Input_LCM_Time.simulated_range_time_Two >= filter.curTime.time && SimulatedRangeUpdateTwoOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
-                Input_LCM_Time = SimulatedRangeUpdateTwo(filter, Input_LCM_Time, LCMMeasurements, Console_Output = true)
+                Input_LCM_Time = SimulatedRangeUpdateTwo(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
             }
 
             if (Input_LCM_Time.range_time_flag == true && Input_LCM_Time.range_time >= filter.curTime.time && RangeUpdateOn == true) {
                 filter.giveStateBlockAuxData("motionmodel", pixhawk2_lcm_message_aux)
-                Input_LCM_Time = RangeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = true)
+                Input_LCM_Time = RangeUpdate(filter, Input_LCM_Time, LCMMeasurements, Console_Output = false)
             }
 
             if (Input_LCM_Time.heading_time_flag == true && Input_LCM_Time.heading_time >= filter.curTime.time && HeadingUpdateOn == true) {
@@ -872,7 +882,7 @@ if (LCMMeasurements.Image_TimeRPY_current[0] != LCMMeasurements.Image_TimeRPY_de
                 timeValidity = Time(Input_LCM_Time.image_update_time),
                 measurementData = LCMMeasurements.Image_dt_velocityXYZ,//Not Used as measurement is calculated from LCMMeasurements
                 auxData = null,
-                measurementCov = mat[1*1])//, 0 end 0, 360*360*(Math.PI/2)])
+                measurementCov = mat[10*10])//, 0 end 0, 360*360*(Math.PI/2)])
 
         filter.update(VOMeasurement)
         var X = filter.getStateBlockEstimate("motionmodel").asRowVector()

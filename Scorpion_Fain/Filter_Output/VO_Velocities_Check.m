@@ -1,9 +1,9 @@
 %VO Velocities Comparison to Velocites from Calculated GPS Position
 %close all
 %clear all
-Save_Name = 'testVo6';
+Save_Name = 'oneloopmmVOR_Inertial';
 Title_Super =['VO Velocity Check  ' Save_Name];
-FigNum=15;
+FigNum=18;
 %Pull in data byte array for filter and convert
 
 filename= ['/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/Filter_Output/SampleRun_' Save_Name '.txt'];
@@ -143,10 +143,15 @@ ylabel('Vy')
 hold off
 
 subplot(3,1,3)
-plot(Time,VO_Vz,'g')
+Truth_Mag_I = sqrt(GPS_Vy.^2 + GPS_Vx.^2);
+Cal_Mag_I = sqrt(VO_Vy.^2 + VO_Vx.^2);
+plot(Time,Cal_Mag,'g')
 hold on
-plot(Time,GPS_Vz,'r')
-ylabel('Vz')
+plot(Time,Truth_Mag,'r')
+ylabel('Magnitude')
 hold off
 
 suptitle(Title_Super)
+
+clearvars -except Time Truth_Mag_I Cal_Mag_I Save_Name 
+save (['DataVO/',Save_Name,'.mat'])

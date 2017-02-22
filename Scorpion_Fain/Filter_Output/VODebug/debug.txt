@@ -1,86 +1,91 @@
 /usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/java -Didea.launcher.port=7533 -Didea.launcher.bin.path=/home/suas/IDEA/bin -Dfile.encoding=UTF-8 -classpath /usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/compilefontconfig.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/dnsns.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/icedtea-sound.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/java-atk-wrapper.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/localedata.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/sunjce_provider.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/sunpkcs11.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/ext/zipfs.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/javazic.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/management-agent.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/rhino.jar:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/rt.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/out/production/Scorpion_Fain:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/lib/kotlin-runtime.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/lib/kotlin-reflect.jar:/home/suas/IDEA/jars/scorpion-all-dev.jar:/usr/local/share/java/lcm.jar:/home/suas/IDEA/jars/pixhawk_fain.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/aspn-messages-lcm.jar:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/out/production/utilities:/home/suas/IdeaProjects/MotionModel/Scorpion_Fain/out/production/VOAll:/home/suas/IDEA/lib/idea_rt.jar com.intellij.rt.execution.application.AppMain FAIN_Main
-Jan 17, 2017 12:01:31 PM com.github.fommil.netlib.BLAS <clinit>
+Feb 14, 2017 2:29:03 PM com.github.fommil.netlib.BLAS <clinit>
 WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemBLAS
-Jan 17, 2017 12:01:31 PM com.github.fommil.netlib.BLAS <clinit>
+Feb 14, 2017 2:29:03 PM com.github.fommil.netlib.BLAS <clinit>
 WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefBLAS
 LCM: Disabling IPV6 support
 LCM: TTL set to 1.
-Jan 17, 2017 12:01:33 PM com.github.fommil.netlib.LAPACK <clinit>
+Feb 14, 2017 2:29:20 PM com.github.fommil.netlib.LAPACK <clinit>
 WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemLAPACK
-Jan 17, 2017 12:01:33 PM com.github.fommil.netlib.LAPACK <clinit>
+Feb 14, 2017 2:29:20 PM com.github.fommil.netlib.LAPACK <clinit>
 WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefLAPACK
+z=mat[ 3675.9672799853124 ]/th1=3674.307568534605
 2--------------------#For Output Above----------------------------
 
 3--------------------#For Output Above----------------------------
 
-Roll = -5.559013698958393
+z=mat[ 3672.5579230538237 ]/th1=3673.354291099927
 Image Skipped
 4--------------------#For Output Above----------------------------
 
 5--------------------#For Output Above----------------------------
 
+z=mat[ 3672.5787187009096 ]/th1=3670.0710680630623
 6--------------------#For Output Above----------------------------
 
-Roll = -5.763234220707658
+z=mat[ 3666.0648316254938 ]/th1=3670.5060142960892
 Image Skipped
 7--------------------#For Output Above----------------------------
 
+z=mat[ 3665.958399212275 ]/th1=3666.8969951097356
 8--------------------#For Output Above----------------------------
 
+z=mat[ 3661.2344215446824 ]/th1=3664.96163499487
 9--------------------#For Output Above----------------------------
 
 10--------------------#For Output Above----------------------------
 
-Roll = -7.458922597264411
+z=mat[ 3655.637378761339 ]/th1=3661.824623499172
 Image Skipped
 11--------------------#For Output Above----------------------------
 
 12--------------------#For Output Above----------------------------
 
-Roll = -6.625284348686015
+z=mat[ 3659.4989764044158 ]/th1=3655.6391484922497
 Image Skipped
 13--------------------#For Output Above----------------------------
 
+z=mat[ 3648.7198788541587 ]/th1=3655.242936677693
 14--------------------#For Output Above----------------------------
 
+z=mat[ 3652.048193832371 ]/th1=3651.0965206209985
 15--------------------#For Output Above----------------------------
 
 16--------------------#For Output Above----------------------------
 
-Roll = -3.7630111878353083
+z=mat[ 3647.2450390222252 ]/th1=3649.3797506018805
+DATASIMVO   -5.300064268845701,0.13800054165650236,-85.44423217713381:
 
-DEBUGGING12	-0.996164	-0.0875037	0.000965386	-0.0874897	0.995651	-0.032017	0.00184042	-0.0319786	-0.999487	cam1 to cam2	END
-DEBUGGING14	0.999488	-0.0313356	0.00643276	0.0317946	0.995258	-0.0919237	-0.00352177	0.0920812	0.995745	cam1 to cam2	END
-DEBUGGING00	4.2463	-126.502	0	0	pixel coordinates	END
-DEBUGGING01	0.103371	-0.381945	0.918386	0.117873	-0.28753	0.950491	normalized coordinates	END
-DEBUGGING02	0.257176	-0.451284	0.854519	0.248426	-0.278446	0.927767	unscaled nav coordinates	END
-DEBUGGING03	0.546172	0.382412	thetas	END
-DEBUGGING04	149.645	137.831	depth vectors	END
-DEBUGGING05	15.4689	-57.1563	137.432	16.2466	-39.6305	131.007	camera coordinates	END
-DEBUGGING06	38.4853	-67.5326	127.875	34.2408	-38.3784	127.875	scaled NED coordinates	END
-DEBUGGING07	4.24449	-29.1542	0	translation vector	END
-DEBUGGING08	0.986859	-0.0987832	0.12787	0.111016	0.989518	-0.0923563	-0.117407	0.105338	0.987481	first camToNav	END
+DEBUGGING12	0.999474	-0.0311073	0.00914459	0.0317988	0.995522	-0.0890179	-0.00633453	0.0892619	0.995988	cam1 to cam2	END
+DEBUGGING14	-0.993458	-0.114196	3.33299e-05	-0.114121	0.992794	-0.0365719	0.00414327	-0.0363365	-0.999331	cam1 to cam2	END
+DEBUGGING00	5.01456	-126.456	0	0	pixel coordinates	END
+DEBUGGING01	0.182254	-0.390779	0.902261	0.202884	-0.300074	0.932091	normalized coordinates	END
+DEBUGGING02	0.33606	-0.447082	0.828964	0.331486	-0.284181	0.899644	unscaled nav coordinates	END
+DEBUGGING03	0.593544	0.451844	thetas	END
+DEBUGGING04	154.036	141.934	depth vectors	END
+DEBUGGING05	28.0737	-60.1941	138.981	28.7962	-42.5907	132.296	camera coordinates	END
+DEBUGGING06	51.7654	-68.8668	127.69	47.0492	-40.335	127.69	scaled NED coordinates	END
+DEBUGGING07	4.71621	-28.5318	-7.62939e-06	translation vector	END
+DEBUGGING08	0.986522	-0.0989015	0.130355	0.111023	0.989803	-0.0892448	-0.120199	0.102514	0.987443	first camToNav	END
 DEBUGGING09	0.990272	-0.0786923	0.114755	0.0793582	0.996845	-0.00123837	-0.114295	0.0103331	0.993393	second camToNav	END
-DEBUGGING10	1	1124	802	num inliers	END
-DEBUGGING11	4.04446	-28.5406	3.39386e-08	final translation vector	END
-
-(java:16826): Gtk-WARNING **: Unable to locate theme engine in module_path: "pixmap",
-init done 
-opengl support available 
-GrdSpd=16.214481272687944Course_ang_deg=171.93437308331033Image DT= 1.3333323001861572
+DEBUGGING10	0	5146	6157	num inliers	END
+DEBUGGING11	4.40112	-27.9765	1.69015e-07	final translation vector	END
+GrdSpd=mat[ 15.93036264067752 ]Course_ang_deg=171.0597971781624Image DT= 1.3333323001861572
 
 An Update happened for the VO to
-1.47879687041417E9
-GrdSpeed=15.21777037392759	4.395507641170358
-CourseAng=-0.003957929009690048	2.999501636295682
+1.478796870426046E9
+GrdSpeed=15.92874631551404	0.009979926292717517
+CourseAng=-0.022573967321682015	2.995931206996761
 
 17--------------------#For Output Above----------------------------
 
+z=mat[ 3644.486097719985 ]/th1=3646.6668557050034
 18--------------------#For Output Above----------------------------
 
+z=mat[ 3647.6781115245526 ]/th1=3644.0048095495667
 19--------------------#For Output Above----------------------------
 
-Roll = -4.547196305501873
+z=mat[ 3643.176418591613 ]/th1=3642.7910068851506
 Image Skipped
 20--------------------#For Output Above----------------------------
 
@@ -90,296 +95,330 @@ Image Skipped
 
 23--------------------#For Output Above----------------------------
 
-Roll = -4.910538463684457
 Image Skipped
+z=mat[ 3648.1626500413036 ]/th1=3636.8609543546745
 24--------------------#For Output Above----------------------------
 
+z=mat[ 3643.529221653472 ]/th1=3638.072899198944
+z=mat[ 3639.027721703265 ]/th1=3637.706200608186
 25--------------------#For Output Above----------------------------
 
-Roll = -6.7769982180776305
 Image Skipped
+z=mat[ 3643.0813494939994 ]/th1=3636.383203855223
 26--------------------#For Output Above----------------------------
 
-Roll = -5.533372741927341
+z=mat[ 3640.6629233744848 ]/th1=3636.159880477096
 Image Skipped
+z=mat[ 3641.901306622168 ]/th1=3635.5601807040716
 27--------------------#For Output Above----------------------------
 
+z=mat[ 3639.522362911244 ]/th1=3635.3090312399536
 28--------------------#For Output Above----------------------------
 
-Roll = -5.232081571693854
-DEBUGGING13	0.999488	-0.0313356	0.00643276	0.0317946	0.995258	-0.0919237	-0.00352177	0.0920812	0.995745	cam1Tocam2	END
-DEBUGGING12	0.997513	-0.0701762	0.00654845	0.0704777	0.992244	-0.102397	0.000688186	0.102604	0.994722	cam1 to cam2	END
-DEBUGGING14	-0.960788	-0.276173	0.0248051	-0.277265	0.957928	-0.0741438	-0.003285	-0.078114	-0.996939	cam1 to cam2	END
-DEBUGGING00	33.588	-181.713	0	0	pixel coordinates	END
-DEBUGGING01	0.0784424	-0.382181	0.920752	0.0739488	-0.242671	0.967286	normalized coordinates	END
-DEBUGGING02	0.251819	-0.459144	0.851924	0.208186	-0.237659	0.948776	unscaled nav coordinates	END
-DEBUGGING03	0.551148	0.321456	thetas	END
-DEBUGGING04	149.544	134.278	depth vectors	END
-DEBUGGING05	11.7306	-57.1529	137.693	9.92972	-32.5854	129.885	camera coordinates	END
-DEBUGGING06	37.658	-68.6621	127.4	27.9548	-31.9124	127.4	scaled NED coordinates	END
-DEBUGGING07	9.70317	-36.7497	7.62939e-06	translation vector	END
-DEBUGGING08	0.981752	-0.135198	0.133737	0.149481	0.983361	-0.103228	-0.117555	0.121335	0.985626	first camToNav	END
+z=mat[ 3634.6562239478426 ]/th1=3634.7258165382445
+DATASIMVO   -5.590171385878585,0.18695503099051342,-85.44423217713381:
+DEBUGGING13	0.999474	-0.0311073	0.00914459	0.0317988	0.995522	-0.0890179	-0.00633453	0.0892619	0.995988	cam1Tocam2	END
+DEBUGGING12	-0.957198	-0.288486	0.0234053	-0.289426	0.954639	-0.0699733	-0.00215725	-0.0737524	-0.997274	cam1 to cam2	END
+DEBUGGING14	0.9975	-0.0701135	0.00883387	0.070654	0.991956	-0.105031	-0.00139871	0.105393	0.99443	cam1 to cam2	END
+DEBUGGING00	36.3737	-178.527	0	0	pixel coordinates	END
+DEBUGGING01	0.0558285	-0.395792	0.916641	0.0509505	-0.261521	0.963852	normalized coordinates	END
+DEBUGGING02	0.232958	-0.477601	0.847129	0.186496	-0.25827	0.947901	unscaled nav coordinates	END
+DEBUGGING03	0.560237	0.324216	thetas	END
+DEBUGGING04	151.015	134.961	depth vectors	END
+DEBUGGING05	8.43094	-59.7706	138.427	6.87631	-35.2951	130.082	camera coordinates	END
+DEBUGGING06	35.1802	-72.1249	127.929	25.1696	-34.8563	127.929	scaled NED coordinates	END
+DEBUGGING07	10.0105	-37.2686	-7.62939e-06	translation vector	END
+DEBUGGING08	0.981475	-0.134779	0.136171	0.149659	0.983075	-0.105671	-0.119624	0.124093	0.985034	first camToNav	END
 DEBUGGING09	0.989673	-0.0786516	0.119835	0.0794249	0.996839	-0.00168313	-0.119324	0.0111836	0.992792	second camToNav	END
-DEBUGGING10	1	878	862	num inliers	END
-DEBUGGING11	9.68509	-36.2681	1.91208e-07	final translation vector	END
-GrdSpd=13.514050392420707Course_ang_deg=165.04850572349338Image DT= 1.6666648387908936
+DEBUGGING10	0	4030	5685	num inliers	END
+DEBUGGING11	9.91611	-36.424	9.84857e-08	final translation vector	END
+GrdSpd=mat[ 13.58991187784763 ]Course_ang_deg=164.7708182144469Image DT= 1.6666648387908936
 
 An Update happened for the VO to
 1.478796872118961E9
-GrdSpeed=15.031251914677846	3.947214704350782
-CourseAng=0.011218852205205078	2.9962943436985032
+GrdSpeed=14.225428375917838	0.0072850129920792395
+CourseAng=14.148094850155172	1.642046735035754
 
 29--------------------#For Output Above----------------------------
 
+z=mat[ 3624.05010244943 ]/th1=3633.2630819656315
 30--------------------#For Output Above----------------------------
 
+z=mat[ 3622.465152716212 ]/th1=3630.460502569979
 31--------------------#For Output Above----------------------------
 
-Roll = -4.372582946257321
 Image Skipped
 32--------------------#For Output Above----------------------------
 
+z=mat[ 3625.04085090151 ]/th1=3626.3725901694215
+z=mat[ 3621.6765322998067 ]/th1=3624.695294866485
 33--------------------#For Output Above----------------------------
 
 34--------------------#For Output Above----------------------------
 
-Roll = -0.3990047636341884
 Image Skipped
+z=mat[ 3622.9307804020905 ]/th1=3622.7405606313437
 35--------------------#For Output Above----------------------------
 
 36--------------------#For Output Above----------------------------
 
+z=mat[ 3606.0990648585157 ]/th1=3619.759880311557
 37--------------------#For Output Above----------------------------
 
-Roll = -0.5632209741363952
 Image Skipped
+z=mat[ 3620.041847357897 ]/th1=3615.850524911359
 38--------------------#For Output Above----------------------------
 
+z=mat[ 3617.8735577787616 ]/th1=3614.895968304606
 39--------------------#For Output Above----------------------------
 
-Roll = 0.603070485549218
+z=mat[ 3617.9176346035256 ]/th1=3613.7760894157905
 Image Skipped
 40--------------------#For Output Above----------------------------
 
+z=mat[ 3617.4652197310365 ]/th1=3612.8602642825267
 41--------------------#For Output Above----------------------------
 
-Roll = 2.3694052162387056
-DEBUGGING13	0.997513	-0.0701762	0.00654845	0.0704777	0.992244	-0.102397	0.000688186	0.102604	0.994722	cam1Tocam2	END
-DEBUGGING12	0.999892	0.0132343	0.00645717	-0.0123956	0.993163	-0.116079	-0.00794925	0.115987	0.993219	cam1 to cam2	END
-DEBUGGING14	-0.624121	0.778082	-0.0711408	0.780678	0.624725	-0.0161698	0.0318619	-0.06563	-0.997335	cam1 to cam2	END
-DEBUGGING00	-125.813	-121.193	0	0	pixel coordinates	END
-DEBUGGING01	0.148002	-0.381451	0.912464	0.264281	-0.295082	0.918195	normalized coordinates	END
-DEBUGGING02	0.181749	-0.484711	0.855583	0.281219	-0.285405	0.916221	unscaled nav coordinates	END
-DEBUGGING03	0.54412	0.412253	thetas	END
-DEBUGGING04	148.775	138.929	depth vectors	END
-DEBUGGING05	22.0189	-56.7504	135.752	36.7162	-40.9954	127.564	camera coordinates	END
-DEBUGGING06	27.0398	-72.1129	127.289	39.0694	-39.6509	127.289	scaled NED coordinates	END
-DEBUGGING07	-12.0297	-32.462	-7.62939e-06	translation vector	END
-DEBUGGING08	0.997732	-0.0666415	0.00949403	0.0673093	0.989422	-0.128505	-0.000829802	0.128853	0.991663	first camToNav	END
+z=mat[ 3607.882175423062 ]/th1=3610.616488941132
+DATASIMVO   1.6799698953457938,0.2816624318166751,-85.44423217713381:
+DEBUGGING13	0.9975	-0.0701135	0.00883387	0.070654	0.991956	-0.105031	-0.00139871	0.105393	0.99443	cam1Tocam2	END
+DEBUGGING12	0.999859	0.0144301	0.00853339	-0.0133025	0.992687	-0.119982	-0.0102023	0.119852	0.992739	cam1 to cam2	END
+DEBUGGING14	-0.643445	0.762695	-0.0653854	0.764322	0.644834	0.000186549	0.042305	-0.0498555	-0.99786	cam1 to cam2	END
+DEBUGGING00	-125.039	-121.054	0	0	pixel coordinates	END
+DEBUGGING01	0.0280833	-0.396362	0.917665	0.143074	-0.311607	0.939378	normalized coordinates	END
+DEBUGGING02	0.064857	-0.511471	0.85685	0.161585	-0.311804	0.936306	unscaled nav coordinates	END
+DEBUGGING03	0.541669	0.358837	thetas	END
+DEBUGGING04	148.799	136.172	depth vectors	END
+DEBUGGING05	4.17878	-58.9785	136.548	19.4828	-42.4322	127.917	camera coordinates	END
+DEBUGGING06	9.65068	-76.1066	127.499	22.0034	-42.459	127.499	scaled NED coordinates	END
+DEBUGGING07	-12.3527	-33.6476	0	translation vector	END
+DEBUGGING08	0.997786	-0.0654357	0.0118775	0.0664329	0.988991	-0.132224	-0.00309456	0.132721	0.991149	first camToNav	END
 DEBUGGING09	0.996803	-0.0796554	-0.00623108	0.0795665	0.996739	-0.0134095	0.00727891	0.0128709	0.999891	second camToNav	END
-DEBUGGING10	0	557	1313	num inliers	END
-DEBUGGING11	-12.6344	-32.7435	-4.3797e-07	final translation vector	END
-GrdSpd=12.634756056902043Course_ang_deg=201.09956928375968Image DT= 1.6666650772094727
+DEBUGGING10	0	2265	7847	num inliers	END
+DEBUGGING11	-12.4142	-33.2189	-3.0648e-07	final translation vector	END
+GrdSpd=mat[ 12.76663025015571 ]Course_ang_deg=200.49122008776376Image DT= 1.6666650772094727
 
 An Update happened for the VO to
-1.478796873779829E9
-GrdSpeed=14.794642857632525	3.554826678749322
-CourseAng=0.029620831809377076	2.9939392271788314
+1.478796873818129E9
+GrdSpeed=12.766775939695723	0.009998173342181838
+CourseAng=14.175262930166422	1.6407707771507403
 
 42--------------------#For Output Above----------------------------
 
+z=mat[ 3608.4591276905157 ]/th1=3608.471855457769
 43--------------------#For Output Above----------------------------
 
 44--------------------#For Output Above----------------------------
 
+z=mat[ 3609.254547334478 ]/th1=3606.9172762969824
 45--------------------#For Output Above----------------------------
 
-Roll = 3.0480523852843495
 Image Skipped
+z=mat[ 3611.4386901012354 ]/th1=3605.7131010500143
 46--------------------#For Output Above----------------------------
 
+z=mat[ 3597.1260954300215 ]/th1=3605.010780707542
 47--------------------#For Output Above----------------------------
 
 48--------------------#For Output Above----------------------------
 
-Roll = -0.12667066063464663
+z=mat[ 3608.162389003678 ]/th1=3602.3512502150875
 Image Skipped
+z=mat[ 3597.3291127285797 ]/th1=3601.6238795785553
 49--------------------#For Output Above----------------------------
 
 50--------------------#For Output Above----------------------------
 
-Roll = 1.3032601779587878
+z=mat[ 3596.601917383901 ]/th1=3599.449775014155
 Image Skipped
+z=mat[ 3594.4403549449253 ]/th1=3597.449388881191
 51--------------------#For Output Above----------------------------
 
 52--------------------#For Output Above----------------------------
 
+z=mat[ 3594.456386583927 ]/th1=3595.3551563611604
 53--------------------#For Output Above----------------------------
 
-Roll = 0.0075314008027964575
+z=mat[ 3583.6361474944815 ]/th1=3593.5561920408645
 Image Skipped
 54--------------------#For Output Above----------------------------
 
 55--------------------#For Output Above----------------------------
 
+z=mat[ 3594.1863901554348 ]/th1=3588.5816044964263
 56--------------------#For Output Above----------------------------
 
 57--------------------#For Output Above----------------------------
 
-Roll = 3.0512239409367625
-DEBUGGING13	0.999892	0.0132343	0.00645717	-0.0123956	0.993163	-0.116079	-0.00794925	0.115987	0.993219	cam1Tocam2	END
-DEBUGGING12	-0.999876	0.0133048	-0.0084266	0.0136308	0.999111	-0.0398826	0.00788848	-0.0399925	-0.999169	cam1 to cam2	END
-DEBUGGING14	0.999255	0.0383237	0.00457336	-0.0375992	0.99335	-0.108823	-0.00871344	0.10857	0.994051	cam1 to cam2	END
-DEBUGGING00	-9.06849	-152.934	0	0	pixel coordinates	END
-DEBUGGING01	0.300081	-0.366498	0.880699	0.317946	-0.269375	0.909037	normalized coordinates	END
-DEBUGGING02	0.311918	-0.447047	0.838365	0.322513	-0.243683	0.914661	unscaled nav coordinates	END
-DEBUGGING03	0.576519	0.416129	thetas	END
-DEBUGGING04	151.804	139.142	depth vectors	END
-DEBUGGING05	45.5535	-55.6359	133.694	44.2394	-37.4812	126.485	camera coordinates	END
-DEBUGGING06	47.3505	-67.8635	127.267	44.8749	-33.9064	127.267	scaled NED coordinates	END
-DEBUGGING07	2.47557	-33.9572	0	translation vector	END
-DEBUGGING08	0.999071	-0.0429096	-0.00409891	0.0422107	0.99318	-0.108681	0.0087344	0.108407	0.994068	first camToNav	END
+DATASIMVO   2.2617258482749265,-0.5026333370535175,-85.44423217713381:
+DEBUGGING13	0.999859	0.0144301	0.00853339	-0.0133025	0.992687	-0.119982	-0.0102023	0.119852	0.992739	cam1Tocam2	END
+DEBUGGING12	-0.99985	0.0152209	-0.00826207	0.0155442	0.999055	-0.0405942	0.00763638	-0.0407165	-0.999142	cam1 to cam2	END
+DEBUGGING14	0.999289	0.0374388	0.00444212	-0.0367747	0.9939	-0.103975	-0.00830774	0.103738	0.99457	cam1 to cam2	END
+DEBUGGING00	-9.8681	-152.017	0	0	pixel coordinates	END
+DEBUGGING01	0.0422448	-0.395543	0.917475	0.0408741	-0.281783	0.958607	normalized coordinates	END
+DEBUGGING02	0.0552657	-0.486506	0.871927	0.0464911	-0.278175	0.959405	unscaled nav coordinates	END
+DEBUGGING03	0.511671	0.285913	thetas	END
+DEBUGGING04	146.147	132.821	depth vectors	END
+DEBUGGING05	6.17394	-57.8074	134.086	5.42896	-37.4269	127.324	camera coordinates	END
+DEBUGGING06	8.07691	-71.1013	127.429	6.17501	-36.9476	127.43	scaled NED coordinates	END
+DEBUGGING07	1.9019	-34.1537	-7.62939e-06	translation vector	END
+DEBUGGING08	0.999032	-0.0437512	-0.00462531	0.0430351	0.993661	-0.103859	0.00913996	0.10356	0.994581	first camToNav	END
 DEBUGGING09	0.996663	-0.0797424	-0.0174386	0.0797446	0.996815	-0.000572436	0.0174287	-0.000820105	0.999848	second camToNav	END
-DEBUGGING10	0	929	887	num inliers	END
-DEBUGGING11	2.01555	-34.5794	-2.22208e-07	final translation vector	END
-GrdSpd=12.469725860396283Course_ang_deg=176.6641367079497Image DT= 1.6666648387908936
+DEBUGGING10	1	4214	5886	num inliers	END
+DEBUGGING11	1.92553	-33.6768	-2.17986e-08	final translation vector	END
+GrdSpd=mat[ 12.14347514227007 ]Course_ang_deg=176.7275845703906Image DT= 1.6666648387908936
 
 An Update happened for the VO to
 1.478796875430236E9
-GrdSpeed=14.586789454012285	3.2258663520564905
-CourseAng=0.041738376572531405	2.992865456878976
+GrdSpeed=12.143365960309332	0.0099986263857721
+CourseAng=14.17780711622963	1.6403593816887552
 
+z=mat[ 3591.810802818257 ]/th1=3587.906334680729
 58--------------------#For Output Above----------------------------
 
+z=mat[ 3582.977195771999 ]/th1=3585.1941161422806
 59--------------------#For Output Above----------------------------
 
-Roll = 3.5599404857441317
 Image Skipped
 60--------------------#For Output Above----------------------------
 
+z=mat[ 3585.1727406406444 ]/th1=3583.188136946186
+z=mat[ 3586.8535538743595 ]/th1=3581.8520518412124
 61--------------------#For Output Above----------------------------
 
 62--------------------#For Output Above----------------------------
 
-Roll = 1.529534206599261
 Image Skipped
+z=mat[ 3576.6461417471814 ]/th1=3579.405777880911
 63--------------------#For Output Above----------------------------
 
 64--------------------#For Output Above----------------------------
 
-Roll = -2.0429689180192283
+z=mat[ 3576.091031956776 ]/th1=3577.304039040807
+z=mat[ 3579.640150677188 ]/th1=3575.4417927364048
 Image Skipped
 65--------------------#For Output Above----------------------------
 
 66--------------------#For Output Above----------------------------
 
+z=mat[ 3573.451578665386 ]/th1=3572.9351679624574
 67--------------------#For Output Above----------------------------
 
-Roll = -8.314489168173134
 Image Skipped
+z=mat[ 3566.055689833655 ]/th1=3571.459235547946
 68--------------------#For Output Above----------------------------
 
+z=mat[ 3564.2432503828845 ]/th1=3568.813401441674
 69--------------------#For Output Above----------------------------
 
-Roll = -6.4932239217442875
-DEBUGGING13	0.999255	0.0383237	0.00457336	-0.0375992	0.99335	-0.108823	-0.00871344	0.10857	0.994051	cam1Tocam2	END
-DEBUGGING12	0.996078	-0.0880541	-0.00872253	0.0869753	0.992446	-0.0865287	0.0162758	0.0854306	0.996211	cam1 to cam2	END
-DEBUGGING14	-0.600811	-0.792903	0.101644	-0.799383	0.595344	-0.0809486	0.00367101	-0.129887	-0.991522	cam1 to cam2	END
-DEBUGGING00	127.05	-181.974	0	0	pixel coordinates	END
-DEBUGGING01	0.131883	-0.383101	0.914243	0.0395155	-0.253069	0.966641	normalized coordinates	END
-DEBUGGING02	0.329601	-0.457933	0.825627	0.212341	-0.276239	0.937338	unscaled nav coordinates	END
-DEBUGGING03	0.599483	0.355886	thetas	END
-DEBUGGING04	153.563	135.262	depth vectors	END
-DEBUGGING05	20.2524	-58.8301	140.394	5.34493	-34.2305	130.749	camera coordinates	END
-DEBUGGING06	50.6145	-70.3216	126.786	28.7216	-37.3645	126.786	scaled NED coordinates	END
-DEBUGGING07	21.8929	-32.957	-7.62939e-06	translation vector	END
-DEBUGGING08	0.976096	-0.150787	0.156527	0.169675	0.978739	-0.115237	-0.135823	0.139041	0.980928	first camToNav	END
+z=mat[ 3564.8243136448186 ]/th1=3566.3093991502583
+DATASIMVO   -7.722431831832304,1.9150597639994562,-85.44423217713381:
+DEBUGGING13	0.999289	0.0374388	0.00444212	-0.0367747	0.9939	-0.103975	-0.00830774	0.103738	0.99457	cam1Tocam2	END
+DEBUGGING12	0.996627	-0.081927	0.00468533	0.081989	0.99174	-0.0986389	0.00343456	0.0986904	0.995112	cam1 to cam2	END
+DEBUGGING14	-0.573469	-0.815744	0.0754585	-0.819169	0.572086	-0.0409789	-0.00974042	-0.0853134	-0.996307	cam1 to cam2	END
+DEBUGGING00	134.737	-177.448	0	0	pixel coordinates	END
+DEBUGGING01	0.096399	-0.392557	0.914662	0.000170781	-0.265624	0.964077	normalized coordinates	END
+DEBUGGING02	0.30591	-0.483451	0.82018	0.174195	-0.291971	0.94043	unscaled nav coordinates	END
+DEBUGGING03	0.609072	0.346902	thetas	END
+DEBUGGING04	154.871	135.068	depth vectors	END
+DEBUGGING05	14.9294	-60.7957	141.655	0.0230671	-35.8774	130.216	camera coordinates	END
+DEBUGGING06	47.3767	-74.8726	127.022	23.5281	-39.4359	127.022	scaled NED coordinates	END
+DEBUGGING07	23.8486	-35.4366	7.62939e-06	translation vector	END
+DEBUGGING08	0.974986	-0.142594	0.170496	0.165119	0.978173	-0.126144	-0.148788	0.151141	0.977251	first camToNav	END
 DEBUGGING09	0.984179	-0.0782955	0.158939	0.0838322	0.996074	-0.0284243	-0.15609	0.0412989	0.986879	second camToNav	END
-DEBUGGING10	0	702	1164	num inliers	END
-DEBUGGING11	22.458	-32.2988	4.31558e-08	final translation vector	END
-GrdSpd=14.162149726178738Course_ang_deg=145.18838304429752Image DT= 1.6666650772094727
+DEBUGGING10	0	2502	6907	num inliers	END
+DEBUGGING11	24.1217	-33.6339	-6.10735e-09	final translation vector	END
+GrdSpd=mat[ 14.9002632031415 ]Course_ang_deg=144.35255535685067Image DT= 1.6666650772094727
 
 An Update happened for the VO to
 1.478796877085133E9
-GrdSpeed=14.549966438228914	2.976035263844114
-CourseAng=0.04491976737268527	2.990641401058911
+GrdSpeed=14.899501616067077	0.009998648878855402
+CourseAng=14.173309767662053	1.6400844725046624
 
 70--------------------#For Output Above----------------------------
 
+z=mat[ 3574.5358383060993 ]/th1=3564.911936426061
 71--------------------#For Output Above----------------------------
 
+z=mat[ 3561.432319887232 ]/th1=3564.861839475897
 72--------------------#For Output Above----------------------------
 
-Roll = -4.955970747609266
+z=mat[ 3560.806396269119 ]/th1=3562.830783322002
 Image Skipped
 73--------------------#For Output Above----------------------------
 
+z=mat[ 3555.8616336653286 ]/th1=3560.996818474493
 74--------------------#For Output Above----------------------------
 
+z=mat[ 3560.168995904928 ]/th1=3558.636439729537
 75--------------------#For Output Above----------------------------
 
-Roll = -2.956404693557707
 Image Skipped
+z=mat[ 3558.637063741236 ]/th1=3557.294006507733
 76--------------------#For Output Above----------------------------
 
+z=mat[ 3564.21710842434 ]/th1=3555.9459031899805
 77--------------------#For Output Above----------------------------
 
 78--------------------#For Output Above----------------------------
 
-Roll = -0.5637051705155256
 Image Skipped
+z=mat[ 3553.966908770399 ]/th1=3554.341991590951
 79--------------------#For Output Above----------------------------
 
 80--------------------#For Output Above----------------------------
 
 81--------------------#For Output Above----------------------------
 
-Roll = -0.08627787570843665
+z=mat[ 3552.9603556240804 ]/th1=3551.394206113732
 Image Skipped
 82--------------------#For Output Above----------------------------
 
 83--------------------#For Output Above----------------------------
 
-Roll = 2.000180130746626
-DEBUGGING13	0.996078	-0.0880541	-0.00872253	0.0869753	0.992446	-0.0865287	0.0162758	0.0854306	0.996211	cam1Tocam2	END
-DEBUGGING12	0.999579	-0.0205859	0.020442	0.0226915	0.993807	-0.108774	-0.0180762	0.109192	0.993856	cam1 to cam2	END
-DEBUGGING14	-0.917154	0.395025	-0.0527583	0.397672	0.915815	-0.0560372	0.0261808	-0.0723752	-0.997034	cam1 to cam2	END
-DEBUGGING00	-76.5283	-153.642	0	0	pixel coordinates	END
-DEBUGGING01	0.0501009	-0.383671	0.92211	0.130605	-0.273	0.953107	normalized coordinates	END
-DEBUGGING02	0.144254	-0.517702	0.843312	0.184085	-0.311011	0.932408	unscaled nav coordinates	END
-DEBUGGING03	0.56738	0.369777	thetas	END
-DEBUGGING04	150.228	135.873	depth vectors	END
-DEBUGGING05	7.52654	-57.638	138.526	17.7457	-37.0933	129.501	camera coordinates	END
-DEBUGGING06	21.6709	-77.7732	126.689	25.0122	-42.258	126.689	scaled NED coordinates	END
-DEBUGGING07	-3.34126	-35.5152	0	translation vector	END
-DEBUGGING08	0.993447	-0.0955638	0.0627	0.104453	0.981802	-0.1586	-0.0464026	0.16411	0.98535	first camToNav	END
+z=mat[ 3552.269939215773 ]/th1=3548.8836728435876
+DATASIMVO   -0.4366679914622004,2.68882424563287,-85.44423217713381:
+DEBUGGING13	0.996627	-0.081927	0.00468533	0.081989	0.99174	-0.0986389	0.00343456	0.0986904	0.995112	cam1Tocam2	END
+DEBUGGING12	-0.916461	0.396387	-0.0545616	0.399452	0.914276	-0.0673676	0.0231807	-0.0835345	-0.996235	cam1 to cam2	END
+DEBUGGING14	0.999612	-0.0212158	0.0180529	0.0232043	0.992718	-0.118206	-0.0154136	0.118579	0.992825	cam1 to cam2	END
+DEBUGGING00	-72.7863	-152.393	0	0	pixel coordinates	END
+DEBUGGING01	0.283359	-0.380559	0.880274	0.369366	-0.278086	0.8867	normalized coordinates	END
+DEBUGGING02	0.371703	-0.491309	0.787688	0.420108	-0.293271	0.858779	unscaled nav coordinates	END
+DEBUGGING03	0.663749	0.537914	thetas	END
+DEBUGGING04	161.05	147.718	depth vectors	END
+DEBUGGING05	45.635	-61.2891	141.768	54.5621	-41.0784	130.982	camera coordinates	END
+DEBUGGING06	59.8628	-79.1254	126.857	62.0576	-43.3214	126.857	scaled NED coordinates	END
+DEBUGGING07	-2.19486	-35.804	-7.62939e-06	translation vector	END
+DEBUGGING08	0.993529	-0.0957866	0.0610323	0.104827	0.980176	-0.168127	-0.043718	0.173437	0.983874	first camToNav	END
 DEBUGGING09	0.996277	-0.0792493	0.0339222	0.0809561	0.995344	-0.0523083	-0.0296189	0.0548598	0.998055	second camToNav	END
-DEBUGGING10	0	779	1453	num inliers	END
-DEBUGGING11	-3.54354	-34.3255	-9.78829e-08	final translation vector	END
-GrdSpd=12.42286090978257Course_ang_deg=185.8939692135968Image DT= 1.6666650772094727
+DEBUGGING10	0	2902	7829	num inliers	END
+DEBUGGING11	-3.76626	-35.2595	1.05158e-07	final translation vector	END
+GrdSpd=mat[ 12.76565848391277 ]Course_ang_deg=186.09695328759184Image DT= 1.6666650772094727
 
 An Update happened for the VO to
 1.478796878728019E9
-GrdSpeed=14.384559287728242	2.768979053205201
-CourseAng=0.06539636880455785	2.9870198324341812
+GrdSpeed=12.766175122967528	0.009997949498642736
+CourseAng=14.175349870948754	1.6399743032045921
 
 84--------------------#For Output Above----------------------------
 
+z=mat[ 3549.5004066872225 ]/th1=3547.9110353742367
 85--------------------#For Output Above----------------------------
 
+z=mat[ 3539.2497350974645 ]/th1=3546.7683208196204
 86--------------------#For Output Above----------------------------
 
 87--------------------#For Output Above----------------------------
 
-Roll = 1.094141450079271
 Image Skipped
 88--------------------#For Output Above----------------------------
 
 89--------------------#For Output Above----------------------------
 
+z=mat[ 3536.258597433856 ]/th1=3540.9118124681977
 90--------------------#For Output Above----------------------------
 
-Roll = 0.30688642918504955
+z=mat[ 3548.413984934489 ]/th1=3538.4008838712316
 Image Skipped
 91--------------------#For Output Above----------------------------
 
@@ -387,215 +426,241 @@ Image Skipped
 
 93--------------------#For Output Above----------------------------
 
-Roll = -1.6009362571306338
+z=mat[ 3533.3676409795785 ]/th1=3537.3470784029037
 Image Skipped
 94--------------------#For Output Above----------------------------
 
 95--------------------#For Output Above----------------------------
 
+z=mat[ 3535.0483453455067 ]/th1=3533.5114065195453
 96--------------------#For Output Above----------------------------
 
-Roll = -1.968525832481613
+z=mat[ 3523.92091309872 ]/th1=3532.363052886582
 Image Skipped
 97--------------------#For Output Above----------------------------
 
 98--------------------#For Output Above----------------------------
 
+z=mat[ 3531.6806402101593 ]/th1=3529.010655551425
 99--------------------#For Output Above----------------------------
 
 100--------------------#For Output Above----------------------------
 
-Roll = 0.48775458752289447
-DEBUGGING13	0.999579	-0.0205859	0.020442	0.0226915	0.993807	-0.108774	-0.0180762	0.109192	0.993856	cam1Tocam2	END
-DEBUGGING12	0.999859	-0.0133514	0.0102101	0.0144081	0.993649	-0.111601	-0.00865527	0.111732	0.993701	cam1 to cam2	END
-DEBUGGING14	-0.903298	-0.428906	0.00964585	-0.428545	0.903133	0.0264414	-0.0200523	0.0197508	-0.999604	cam1 to cam2	END
-DEBUGGING00	48.781	-152.717	0	0	pixel coordinates	END
-DEBUGGING01	0.317171	-0.367171	0.874407	0.305326	-0.263384	0.915098	normalized coordinates	END
-DEBUGGING02	0.389546	-0.474121	0.789597	0.351146	-0.287574	0.891065	unscaled nav coordinates	END
-DEBUGGING03	0.660644	0.471109	thetas	END
-DEBUGGING04	160.603	142.315	depth vectors	END
-DEBUGGING05	50.9387	-58.9688	140.433	43.4524	-37.4834	130.232	camera coordinates	END
-DEBUGGING06	62.5623	-76.1453	126.812	49.9733	-40.926	126.812	scaled NED coordinates	END
-DEBUGGING07	12.589	-35.2193	-7.62939e-06	translation vector	END
-DEBUGGING08	0.994917	-0.0889084	0.0472804	0.0955529	0.981713	-0.164649	-0.0317771	0.16833	0.985218	first camToNav	END
+DATASIMVO   -0.11216417220075646,2.8031202456689894,-85.44423217713381:
+DEBUGGING13	0.999612	-0.0212158	0.0180529	0.0232043	0.992718	-0.118206	-0.0154136	0.118579	0.992825	cam1Tocam2	END
+DEBUGGING12	0.999842	-0.0138897	0.01112	0.0150377	0.993722	-0.110867	-0.0095103	0.111016	0.993773	cam1 to cam2	END
+DEBUGGING14	-0.899731	-0.43635	0.00910657	-0.436011	0.899571	0.0258122	-0.0194551	0.0192535	-0.999625	cam1 to cam2	END
+DEBUGGING00	49.2841	-152.161	0	0	pixel coordinates	END
+DEBUGGING01	0.19668	-0.38841	0.900253	0.173305	-0.281683	0.943727	normalized coordinates	END
+DEBUGGING02	0.273744	-0.509913	0.815508	0.22186	-0.318014	0.921762	unscaled nav coordinates	END
+DEBUGGING03	0.61719	0.398196	thetas	END
+DEBUGGING04	155.667	137.723	depth vectors	END
+DEBUGGING05	30.6165	-60.4624	140.139	23.868	-38.7942	129.972	camera coordinates	END
+DEBUGGING06	42.6128	-79.3764	126.947	30.5551	-43.7977	126.947	scaled NED coordinates	END
+DEBUGGING07	12.0577	-35.5787	-7.62939e-06	translation vector	END
+DEBUGGING08	0.994826	-0.0894709	0.0481309	0.096225	0.981781	-0.163849	-0.0325943	0.167632	0.985311	first camToNav	END
 DEBUGGING09	0.996446	-0.0792854	0.0284374	0.0807511	0.995229	-0.0547499	-0.0239608	0.0568517	0.998095	second camToNav	END
-DEBUGGING10	1	1250	1020	num inliers	END
-DEBUGGING11	11.5382	-34.1049	6.09568e-08	final translation vector	END
-GrdSpd=12.961394401097902Course_ang_deg=161.30851969886615Image DT= 1.6666650772094727
+DEBUGGING10	0	4420	6110	num inliers	END
+DEBUGGING11	11.5382	-33.8624	-1.57052e-07	final translation vector	END
+GrdSpd=mat[ 12.87871501863187 ]Course_ang_deg=161.18410662418916Image DT= 1.6666650772094727
 
 An Update happened for the VO to
 1.478796880423721E9
-GrdSpeed=14.281070814835454	2.5834784329054883
-CourseAng=0.08002918552247149	2.9829098691505993
+GrdSpeed=12.87844583398417	0.00999843745885045
+CourseAng=14.17714299002414	1.6399473073100004
 
 101--------------------#For Output Above----------------------------
 
 102--------------------#For Output Above----------------------------
 
+z=mat[ 3517.4749243237507 ]/th1=3523.596640599942
 103--------------------#For Output Above----------------------------
 
-Roll = -0.5244498321996409
 Image Skipped
 104--------------------#For Output Above----------------------------
 
+z=mat[ 3512.2722310731906 ]/th1=3520.711316770597
 105--------------------#For Output Above----------------------------
 
+z=mat[ 3516.0798544803197 ]/th1=3517.389407736045
+z=mat[ 3511.367408099298 ]/th1=3515.4503391601984
 106--------------------#For Output Above----------------------------
 
-Roll = -0.5664638732491232
 Image Skipped
 107--------------------#For Output Above----------------------------
 
+z=mat[ 3510.7991444158647 ]/th1=3511.2654355836116
 108--------------------#For Output Above----------------------------
 
-Roll = 0.8961614800755756
 Image Skipped
+z=mat[ 3512.879674350676 ]/th1=3509.4293307632547
 109--------------------#For Output Above----------------------------
 
+z=mat[ 3510.195136078899 ]/th1=3508.3251841343945
 110--------------------#For Output Above----------------------------
 
+z=mat[ 3510.7817173253275 ]/th1=3506.9710472141396
 111--------------------#For Output Above----------------------------
 
-Roll = 1.269923732167248
 Image Skipped
+z=mat[ 3502.464746705167 ]/th1=3505.970617390853
 112--------------------#For Output Above----------------------------
 
-Roll = -1.7380021455169226
-DEBUGGING13	0.999859	-0.0133514	0.0102101	0.0144081	0.993649	-0.111601	-0.00865527	0.111732	0.993701	cam1Tocam2	END
-DEBUGGING12	-0.952338	-0.305018	0.00410834	-0.304856	0.952135	0.0224151	-0.0107487	0.0200943	-0.99974	cam1 to cam2	END
-DEBUGGING14	0.999803	0.0168024	0.0106026	-0.0153886	0.992451	-0.121669	-0.0125669	0.121482	0.992514	cam1 to cam2	END
-DEBUGGING00	25.5652	-111.418	0	0	pixel coordinates	END
-DEBUGGING01	-0.344421	-0.361526	0.866414	-0.388326	-0.277272	0.878819	normalized coordinates	END
-DEBUGGING02	-0.26524	-0.505799	0.820863	-0.323791	-0.330097	0.886676	unscaled nav coordinates	END
-DEBUGGING03	0.607876	0.480689	thetas	END
-DEBUGGING04	156.875	145.231	depth vectors	END
-DEBUGGING05	-54.0311	-56.7144	135.919	-56.397	-40.2684	127.632	camera coordinates	END
-DEBUGGING06	-41.6095	-79.3472	128.773	-47.0245	-47.9404	128.773	scaled NED coordinates	END
-DEBUGGING07	5.41503	-31.4068	1.52588e-05	translation vector	END
-DEBUGGING08	0.996206	-0.0562311	0.0664183	0.0654444	0.987137	-0.145869	-0.0573616	0.149662	0.987072	first camToNav	END
+z=mat[ 3509.451300063101 ]/th1=3503.6968214836206
+z=mat[ 3510.1246978337035 ]/th1=3503.065255209774
+DATASIMVO   -1.2808913900180994,1.2241847459389716,-85.44423217713381:
+DEBUGGING13	0.999842	-0.0138897	0.01112	0.0150377	0.993722	-0.110867	-0.0095103	0.111016	0.993773	cam1Tocam2	END
+DEBUGGING12	0.999814	0.016992	0.00911035	-0.0157855	0.992743	-0.119217	-0.01107	0.119051	0.992826	cam1 to cam2	END
+DEBUGGING14	-0.955463	-0.295066	0.00514725	-0.29492	0.955326	0.019334	-0.0106221	0.0169549	-0.9998	cam1 to cam2	END
+DEBUGGING00	24.4456	-110.285	0	0	pixel coordinates	END
+DEBUGGING01	0.293524	-0.379778	0.877275	0.28852	-0.317711	0.903225	normalized coordinates	END
+DEBUGGING02	0.370585	-0.481886	0.794011	0.354532	-0.316553	0.87983	unscaled nav coordinates	END
+DEBUGGING03	0.653418	0.495291	thetas	END
+DEBUGGING04	162.17	146.351	depth vectors	END
+DEBUGGING05	47.6007	-61.5885	142.268	42.2254	-46.4975	132.188	camera coordinates	END
+DEBUGGING06	60.0976	-78.1473	128.764	51.8863	-46.3279	128.764	scaled NED coordinates	END
+DEBUGGING07	8.21133	-31.8193	0	translation vector	END
+DEBUGGING08	0.996319	-0.0561786	0.0647527	0.0650114	0.987505	-0.143553	-0.055879	0.147234	0.987522	first camToNav	END
 DEBUGGING09	0.995769	-0.0792179	0.0465708	0.0804712	0.996426	-0.0256796	-0.0443701	0.0293186	0.998585	second camToNav	END
-DEBUGGING10	0	1538	1107	num inliers	END
-DEBUGGING11	7.53433	-31.3478	3.96338e-11	final translation vector	END
-GrdSpd=11.606618969639467Course_ang_deg=166.48552048416988Image DT= 1.6666650772094727
+DEBUGGING10	0	5004	6549	num inliers	END
+DEBUGGING11	7.25529	-30.7066	3.65604e-08	final translation vector	END
+GrdSpd=mat[ 11.3587890713182 ]Course_ang_deg=166.70610526258798Image DT= 1.6666650772094727
 
 An Update happened for the VO to
-1.478796882061002E9
-GrdSpeed=14.104119403557272	2.3997619413843774
-CourseAng=0.10189484164858924	2.9803341906912335
+1.478796882099924E9
+GrdSpeed=11.359428748882811	0.009998397233000453
+CourseAng=14.179193583114571	1.6399215974328614
 
 113--------------------#For Output Above----------------------------
 
+z=mat[ 3505.7673011091847 ]/th1=3502.317274277567
 114--------------------#For Output Above----------------------------
 
+z=mat[ 3505.1984841425556 ]/th1=3501.244151150738
 115--------------------#For Output Above----------------------------
 
-Roll = -1.4368491798924228
 Image Skipped
+z=mat[ 3499.375701692644 ]/th1=3500.252737482926
 116--------------------#For Output Above----------------------------
 
+z=mat[ 3506.634658499458 ]/th1=3498.585028758134
+z=mat[ 3502.840431250703 ]/th1=3498.1981042601737
 117--------------------#For Output Above----------------------------
 
-Roll = -1.9130489016086538
 Image Skipped
+z=mat[ 3498.693165707885 ]/th1=3497.4231267976893
 118--------------------#For Output Above----------------------------
 
+z=mat[ 3487.864790244749 ]/th1=3496.213055010637
 119--------------------#For Output Above----------------------------
 
 120--------------------#For Output Above----------------------------
 
-Roll = -0.6830493326874228
+z=mat[ 3489.028396947897 ]/th1=3493.4774659648197
 Image Skipped
 121--------------------#For Output Above----------------------------
 
+z=mat[ 3489.9642841992245 ]/th1=3489.651969364406
 122--------------------#For Output Above----------------------------
 
-Roll = 1.5216829041483313
 Image Skipped
+z=mat[ 3484.2329232446523 ]/th1=3488.1521745506384
 123--------------------#For Output Above----------------------------
 
+z=mat[ 3487.285184950359 ]/th1=3485.767038232577
 124--------------------#For Output Above----------------------------
 
+z=mat[ 3483.1180084141297 ]/th1=3484.4257392659165
 125--------------------#For Output Above----------------------------
 
-Roll = 1.455821524416014
-DEBUGGING13	0.999803	0.0168024	0.0106026	-0.0153886	0.992451	-0.121669	-0.0125669	0.121482	0.992514	cam1Tocam2	END
-DEBUGGING12	-0.996131	0.0864884	-0.0155892	0.0867409	0.996097	-0.0163192	0.014117	-0.0176083	-0.999745	cam1 to cam2	END
-DEBUGGING14	0.999491	-0.0296497	0.0117954	0.0308228	0.992721	-0.116428	-0.00825753	0.116732	0.993129	cam1 to cam2	END
-DEBUGGING00	-25.2935	-157.575	0	0	pixel coordinates	END
-DEBUGGING01	0.38571	-0.3589	0.849952	0.43709	-0.247926	0.864572	normalized coordinates	END
-DEBUGGING02	0.433084	-0.438425	0.787541	0.447747	-0.243663	0.86032	unscaled nav coordinates	END
-DEBUGGING03	0.663987	0.534898	thetas	END
-DEBUGGING04	164.354	150.451	depth vectors	END
-DEBUGGING05	63.393	-58.9867	139.693	65.7604	-37.3006	130.075	camera coordinates	END
-DEBUGGING06	71.1792	-72.057	129.436	67.3638	-36.6592	129.436	scaled NED coordinates	END
-DEBUGGING07	3.81544	-35.3978	0	translation vector	END
-DEBUGGING08	0.993894	-0.10966	0.0122041	0.110242	0.982361	-0.15104	0.0045742	0.151463	0.988452	first camToNav	END
+DATASIMVO   1.935620057306922,1.5740340599546618,-85.44423217713381:
+DEBUGGING13	0.999814	0.016992	0.00911035	-0.0157855	0.992743	-0.119217	-0.01107	0.119051	0.992826	cam1Tocam2	END
+DEBUGGING12	-0.997088	0.0744867	-0.0163713	0.0747329	0.997091	-0.0149746	0.0152082	-0.0161544	-0.999754	cam1 to cam2	END
+DEBUGGING14	0.999444	-0.0304906	0.0134935	0.031844	0.992833	-0.115187	-0.00988467	0.115552	0.993252	cam1 to cam2	END
+DEBUGGING00	-22.6242	-158.099	0	0	pixel coordinates	END
+DEBUGGING01	0.0396782	-0.395616	0.917558	0.0754301	-0.279117	0.95729	normalized coordinates	END
+DEBUGGING02	0.0958048	-0.521591	0.8478	0.0889104	-0.306767	0.947623	unscaled nav coordinates	END
+DEBUGGING03	0.558973	0.325088	thetas	END
+DEBUGGING04	152.432	136.375	depth vectors	END
+DEBUGGING05	6.04824	-60.3047	139.866	10.2868	-38.0647	130.551	camera coordinates	END
+DEBUGGING06	14.6038	-79.5073	129.232	12.1252	-41.8354	129.232	scaled NED coordinates	END
+DEBUGGING07	2.47858	-37.6719	0	translation vector	END
+DEBUGGING08	0.993781	-0.110496	0.0137967	0.111314	0.982449	-0.149674	0.00298381	0.150279	0.988639	first camToNav	END
 DEBUGGING09	0.996783	-0.0796475	-0.00888766	0.0792773	0.996194	-0.03624	0.0117403	0.0354188	0.999304	second camToNav	END
-DEBUGGING10	0	1174	1370	num inliers	END
-DEBUGGING11	2.06958	-36.6664	1.16975e-07	final translation vector	END
-GrdSpd=13.220950704101488Course_ang_deg=176.7694610799993Image DT= 1.6666648387908936
+DEBUGGING10	0	4101	6675	num inliers	END
+DEBUGGING11	2.31007	-35.8109	8.55861e-08	final translation vector	END
+GrdSpd=mat[ 12.91873898137456 ]Course_ang_deg=176.30911218335467Image DT= 1.6666648387908936
 
 An Update happened for the VO to
 1.478796883752337E9
-GrdSpeed=14.044349443052749	2.2793063383011787
-CourseAng=0.11152244365421374	2.9757258181710653
+GrdSpeed=12.918135251928582	0.009998661579552186
+CourseAng=14.179077741263946	1.639833142549839
 
 126--------------------#For Output Above----------------------------
 
+z=mat[ 3490.1142775287594 ]/th1=3483.2586452573014
 127--------------------#For Output Above----------------------------
 
+z=mat[ 3478.0993669596896 ]/th1=3482.765330131039
 128--------------------#For Output Above----------------------------
 
-Roll = 1.5269957241055434
+z=mat[ 3477.9058087302847 ]/th1=3480.654737066274
 Image Skipped
 129--------------------#For Output Above----------------------------
 
+z=mat[ 3473.595773042605 ]/th1=3478.7730178037477
 130--------------------#For Output Above----------------------------
 
-Roll = 4.022814081502845
+z=mat[ 3474.054769310921 ]/th1=3474.92419897124
 Image Skipped
 131--------------------#For Output Above----------------------------
 
+z=mat[ 3467.6429473956428 ]/th1=3473.1893711498296
+z=mat[ 3475.8191769058444 ]/th1=3470.597594531634
 132--------------------#For Output Above----------------------------
 
-Roll = 3.6021952376010042
 Image Skipped
 133--------------------#For Output Above----------------------------
 
+z=mat[ 3476.2947622510787 ]/th1=3469.8569229954046
+z=mat[ 3465.7523334225525 ]/th1=3469.414858615993
 134--------------------#For Output Above----------------------------
 
 135--------------------#For Output Above----------------------------
 
-Roll = 4.034836068215713
+z=mat[ 3462.913650291848 ]/th1=3467.225618641113
 Image Skipped
 136--------------------#For Output Above----------------------------
 
+z=mat[ 3470.4217442301315 ]/th1=3464.8381285088753
 137--------------------#For Output Above----------------------------
 
+z=mat[ 3468.4657310094967 ]/th1=3464.2063607181954
 138--------------------#For Output Above----------------------------
 
-Roll = 7.219492023456906
-DEBUGGING13	0.999491	-0.0296497	0.0117954	0.0308228	0.992721	-0.116428	-0.00825753	0.116732	0.993129	cam1Tocam2	END
-DEBUGGING12	0.999093	0.0413461	0.0101834	-0.0398076	0.991809	-0.121368	-0.0151181	0.120853	0.992555	cam1 to cam2	END
-DEBUGGING14	-0.976632	0.213908	-0.0208124	0.212987	0.97626	0.0394164	0.0287498	0.0340625	-0.999006	cam1 to cam2	END
-DEBUGGING00	-39.0511	-118.351	0	0	pixel coordinates	END
-DEBUGGING01	0.320828	-0.35956	0.876234	0.358341	-0.293113	0.886384	normalized coordinates	END
-DEBUGGING02	0.277196	-0.471751	0.837026	0.30016	-0.288096	0.909343	unscaled nav coordinates	END
-DEBUGGING03	0.578971	0.429095	thetas	END
-DEBUGGING04	155.589	143.215	depth vectors	END
-DEBUGGING05	49.9171	-55.9435	136.332	51.3199	-41.9783	126.944	camera coordinates	END
-DEBUGGING06	43.1286	-73.3991	130.232	42.9875	-41.2598	130.232	scaled NED coordinates	END
-DEBUGGING07	0.141056	-32.1393	1.52588e-05	translation vector	END
-DEBUGGING08	0.99641	-0.0493946	-0.0687492	0.0388509	0.988368	-0.147036	0.0752123	0.143837	0.986739	first camToNav	END
+z=mat[ 3453.327278448377 ]/th1=3463.424599113071
+DATASIMVO   6.492384525050729,0.6875313656574061,-85.44423217713381:
+DEBUGGING13	0.999444	-0.0304906	0.0134935	0.031844	0.992833	-0.115187	-0.00988467	0.115552	0.993252	cam1Tocam2	END
+DEBUGGING12	-0.976294	0.215403	-0.0212609	0.214627	0.976111	0.0337977	0.0280332	0.0284333	-0.999203	cam1 to cam2	END
+DEBUGGING14	0.99915	0.0398609	0.0105142	-0.038365	0.992429	-0.116674	-0.0150853	0.116172	0.993115	cam1 to cam2	END
+DEBUGGING00	-39.6958	-114.062	0	0	pixel coordinates	END
+DEBUGGING01	-0.466957	-0.350045	0.812047	-0.477342	-0.263477	0.838287	normalized coordinates	END
+DEBUGGING02	-0.503482	-0.480601	0.718004	-0.527563	-0.322595	0.785882	unscaled nav coordinates	END
+DEBUGGING03	0.769866	0.666676	thetas	END
+DEBUGGING04	181.421	165.751	depth vectors	END
+DEBUGGING05	-84.7157	-63.5054	147.322	-79.12	-43.6715	138.947	camera coordinates	END
+DEBUGGING06	-91.342	-87.1909	130.261	-87.4441	-53.4706	130.261	scaled NED coordinates	END
+DEBUGGING07	-3.89789	-33.7203	0	translation vector	END
+DEBUGGING08	0.996348	-0.0505009	-0.0688477	0.0402921	0.988996	-0.142347	0.0752788	0.139053	0.987419	first camToNav	END
 DEBUGGING09	0.992764	-0.0803107	-0.0892707	0.0781834	0.996571	-0.0270815	0.0911396	0.019906	0.995639	second camToNav	END
-DEBUGGING10	0	1098	1394	num inliers	END
-DEBUGGING11	-1.28327	-32.6183	-1.80553e-07	final translation vector	END
-GrdSpd=11.751706372202332Course_ang_deg=182.25297371090085Image DT= 1.6666650772094727
+DEBUGGING10	0	3637	7036	num inliers	END
+DEBUGGING11	-1.15149	-31.3946	-1.8038e-07	final translation vector	END
+GrdSpd=mat[ 11.30968773176185 ]Course_ang_deg=182.10054808476886Image DT= 1.6666650772094727
 
 An Update happened for the VO to
-1.478796885400095E9
-GrdSpeed=13.91185760074752	2.128836689042286
-CourseAng=0.13102428544163602	2.972966861572325
+1.478796885486226E9
+GrdSpeed=11.309812543687459	0.009998078512765313
+CourseAng=14.177753815386783	1.6398034094136866
 
 139--------------------#For Output Above----------------------------
 
@@ -603,1400 +668,291 @@ CourseAng=0.13102428544163602	2.972966861572325
 
 141--------------------#For Output Above----------------------------
 
-Roll = 3.649712863656783
+z=mat[ 3453.553756938154 ]/th1=3458.157610128796
 Image Skipped
 142--------------------#For Output Above----------------------------
 
 143--------------------#For Output Above----------------------------
 
+z=mat[ 3457.6256861298493 ]/th1=3453.8625598631147
 144--------------------#For Output Above----------------------------
 
-Roll = 1.1155168472519432
+z=mat[ 3463.5626557966984 ]/th1=3452.7834426041477
 Image Skipped
 145--------------------#For Output Above----------------------------
 
+z=mat[ 3448.309017675111 ]/th1=3452.9604010626085
 146--------------------#For Output Above----------------------------
 
+z=mat[ 3451.061921256534 ]/th1=3450.5509564627964
 147--------------------#For Output Above----------------------------
 
-Roll = -2.3394392553591556
 Image Skipped
+z=mat[ 3452.017207206282 ]/th1=3448.9880438600626
 148--------------------#For Output Above----------------------------
 
+z=mat[ 3455.0155305231315 ]/th1=3447.8494473773535
 149--------------------#For Output Above----------------------------
 
+z=mat[ 3462.954666176745 ]/th1=3447.4502007887427
 150--------------------#For Output Above----------------------------
 
-Roll = -1.6945448534793048
 Image Skipped
+z=mat[ 3453.084227910665 ]/th1=3448.5970445298285
 151--------------------#For Output Above----------------------------
 
 152--------------------#For Output Above----------------------------
 
-Roll = -2.9691816296172733
-DEBUGGING13	0.999093	0.0413461	0.0101834	-0.0398076	0.991809	-0.121368	-0.0151181	0.120853	0.992555	cam1Tocam2	END
-DEBUGGING12	0.999913	-0.0130943	0.00184102	0.0132189	0.993381	-0.114102	-0.000334746	0.114116	0.993467	cam1 to cam2	END
-DEBUGGING14	-0.65491	-0.754119	0.0489546	-0.754858	0.65587	0.00490818	-0.0358092	-0.0337394	-0.998789	cam1 to cam2	END
-DEBUGGING00	125.775	-169.278	0	0	pixel coordinates	END
-DEBUGGING01	0.416183	-0.341407	0.842753	0.357577	-0.234157	0.904052	normalized coordinates	END
-DEBUGGING02	0.501073	-0.402381	0.766169	0.427542	-0.213541	0.878412	unscaled nav coordinates	END
-DEBUGGING03	0.697938	0.498267	thetas	END
-DEBUGGING04	170.709	148.896	depth vectors	END
-DEBUGGING05	71.0464	-58.2813	143.866	53.2418	-34.8651	134.61	camera coordinates	END
-DEBUGGING06	85.5379	-68.6902	130.792	63.6594	-31.7955	130.792	scaled NED coordinates	END
-DEBUGGING07	21.8785	-36.8947	0	translation vector	END
-DEBUGGING08	0.993974	-0.0849311	0.0692991	0.0930073	0.988022	-0.123134	-0.0580111	0.128838	0.989967	first camToNav	END
+DATASIMVO   -2.0547610273275705,0.3614126438233909,-85.44423217713381:
+DEBUGGING13	0.99915	0.0398609	0.0105142	-0.038365	0.992429	-0.116674	-0.0150853	0.116172	0.993115	cam1Tocam2	END
+DEBUGGING12	-0.650402	-0.758185	0.0461747	-0.758671	0.651403	0.00959931	-0.0373564	-0.028788	-0.998887	cam1 to cam2	END
+DEBUGGING14	0.999898	-0.0141169	0.00217526	0.0142721	0.99354	-0.112581	-0.000571908	0.112601	0.99364	cam1 to cam2	END
+DEBUGGING00	125.375	-167.308	0	0	pixel coordinates	END
+DEBUGGING01	0.120719	-0.390546	0.912634	0.0128377	-0.266279	0.963811	normalized coordinates	END
+DEBUGGING02	0.217033	-0.485519	0.846858	0.0905405	-0.273656	0.957557	unscaled nav coordinates	END
+DEBUGGING03	0.560748	0.292393	thetas	END
+DEBUGGING04	154.11	136.294	depth vectors	END
+DEBUGGING05	18.6041	-60.1871	140.646	1.7497	-36.2922	131.362	camera coordinates	END
+DEBUGGING06	33.447	-74.8235	130.509	12.3401	-37.2976	130.509	scaled NED coordinates	END
+DEBUGGING07	21.1068	-37.5258	1.52588e-05	translation vector	END
+DEBUGGING08	0.993862	-0.0860504	0.0695215	0.0940583	0.988113	-0.121593	-0.058232	0.127386	0.990142	first camToNav	END
 DEBUGGING09	0.995127	-0.0791369	0.0588217	0.079835	0.996762	-0.00961175	-0.0578705	0.0142609	0.998222	second camToNav	END
-DEBUGGING10	0	753	1401	num inliers	END
-DEBUGGING11	21.3493	-36.6647	2.42928e-07	final translation vector	END
-GrdSpd=15.273938313897087Course_ang_deg=149.78843093283191Image DT= 1.6666648387908936
+DEBUGGING10	1	2502	6603	num inliers	END
+DEBUGGING11	21.2167	-36.2959	-2.37919e-07	final translation vector	END
+GrdSpd=mat[ 15.13519668874584 ]Course_ang_deg=149.69160721686617Image DT= 1.6666648387908936
 
 An Update happened for the VO to
 1.478796887101415E9
-GrdSpeed=13.989592959267034	2.007203632793342
-CourseAng=0.12090203432545489	2.9708508432910965
+GrdSpeed=15.135355873737758	0.009997966627140992
+CourseAng=14.1862640795042	1.6397854591633694
 
 153--------------------#For Output Above----------------------------
 
+z=mat[ 3448.362358111085 ]/th1=3446.8220330195904
 154--------------------#For Output Above----------------------------
 
+z=mat[ 3442.2075736218976 ]/th1=3445.8912055282476
 155--------------------#For Output Above----------------------------
 
+z=mat[ 3443.3586463252286 ]/th1=3444.0725986416733
 156--------------------#For Output Above----------------------------
 
-Roll = -1.6404881750668852
 Image Skipped
 157--------------------#For Output Above----------------------------
 
+z=mat[ 3441.4544552305924 ]/th1=3442.729083731229
 158--------------------#For Output Above----------------------------
 
 159--------------------#For Output Above----------------------------
 
+z=mat[ 3435.934436567128 ]/th1=3440.0267940820618
 160--------------------#For Output Above----------------------------
 
-Roll = -0.8572320698491476
 Image Skipped
+z=mat[ 3433.111389342287 ]/th1=3437.99995714411
 161--------------------#For Output Above----------------------------
 
+z=mat[ 3422.14393584546 ]/th1=3435.8098987422504
 162--------------------#For Output Above----------------------------
 
-Roll = 0.9805245616089882
+z=mat[ 3422.188128242244 ]/th1=3432.0241439446727
 Image Skipped
 163--------------------#For Output Above----------------------------
 
+z=mat[ 3425.6423485072355 ]/th1=3428.778265731786
 164--------------------#For Output Above----------------------------
 
-Roll = 0.7535038011931622
+z=mat[ 3423.4608237460225 ]/th1=3426.60867721202
 Image Skipped
 165--------------------#For Output Above----------------------------
 
+z=mat[ 3426.9904100450153 ]/th1=3424.41252362906
 166--------------------#For Output Above----------------------------
 
+z=mat[ 3429.219388753014 ]/th1=3423.085917456524
 167--------------------#For Output Above----------------------------
 
 168--------------------#For Output Above----------------------------
 
-Roll = 1.943468002850952
-DEBUGGING13	0.999913	-0.0130943	0.00184102	0.0132189	0.993381	-0.114102	-0.000334746	0.114116	0.993467	cam1Tocam2	END
-DEBUGGING12	0.999555	0.0254741	0.0154964	-0.0234882	0.992846	-0.117068	-0.0183678	0.116652	0.993003	cam1 to cam2	END
-DEBUGGING14	-0.873198	0.48599	-0.0365963	0.484642	0.873794	0.0400616	0.0514472	0.0172456	-0.998527	cam1 to cam2	END
-DEBUGGING00	-93.8659	-162.169	0	0	pixel coordinates	END
-DEBUGGING01	0.40519	-0.355028	0.842482	0.4807	-0.261965	0.83684	normalized coordinates	END
-DEBUGGING02	0.43379	-0.426389	0.793737	0.488738	-0.222629	0.843547	unscaled nav coordinates	END
-DEBUGGING03	0.653868	0.566942	thetas	END
-DEBUGGING04	164.75	155.022	depth vectors	END
-DEBUGGING05	66.755	-58.4908	138.799	74.519	-40.6103	129.728	camera coordinates	END
-DEBUGGING06	71.4669	-70.2475	130.768	75.765	-34.5123	130.768	scaled NED coordinates	END
-DEBUGGING07	-4.29807	-35.7352	0	translation vector	END
-DEBUGGING08	0.998404	-0.0553207	0.0114033	0.0562678	0.991742	-0.115245	-0.00493375	0.115703	0.993272	first camToNav	END
+DATASIMVO   2.031331944219877,-0.52959609029498,-85.44423217713381:
+DEBUGGING13	0.999898	-0.0141169	0.00217526	0.0142721	0.99354	-0.112581	-0.000571908	0.112601	0.99364	cam1Tocam2	END
+DEBUGGING12	0.99947	0.0295537	0.0136668	-0.0276431	0.991961	-0.123487	-0.0172064	0.123044	0.992252	cam1 to cam2	END
+DEBUGGING14	-0.874115	0.484364	-0.0362607	0.482951	0.874667	0.0414223	0.0517795	0.0186957	-0.998484	cam1 to cam2	END
+DEBUGGING00	-92.0822	-164.138	0	0	pixel coordinates	END
+DEBUGGING01	0.254403	-0.381552	0.888649	0.338085	-0.27109	0.901226	normalized coordinates	END
+DEBUGGING02	0.282594	-0.473159	0.834423	0.346449	-0.243079	0.906027	unscaled nav coordinates	END
+DEBUGGING03	0.583711	0.436996	thetas	END
+DEBUGGING04	156.744	144.356	depth vectors	END
+DEBUGGING05	39.876	-59.8059	139.29	48.8046	-39.1334	130.097	camera coordinates	END
+DEBUGGING06	44.2948	-74.1646	130.79	50.0121	-35.09	130.79	scaled NED coordinates	END
+DEBUGGING07	-5.71729	-39.0746	1.52588e-05	translation vector	END
+DEBUGGING08	0.998634	-0.0512699	0.0101015	0.0521195	0.991187	-0.12179	-0.00376828	0.12215	0.992505	first camToNav	END
 DEBUGGING09	0.996727	-0.0797105	-0.0134681	0.0797207	0.996817	0.000216514	0.013408	-0.00128949	0.999909	second camToNav	END
-DEBUGGING10	0	618	1356	num inliers	END
-DEBUGGING11	-6.82715	-37.7235	7.65802e-07	final translation vector	END
-GrdSpd=13.80109467503125Course_ang_deg=190.25828458890814Image DT= 1.6666650772094727
+DEBUGGING10	0	2416	6189	num inliers	END
+DEBUGGING11	-7.12631	-39.0925	-3.97989e-07	final translation vector	END
+GrdSpd=mat[ 14.30525238069688 ]Course_ang_deg=190.33121176812145Image DT= 1.6666650772094727
 
 An Update happened for the VO to
 1.478796888752815E9
-GrdSpeed=13.980049949456872	1.9043964283183004
-CourseAng=0.12231429266560753	2.968756057854201
+GrdSpeed=14.304939724029467	0.009998026131217239
+CourseAng=14.193493078622394	1.6397620931506833
 
 169--------------------#For Output Above----------------------------
 
+z=mat[ 3423.8497950285782 ]/th1=3420.926133755513
 170--------------------#For Output Above----------------------------
 
-Roll = 5.145563992364126
+z=mat[ 3424.504478623525 ]/th1=3418.261727500959
 Image Skipped
 171--------------------#For Output Above----------------------------
 
+z=mat[ 3418.2202731918533 ]/th1=3417.8036452823444
 172--------------------#For Output Above----------------------------
 
-Roll = 4.407031859109926
+z=mat[ 3418.973390041184 ]/th1=3416.398719192028
 Image Skipped
 173--------------------#For Output Above----------------------------
 
+z=mat[ 3418.8040507548712 ]/th1=3415.357162737441
 174--------------------#For Output Above----------------------------
 
 175--------------------#For Output Above----------------------------
 
-Roll = 4.024387586332887
+z=mat[ 3411.1420763668802 ]/th1=3413.0744792264677
 Image Skipped
 176--------------------#For Output Above----------------------------
 
+z=mat[ 3407.3392458185954 ]/th1=3411.262707585318
 177--------------------#For Output Above----------------------------
 
+z=mat[ 3402.346401339969 ]/th1=3409.0251607198647
 178--------------------#For Output Above----------------------------
 
-Roll = 2.127421859228909
+z=mat[ 3398.131508540018 ]/th1=3406.2305318927283
 Image Skipped
 179--------------------#For Output Above----------------------------
 
+z=mat[ 3406.0380229757293 ]/th1=3403.1192325593397
+z=mat[ 3396.9125356447776 ]/th1=3401.8815799852
 180--------------------#For Output Above----------------------------
 
-Roll = 0.34507879263092456
-DEBUGGING13	0.999555	0.0254741	0.0154964	-0.0234882	0.992846	-0.117068	-0.0183678	0.116652	0.993003	cam1Tocam2	END
-DEBUGGING12	0.996954	0.0773103	-0.0103046	-0.0779537	0.991951	-0.0997854	0.00250726	0.100285	0.994956	cam1 to cam2	END
-DEBUGGING14	-0.782863	-0.621288	0.0335747	-0.620835	0.783579	0.0238326	-0.0411153	-0.00218669	-0.999152	cam1 to cam2	END
-DEBUGGING00	94.5413	-92.2466	0	0	pixel coordinates	END
-DEBUGGING01	0.0768551	-0.368203	0.926563	-0.0261647	-0.279719	0.959725	normalized coordinates	END
-DEBUGGING02	0.0809901	-0.438065	0.895287	0.00227053	-0.258101	0.966115	unscaled nav coordinates	END
-DEBUGGING03	0.461721	0.261067	thetas	END
-DEBUGGING04	147.195	136.404	depth vectors	END
-DEBUGGING05	11.3127	-54.1978	136.386	-3.56897	-38.1549	130.911	camera coordinates	END
-DEBUGGING06	11.9214	-64.4812	131.782	0.30971	-35.2061	131.782	scaled NED coordinates	END
-DEBUGGING07	11.6117	-29.2751	-1.52588e-05	translation vector	END
-DEBUGGING08	0.999991	-0.00117546	0.00399636	0.00147851	0.997054	-0.0766926	-0.00389443	0.0766979	0.997047	first camToNav	END
+DATASIMVO   0.7916528979927472,-1.779984032463978,-85.44423217713381:
+DEBUGGING13	0.99947	0.0295537	0.0136668	-0.0276431	0.991961	-0.123487	-0.0172064	0.123044	0.992252	cam1Tocam2	END
+DEBUGGING12	-0.78519	-0.618826	0.0230258	-0.617139	0.785038	0.0534348	-0.051143	0.0277464	-0.998306	cam1 to cam2	END
+DEBUGGING14	0.996123	0.0879174	-0.00318654	-0.0876655	0.988929	-0.119725	-0.00737466	0.11954	0.992802	cam1 to cam2	END
+DEBUGGING00	83.7325	-110.189	0	0	pixel coordinates	END
+DEBUGGING01	0.440629	-0.349412	0.826896	0.381694	-0.320246	0.867037	normalized coordinates	END
+DEBUGGING02	0.447633	-0.430952	0.783521	0.411462	-0.268323	0.871035	unscaled nav coordinates	END
+DEBUGGING03	0.670485	0.513491	thetas	END
+DEBUGGING04	168.317	151.406	depth vectors	END
+DEBUGGING05	74.1654	-58.812	139.181	57.7907	-48.4872	131.274	camera coordinates	END
+DEBUGGING06	75.3444	-72.5366	131.88	62.2977	-40.6256	131.88	scaled NED coordinates	END
+DEBUGGING07	13.0466	-31.911	0	translation vector	END
+DEBUGGING08	0.999872	0.00976071	0.0126636	-0.00849997	0.99534	-0.0960502	-0.0135421	0.0959302	0.995296	first camToNav	END
 DEBUGGING09	0.996813	-0.0795178	0.00636556	0.0793468	0.996566	0.0236872	-0.00822725	-0.0231066	0.999699	second camToNav	END
-DEBUGGING10	0	843	1554	num inliers	END
-DEBUGGING11	11.5651	-28.7227	3.81021e-07	final translation vector	END
-GrdSpd=11.14691857226789Course_ang_deg=158.06791202308398Image DT= 1.6666648387908936
+DEBUGGING10	0	2470	6534	num inliers	END
+DEBUGGING11	12.5626	-31.7863	-2.16379e-07	final translation vector	END
+GrdSpd=mat[ 12.30437813052011 ]Course_ang_deg=158.4349914153284Image DT= 1.6666648387908936
 
 An Update happened for the VO to
 1.478796890407658E9
-GrdSpeed=13.850744288918056	1.7853874625757322
-CourseAng=0.12276725678675894	2.9687548559577372
+GrdSpeed=12.304526375924302	0.00999757211503965
+CourseAng=14.179104539126717	1.6393186639744237
 
+z=mat[ 3393.6190817795286 ]/th1=3399.2940464090293
 181--------------------#For Output Above----------------------------
 
+z=mat[ 3399.549347109471 ]/th1=3396.6935568978715
 182--------------------#For Output Above----------------------------
 
-Roll = 1.5644713712558167
+z=mat[ 3398.373698878975 ]/th1=3395.3046161401508
 Image Skipped
 183--------------------#For Output Above----------------------------
 
 184--------------------#For Output Above----------------------------
 
+z=mat[ 3386.314875089138 ]/th1=3392.21346055907
 185--------------------#For Output Above----------------------------
 
-Roll = 2.9635727636482234
+z=mat[ 3399.211162250961 ]/th1=3389.5397353204576
 Image Skipped
 186--------------------#For Output Above----------------------------
 
 187--------------------#For Output Above----------------------------
 
+z=mat[ 3395.6504862586107 ]/th1=3389.201853194691
 188--------------------#For Output Above----------------------------
 
 189--------------------#For Output Above----------------------------
 
-Roll = -1.078275134080743
 Image Skipped
+z=mat[ 3391.44810756435 ]/th1=3386.808535089808
 190--------------------#For Output Above----------------------------
 
+z=mat[ 3388.964976721598 ]/th1=3385.9505780031686
 191--------------------#For Output Above----------------------------
 
-Roll = -2.0653917887341455
+z=mat[ 3380.5187961102047 ]/th1=3384.89589807187
 Image Skipped
 192--------------------#For Output Above----------------------------
 
 193--------------------#For Output Above----------------------------
 
-Roll = -3.423105543129154
-DEBUGGING13	0.996954	0.0773103	-0.0103046	-0.0779537	0.991951	-0.0997854	0.00250726	0.100285	0.994956	cam1Tocam2	END
-DEBUGGING12	0.999816	-0.0151898	-0.011743	0.0141335	0.996253	-0.0853264	0.0129951	0.0851447	0.996284	cam1 to cam2	END
-DEBUGGING14	-0.837652	-0.542758	0.0612654	-0.546127	0.834144	-0.0771361	-0.00923789	-0.0980718	-0.995136	cam1 to cam2	END
-DEBUGGING00	90.595	-189.127	0	0	pixel coordinates	END
-DEBUGGING01	-0.0206268	-0.30789	0.951198	-0.114774	-0.136556	0.983961	normalized coordinates	END
-DEBUGGING02	0.0776079	-0.363134	0.928499	-0.0243182	-0.117325	0.992796	unscaled nav coordinates	END
-DEBUGGING03	0.380446	0.120108	thetas	END
-DEBUGGING04	142.299	133.083	depth vectors	END
-DEBUGGING05	-2.93517	-43.8124	135.354	-15.2745	-18.1733	130.948	camera coordinates	END
-DEBUGGING06	11.0435	-51.6735	132.124	-3.23635	-15.614	132.124	scaled NED coordinates	END
-DEBUGGING07	14.2799	-36.0596	1.52588e-05	translation vector	END
-DEBUGGING08	0.99339	-0.0868988	0.0750034	0.0913425	0.994129	-0.0579981	-0.0695231	0.0644657	0.995495	first camToNav	END
+z=mat[ 3374.957523223781 ]/th1=3381.0019653198374
+DATASIMVO   -3.4526791319825034,-1.698616559359671,-85.44423217713381:
+DEBUGGING13	0.996123	0.0879174	-0.00318654	-0.0876655	0.988929	-0.119725	-0.00737466	0.11954	0.992802	cam1Tocam2	END
+DEBUGGING12	-0.816118	-0.57568	0.0504324	-0.577781	0.814512	-0.0523371	-0.0109484	-0.0718522	-0.997355	cam1 to cam2	END
+DEBUGGING14	0.999965	-0.0081677	-0.00181392	0.0079497	0.99512	-0.0983555	0.00260841	0.0983376	0.99515	cam1 to cam2	END
+DEBUGGING00	95.826	-189.828	0	0	pixel coordinates	END
+DEBUGGING01	0.268704	-0.378343	0.885807	0.215548	-0.245102	0.945232	normalized coordinates	END
+DEBUGGING02	0.372686	-0.415456	0.82976	0.309366	-0.20119	0.929417	unscaled nav coordinates	END
+DEBUGGING03	0.592119	0.377967	thetas	END
+DEBUGGING04	159.236	142.162	depth vectors	END
+DEBUGGING05	42.7872	-60.2457	141.052	30.6426	-34.8441	134.376	camera coordinates	END
+DEBUGGING06	59.3449	-66.1553	132.127	43.9799	-28.6014	132.127	scaled NED coordinates	END
+DEBUGGING07	15.3651	-37.5539	1.52588e-05	translation vector	END
+DEBUGGING08	0.993193	-0.0787734	0.0858068	0.0848996	0.99391	-0.0702517	-0.0797503	0.0770584	0.993832	first camToNav	END
 DEBUGGING09	0.993646	-0.0789329	0.0802349	0.0769061	0.996644	0.0280493	-0.0821796	-0.0217005	0.996381	second camToNav	END
-DEBUGGING10	1	1022	1469	num inliers	END
-DEBUGGING11	14.1659	-35.9491	-5.9684e-07	final translation vector	END
-GrdSpd=13.910257042377765Course_ang_deg=158.49283086123913Image DT= 1.6666653156280518
+DEBUGGING10	0	2518	5629	num inliers	END
+DEBUGGING11	15.524	-37.433	-3.3338e-07	final translation vector	END
+GrdSpd=mat[ 14.58879801722004 ]Course_ang_deg=157.475539606053Image DT= 1.6666653156280518
 
 An Update happened for the VO to
 1.478796892058966E9
-GrdSpeed=13.855163698486537	1.7017676481478068
-CourseAng=0.12280868441336142	2.9687371570632246
+GrdSpeed=14.588388232262645	0.00999810712217618
+CourseAng=14.180422147022396	1.6391516412476732
 
 194--------------------#For Output Above----------------------------
 
+z=mat[ 3374.103751530483 ]/th1=3376.8750221304713
 195--------------------#For Output Above----------------------------
 
+z=mat[ 3383.84465325555 ]/th1=3374.7631722643387
 196--------------------#For Output Above----------------------------
 
-Roll = -5.948201292960304
 Image Skipped
+z=mat[ 3377.610537482523 ]/th1=3374.7558299486036
 197--------------------#For Output Above----------------------------
 
+z=mat[ 3376.0932547698453 ]/th1=3373.737273765938
+z=mat[ 3378.1222856001564 ]/th1=3372.671087321006
 198--------------------#For Output Above----------------------------
 
-Roll = -4.327034549116621
 Image Skipped
+z=mat[ 3372.4924096830555 ]/th1=3372.139294218464
 199--------------------#For Output Above----------------------------
 
-Roll = -4.329876334698169
+z=mat[ 3376.9349777622765 ]/th1=3370.8276238330586
 Image Skipped
 200--------------------#For Output Above----------------------------
 
+z=mat[ 3367.228983286773 ]/th1=3369.1931626912387
 201--------------------#For Output Above----------------------------
 
-202--------------------#For Output Above----------------------------
-
-Roll = -4.8603429765872095
-Image Skipped
-203--------------------#For Output Above----------------------------
-
-Roll = -3.682802568864556
-DEBUGGING13	0.999816	-0.0151898	-0.011743	0.0141335	0.996253	-0.0853264	0.0129951	0.0851447	0.996284	cam1Tocam2	END
-DEBUGGING12	-0.994056	0.107566	-0.0168149	0.108741	0.988533	-0.104781	0.00535123	-0.105986	-0.994353	cam1 to cam2	END
-DEBUGGING14	0.992016	-0.124727	0.0186386	0.126001	0.986447	-0.105102	-0.00527697	0.106611	0.994287	cam1 to cam2	END
-DEBUGGING00	-21.451	-173.294	0	0	pixel coordinates	END
-DEBUGGING01	-0.130072	-0.310198	0.941732	-0.0812357	-0.18485	0.979404	normalized coordinates	END
-DEBUGGING02	0.0432952	-0.438227	0.897821	0.023127	-0.20422	0.978652	unscaled nav coordinates	END
-DEBUGGING03	0.456	0.207001	thetas	END
-DEBUGGING04	145.293	133.292	depth vectors	END
-DEBUGGING05	-18.8985	-45.0695	136.827	-10.8281	-24.6391	130.547	camera coordinates	END
-DEBUGGING06	6.29047	-63.6711	130.447	3.08265	-27.221	130.447	scaled NED coordinates	END
-DEBUGGING07	3.20783	-36.4501	1.52588e-05	translation vector	END
-DEBUGGING08	0.974372	-0.191916	0.117339	0.20546	0.971658	-0.116908	-0.0915769	0.13802	0.986187	first camToNav	END
-DEBUGGING09	0.992716	-0.0788747	0.0910666	0.0804483	0.996664	-0.0137349	-0.0896795	0.020961	0.99575	second camToNav	END
-DEBUGGING10	0	1191	1274	num inliers	END
-DEBUGGING11	3.2718	-35.5191	-6.45599e-08	final translation vector	END
-GrdSpd=12.841030522254634Course_ang_deg=174.73711838686293Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796893660178E9
-GrdSpeed=13.79664303082039	1.6516828410906403
-CourseAng=0.13024001502004037	2.9666600196459387
-
-204--------------------#For Output Above----------------------------
-
-205--------------------#For Output Above----------------------------
-
-Roll = -3.858828496606832
-Image Skipped
-206--------------------#For Output Above----------------------------
-
-207--------------------#For Output Above----------------------------
-
-Roll = -1.8850020104424658
-Image Skipped
-208--------------------#For Output Above----------------------------
-
-209--------------------#For Output Above----------------------------
-
-Roll = 1.0272591705094485
-Image Skipped
-210--------------------#For Output Above----------------------------
-
-211--------------------#For Output Above----------------------------
-
-212--------------------#For Output Above----------------------------
-
-213--------------------#For Output Above----------------------------
-
-Roll = 2.132321025854512
-Image Skipped
-214--------------------#For Output Above----------------------------
-
-215--------------------#For Output Above----------------------------
-
-216--------------------#For Output Above----------------------------
-
-Roll = 2.526732007024191
-DEBUGGING13	0.992016	-0.124727	0.0186386	0.126001	0.986447	-0.105102	-0.00527697	0.106611	0.994287	cam1Tocam2	END
-DEBUGGING12	0.999577	-0.00863126	0.0277552	0.0117329	0.993457	-0.113607	-0.026593	0.113884	0.993138	cam1 to cam2	END
-DEBUGGING14	-0.795706	0.60242	-0.0627829	0.603193	0.797556	0.00795442	0.0548648	-0.0315408	-0.997996	cam1 to cam2	END
-DEBUGGING00	-109.889	-143.901	0	0	pixel coordinates	END
-DEBUGGING01	-0.448048	-0.284899	0.847399	-0.388304	-0.182278	0.903324	normalized coordinates	END
-DEBUGGING02	-0.405027	-0.432958	0.805295	-0.389223	-0.23031	0.891887	unscaled nav coordinates	END
-DEBUGGING03	0.634623	0.469295	thetas	END
-DEBUGGING04	161.068	145.43	depth vectors	END
-DEBUGGING05	-72.1661	-45.8881	136.489	-56.4711	-26.5088	131.37	camera coordinates	END
-DEBUGGING06	-65.2368	-69.7357	129.707	-56.6047	-33.494	129.707	scaled NED coordinates	END
-DEBUGGING07	-8.63213	-36.2417	0	translation vector	END
-DEBUGGING08	0.995779	-0.0899435	0.018297	0.0915682	0.987196	-0.130612	-0.00631509	0.131736	0.991265	first camToNav	END
-DEBUGGING09	0.996642	-0.0797502	-0.0185524	0.0793836	0.996649	-0.0197243	0.0200633	0.0181853	0.999633	second camToNav	END
-DEBUGGING10	0	679	1215	num inliers	END
-DEBUGGING11	-8.01309	-33.7451	1.12267e-07	final translation vector	END
-GrdSpd=12.486056703599688Course_ang_deg=193.35802903558366Image DT= 1.6666650772094727
-
-An Update happened for the VO to
-1.478796895405636E9
-GrdSpeed=13.732381989935492	1.6115806101016499
-CourseAng=0.14443371128970364	2.962201319366081
-
-217--------------------#For Output Above----------------------------
-
-218--------------------#For Output Above----------------------------
-
-219--------------------#For Output Above----------------------------
-
-Roll = 3.778457233756469
-Image Skipped
-220--------------------#For Output Above----------------------------
-
-221--------------------#For Output Above----------------------------
-
-222--------------------#For Output Above----------------------------
-
-Roll = 2.1674657642288127
-Image Skipped
-223--------------------#For Output Above----------------------------
-
-224--------------------#For Output Above----------------------------
-
-225--------------------#For Output Above----------------------------
-
-Roll = 1.6059860080830948
-Image Skipped
-226--------------------#For Output Above----------------------------
-
-227--------------------#For Output Above----------------------------
-
-228--------------------#For Output Above----------------------------
-
-Roll = 1.3351745570207898
-Image Skipped
-229--------------------#For Output Above----------------------------
-
-230--------------------#For Output Above----------------------------
-
-231--------------------#For Output Above----------------------------
-
-Roll = 1.5931961586971284
-DEBUGGING13	0.999577	-0.00863126	0.0277552	0.0117329	0.993457	-0.113607	-0.026593	0.113884	0.993138	cam1Tocam2	END
-DEBUGGING12	0.998509	0.0543874	0.00461292	-0.0537612	0.99457	-0.0891077	-0.00943421	0.0887269	0.996011	cam1 to cam2	END
-DEBUGGING14	-0.644994	-0.763965	0.0184449	-0.763178	0.645195	0.0358233	-0.0392683	0.00902908	-0.999188	cam1 to cam2	END
-DEBUGGING00	79.1259	-103.66	0	0	pixel coordinates	END
-DEBUGGING01	0.0761558	-0.307113	0.948621	-0.0216471	-0.206834	0.978136	normalized coordinates	END
-DEBUGGING02	0.0899272	-0.388637	0.916992	-0.0104075	-0.208855	0.977891	unscaled nav coordinates	END
-DEBUGGING03	0.410323	0.210669	thetas	END
-DEBUGGING04	141.44	132.631	depth vectors	END
-DEBUGGING05	10.7714	-43.438	134.173	-2.87109	-27.4327	129.732	camera coordinates	END
-DEBUGGING06	12.7193	-54.9687	129.699	-1.38037	-27.7008	129.699	scaled NED coordinates	END
-DEBUGGING07	14.0996	-27.268	0	translation vector	END
-DEBUGGING08	0.999655	-0.0254825	0.00629512	0.0259437	0.995655	-0.0894287	-0.00398891	0.0895612	0.995973	first camToNav	END
-DEBUGGING09	0.996808	-0.0796477	-0.00542192	0.0796436	0.996823	-0.000975351	0.00548238	0.000540416	0.999985	second camToNav	END
-DEBUGGING10	0	482	963	num inliers	END
-DEBUGGING11	14.0856	-25.7606	-7.59541e-07	final translation vector	END
-GrdSpd=10.569634699893882Course_ang_deg=151.3306366255181Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796897097457E9
-GrdSpeed=13.608893926987907	1.5067016818658805
-CourseAng=0.1612124112049566	2.961149459077279
-
-232--------------------#For Output Above----------------------------
-
-233--------------------#For Output Above----------------------------
-
-Roll = -0.6202142603659501
-Image Skipped
-234--------------------#For Output Above----------------------------
-
-235--------------------#For Output Above----------------------------
-
-236--------------------#For Output Above----------------------------
-
-Roll = 0.7084857575693436
-Image Skipped
-237--------------------#For Output Above----------------------------
-
-238--------------------#For Output Above----------------------------
-
-Roll = 0.5406286293526971
-Image Skipped
-239--------------------#For Output Above----------------------------
-
-240--------------------#For Output Above----------------------------
-
-Roll = 1.767038133452293
-Image Skipped
-241--------------------#For Output Above----------------------------
-
-242--------------------#For Output Above----------------------------
-
-Roll = 2.046198316836175
-DEBUGGING13	0.998509	0.0543874	0.00461292	-0.0537612	0.99457	-0.0891077	-0.00943421	0.0887269	0.996011	cam1Tocam2	END
-DEBUGGING12	0.999288	-0.0358238	0.0118616	0.0369291	0.993014	-0.112068	-0.00776406	0.112426	0.99363	cam1 to cam2	END
-DEBUGGING14	-0.992318	0.122834	-0.0147409	0.122036	0.991441	0.0463995	0.0203142	0.0442441	-0.998814	cam1 to cam2	END
-DEBUGGING00	-24.0452	-117.657	0	0	pixel coordinates	END
-DEBUGGING01	-0.338516	-0.265767	0.902649	-0.323572	-0.173052	0.930244	normalized coordinates	END
-DEBUGGING02	-0.294776	-0.398601	0.868461	-0.317124	-0.194959	0.928129	unscaled nav coordinates	END
-DEBUGGING03	0.518707	0.381442	thetas	END
-DEBUGGING04	149.388	139.784	depth vectors	END
-DEBUGGING05	-50.5701	-39.7024	134.845	-45.2302	-24.1899	130.033	camera coordinates	END
-DEBUGGING06	-44.036	-59.5463	129.738	-44.3289	-27.2522	129.738	scaled NED coordinates	END
-DEBUGGING07	0.292877	-32.2941	0	translation vector	END
-DEBUGGING08	0.993198	-0.115837	0.0118	0.116434	0.987396	-0.107206	0.000767155	0.107851	0.994167	first camToNav	END
-DEBUGGING09	0.99678	-0.0796725	-0.00900956	0.0797074	0.996812	0.00358229	0.00869543	-0.00428889	0.999953	second camToNav	END
-DEBUGGING10	0	286	452	num inliers	END
-DEBUGGING11	0.820376	-31.5337	5.84221e-07	final translation vector	END
-GrdSpd=11.355985713871974Course_ang_deg=178.50973613447354Image DT= 1.6666650772094727
-
-An Update happened for the VO to
-1.478796898695118E9
-GrdSpeed=13.508630934199202	1.4739754784756656
-CourseAng=0.18147889298180728	2.9580881904501664
-
-243--------------------#For Output Above----------------------------
-
-244--------------------#For Output Above----------------------------
-
-245--------------------#For Output Above----------------------------
-
-Roll = 1.2586665131980093
-Image Skipped
-246--------------------#For Output Above----------------------------
-
-247--------------------#For Output Above----------------------------
-
-Roll = 2.953547326607114
-Image Skipped
-248--------------------#For Output Above----------------------------
-
-249--------------------#For Output Above----------------------------
-
-250--------------------#For Output Above----------------------------
-
-Roll = 3.8405701202949185
-Image Skipped
-251--------------------#For Output Above----------------------------
-
-252--------------------#For Output Above----------------------------
-
-Roll = 3.079034123359527
-Image Skipped
-253--------------------#For Output Above----------------------------
-
-254--------------------#For Output Above----------------------------
-
-255--------------------#For Output Above----------------------------
-
-Roll = 2.0807770032830106
-DEBUGGING13	0.999288	-0.0358238	0.0118616	0.0369291	0.993014	-0.112068	-0.00776406	0.112426	0.99363	cam1Tocam2	END
-DEBUGGING12	0.994733	0.1025	-0.000155472	-0.101875	0.988506	-0.111697	-0.0112953	0.111125	0.993742	cam1 to cam2	END
-DEBUGGING14	-0.939672	-0.342042	0.00487028	-0.340776	0.937244	0.0737938	-0.0298052	0.0676822	-0.997262	cam1 to cam2	END
-DEBUGGING00	34.9557	-104.746	0	0	pixel coordinates	END
-DEBUGGING01	-0.266782	-0.293069	0.918117	-0.328019	-0.185254	0.926329	normalized coordinates	END
-DEBUGGING02	-0.278795	-0.350271	0.894194	-0.32612	-0.171968	0.929555	unscaled nav coordinates	END
-DEBUGGING03	0.464168	0.377592	thetas	END
-DEBUGGING04	146.005	140.451	depth vectors	END
-DEBUGGING05	-38.9516	-42.7897	134.05	-46.0707	-26.0192	130.104	camera coordinates	END
-DEBUGGING06	-40.7056	-51.1414	130.557	-45.804	-24.1532	130.557	scaled NED coordinates	END
-DEBUGGING07	5.09842	-26.9882	0	translation vector	END
-DEBUGGING08	0.999743	0.0217832	-0.00620564	-0.0221626	0.997329	-0.0695958	0.00467305	0.0697155	0.997556	first camToNav	END
-DEBUGGING09	0.996712	-0.0796233	-0.0150385	0.0801908	0.995898	0.0419181	0.0116391	-0.0429863	0.999008	second camToNav	END
-DEBUGGING10	0	210	401	num inliers	END
-DEBUGGING11	5.33082	-26.902	-7.23827e-07	final translation vector	END
-GrdSpd=9.873044741959319Course_ang_deg=168.7916340583773Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796900386704E9
-GrdSpeed=13.386956366006364	1.3822567384653097
-CourseAng=0.18464653063620995	2.95805953184521
-
-256--------------------#For Output Above----------------------------
-
-257--------------------#For Output Above----------------------------
-
-Roll = 0.9759487617519027
-Image Skipped
-258--------------------#For Output Above----------------------------
-
-259--------------------#For Output Above----------------------------
-
-260--------------------#For Output Above----------------------------
-
-Roll = 1.9379940331180099
-Image Skipped
-261--------------------#For Output Above----------------------------
-
-262--------------------#For Output Above----------------------------
-
-263--------------------#For Output Above----------------------------
-
-264--------------------#For Output Above----------------------------
-
-Roll = -0.3758466070468635
-Image Skipped
-265--------------------#For Output Above----------------------------
-
-266--------------------#For Output Above----------------------------
-
-267--------------------#For Output Above----------------------------
-
-Roll = -1.2578269335386265
-Image Skipped
-268--------------------#For Output Above----------------------------
-
-269--------------------#For Output Above----------------------------
-
-270--------------------#For Output Above----------------------------
-
-271--------------------#For Output Above----------------------------
-
-Roll = -2.9424536052911323
-DEBUGGING13	0.994733	0.1025	-0.000155472	-0.101875	0.988506	-0.111697	-0.0112953	0.111125	0.993742	cam1Tocam2	END
-DEBUGGING12	-0.922009	-0.386919	0.0138912	-0.386854	0.922113	0.00717896	-0.0155869	0.00124519	-0.999878	cam1 to cam2	END
-DEBUGGING14	0.999977	-0.00549735	0.00397807	0.00584872	0.995508	-0.0945009	-0.0034407	0.094522	0.995517	cam1 to cam2	END
-DEBUGGING00	49.2898	-165.525	0	0	pixel coordinates	END
-DEBUGGING01	0.144062	-0.328697	0.933383	0.107177	-0.186208	0.976647	normalized coordinates	END
-DEBUGGING02	0.235962	-0.346639	0.907834	0.180526	-0.11771	0.976501	unscaled nav coordinates	END
-DEBUGGING03	0.432706	0.217216	thetas	END
-DEBUGGING04	144.793	134.611	depth vectors	END
-DEBUGGING05	20.8591	-47.5931	135.147	14.4272	-25.0657	131.468	camera coordinates	END
-DEBUGGING06	34.1657	-50.1909	131.448	24.3008	-15.8451	131.448	scaled NED coordinates	END
-DEBUGGING07	9.86491	-34.3457	0	translation vector	END
-DEBUGGING08	0.994341	-0.0783492	0.0717417	0.0808784	0.996176	-0.0330518	-0.0688777	0.0386671	0.996875	first camToNav	END
-DEBUGGING09	0.995034	-0.0789612	0.0605931	0.0752687	0.995297	0.0609787	-0.0651231	-0.0561151	0.996298	second camToNav	END
-DEBUGGING10	1	257	301	num inliers	END
-DEBUGGING11	9.61133	-33.8115	7.69029e-07	final translation vector	END
-GrdSpd=12.654392021841419Course_ang_deg=164.1315563296578Image DT= 1.6666653156280518
-
-An Update happened for the VO to
-1.478796902131961E9
-GrdSpeed=13.361361937378618	1.3326025668410098
-CourseAng=0.18493811642236152	2.9580535373834556
-
-272--------------------#For Output Above----------------------------
-
-273--------------------#For Output Above----------------------------
-
-274--------------------#For Output Above----------------------------
-
-Roll = -2.5196444050998332
-Image Skipped
-275--------------------#For Output Above----------------------------
-
-276--------------------#For Output Above----------------------------
-
-277--------------------#For Output Above----------------------------
-
-Roll = -3.8045284927052307
-Image Skipped
-278--------------------#For Output Above----------------------------
-
-279--------------------#For Output Above----------------------------
-
-280--------------------#For Output Above----------------------------
-
-Roll = -3.4998435722278938
-Image Skipped
-281--------------------#For Output Above----------------------------
-
-282--------------------#For Output Above----------------------------
-
-283--------------------#For Output Above----------------------------
-
-Roll = -3.739317261604534
-Image Skipped
-284--------------------#For Output Above----------------------------
-
-285--------------------#For Output Above----------------------------
-
-286--------------------#For Output Above----------------------------
-
-Roll = -3.441922927735951
-DEBUGGING13	0.999977	-0.00549735	0.00397807	0.00584872	0.995508	-0.0945009	-0.0034407	0.094522	0.995517	cam1Tocam2	END
-DEBUGGING12	0.998383	-0.0556044	0.0117831	0.0564934	0.993584	-0.0979735	-0.00625971	0.0984808	0.995119	cam1 to cam2	END
-DEBUGGING14	-0.990016	-0.140939	0.00207987	-0.140901	0.989138	-0.0418756	0.0038446	-0.0417506	-0.999121	cam1 to cam2	END
-DEBUGGING00	4.13147	-108.644	0	0	pixel coordinates	END
-DEBUGGING01	0.208661	-0.329926	0.920657	0.232482	-0.227557	0.945606	normalized coordinates	END
-DEBUGGING02	0.336846	-0.338584	0.878576	0.32268	-0.157613	0.933293	unscaled nav coordinates	END
-DEBUGGING03	0.497924	0.36732	thetas	END
-DEBUGGING04	150.077	141.278	depth vectors	END
-DEBUGGING05	31.3152	-49.5142	138.169	32.8446	-32.1488	133.593	camera coordinates	END
-DEBUGGING06	50.5527	-50.8137	131.854	45.5875	-22.2672	131.854	scaled NED coordinates	END
-DEBUGGING07	4.96516	-28.5465	1.52588e-05	translation vector	END
-DEBUGGING08	0.987286	-0.125942	0.0969806	0.130519	0.99054	-0.0423767	-0.0907261	0.0544958	0.994384	first camToNav	END
-DEBUGGING09	0.993835	-0.0788601	0.0779243	0.0747307	0.99571	0.0545622	-0.0818928	-0.0484026	0.995465	second camToNav	END
-DEBUGGING10	1	325	312	num inliers	END
-DEBUGGING11	5.08816	-28.5027	5.18818e-07	final translation vector	END
-GrdSpd=10.423224545670108Course_ang_deg=169.87847409861266Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796903715802E9
-GrdSpeed=13.246887374625345	1.2945186799094788
-CourseAng=0.19638891357925528	2.9574825523698536
-
-287--------------------#For Output Above----------------------------
-
-288--------------------#For Output Above----------------------------
-
-289--------------------#For Output Above----------------------------
-
-Roll = -1.835233410168345
-Image Skipped
-290--------------------#For Output Above----------------------------
-
-291--------------------#For Output Above----------------------------
-
-292--------------------#For Output Above----------------------------
-
-Roll = -2.2411056622087164
-Image Skipped
-293--------------------#For Output Above----------------------------
-
-294--------------------#For Output Above----------------------------
-
-295--------------------#For Output Above----------------------------
-
-Roll = -1.1630425841573615
-Image Skipped
-296--------------------#For Output Above----------------------------
-
-297--------------------#For Output Above----------------------------
-
-Roll = -0.7487748556882804
-Image Skipped
-298--------------------#For Output Above----------------------------
-
-299--------------------#For Output Above----------------------------
-
-300--------------------#For Output Above----------------------------
-
-Roll = -0.10446206042451217
-DEBUGGING13	0.998383	-0.0556044	0.0117831	0.0564934	0.993584	-0.0979735	-0.00625971	0.0984808	0.995119	cam1Tocam2	END
-DEBUGGING12	-0.998722	0.048287	-0.0149405	0.0492093	0.996389	-0.0691931	0.0115454	-0.0698398	-0.997491	cam1 to cam2	END
-DEBUGGING14	0.999096	-0.0400619	0.0142555	0.0412547	0.994467	-0.0966055	-0.0103064	0.0971062	0.995221	cam1 to cam2	END
-DEBUGGING00	-19.1893	-129.957	0	0	pixel coordinates	END
-DEBUGGING01	-0.306471	-0.314147	0.898547	-0.298481	-0.220411	0.928616	normalized coordinates	END
-DEBUGGING02	-0.219965	-0.396877	0.891125	-0.250825	-0.20504	0.946068	unscaled nav coordinates	END
-DEBUGGING03	0.470977	0.32992	thetas	END
-DEBUGGING04	147.587	139.016	depth vectors	END
-DEBUGGING05	-45.2312	-46.3641	132.614	-41.4936	-30.6406	129.092	camera coordinates	END
-DEBUGGING06	-32.464	-58.5739	131.519	-34.8687	-28.5038	131.519	scaled NED coordinates	END
-DEBUGGING07	2.40466	-30.0701	1.52588e-05	translation vector	END
-DEBUGGING08	0.991866	-0.115708	0.0530455	0.118579	0.991441	-0.0546179	-0.0462718	0.0604637	0.997097	first camToNav	END
-DEBUGGING09	0.99636	-0.0792731	0.0313335	0.0779745	0.996124	0.0406961	-0.0344382	-0.0381048	0.99868	second camToNav	END
-DEBUGGING10	0	250	356	num inliers	END
-DEBUGGING11	2.38773	-30.8857	8.56567e-07	final translation vector	END
-GrdSpd=11.152043302202571Course_ang_deg=175.57933704476744Image DT= 1.6666650772094727
-
-An Update happened for the VO to
-1.478796905462369E9
-GrdSpeed=13.161356689677215	1.2772099973320303
-CourseAng=0.21354330492319756	2.9549509766408693
-
-301--------------------#For Output Above----------------------------
-
-302--------------------#For Output Above----------------------------
-
-Roll = 0.3342660695662655
-Image Skipped
-303--------------------#For Output Above----------------------------
-
-304--------------------#For Output Above----------------------------
-
-305--------------------#For Output Above----------------------------
-
-Roll = 0.14169492903434583
-Image Skipped
-306--------------------#For Output Above----------------------------
-
-307--------------------#For Output Above----------------------------
-
-Roll = 0.339523020710501
-Image Skipped
-308--------------------#For Output Above----------------------------
-
-309--------------------#For Output Above----------------------------
-
-310--------------------#For Output Above----------------------------
-
-Roll = 0.5956956421537497
-Image Skipped
-311--------------------#For Output Above----------------------------
-
-312--------------------#For Output Above----------------------------
-
-313--------------------#For Output Above----------------------------
-
-Roll = 1.8396311982201867
-DEBUGGING13	0.999096	-0.0400619	0.0142555	0.0412547	0.994467	-0.0966055	-0.0103064	0.0971062	0.995221	cam1Tocam2	END
-DEBUGGING12	0.999886	-0.00872976	0.012329	0.00989291	0.99517	-0.0976716	-0.0114168	0.0977824	0.995142	cam1 to cam2	END
-DEBUGGING14	-0.998859	0.0453267	-0.0150599	0.0460406	0.997635	-0.0510336	0.0127111	-0.0516688	-0.998583	cam1 to cam2	END
-DEBUGGING00	-16.8994	-148.982	0	0	pixel coordinates	END
-DEBUGGING01	-0.434341	-0.320328	0.841866	-0.442733	-0.222601	0.868583	normalized coordinates	END
-DEBUGGING02	-0.50183	-0.284401	0.816874	-0.48112	-0.100628	0.87086	unscaled nav coordinates	END
-DEBUGGING03	0.614826	0.513846	thetas	END
-DEBUGGING04	159.768	149.864	depth vectors	END
-DEBUGGING05	-69.3937	-51.1782	134.503	-66.3496	-33.3598	130.169	camera coordinates	END
-DEBUGGING06	-80.1763	-45.4382	130.51	-72.1023	-15.0804	130.51	scaled NED coordinates	END
-DEBUGGING07	-8.07403	-30.3578	0	translation vector	END
-DEBUGGING08	0.975731	0.218768	-0.00944655	-0.218808	0.972425	-0.0807053	-0.00846966	0.0808137	0.996693	first camToNav	END
-DEBUGGING09	0.973594	0.228286	0.000851239	-0.228267	0.973445	0.0172708	0.00311406	-0.0170091	0.99985	second camToNav	END
-DEBUGGING10	0	278	360	num inliers	END
-DEBUGGING11	-8.12933	-32.0103	-8.75123e-07	final translation vector	END
-GrdSpd=11.889525404341724Course_ang_deg=194.24959394060315Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.47879690711638E9
-GrdSpeed=13.115785182550654	1.2417701084418056
-CourseAng=0.22438493225931277	2.952233144734412
-
-314--------------------#For Output Above----------------------------
-
-315--------------------#For Output Above----------------------------
-
-Roll = 1.9709430791175628
-Image Skipped
-316--------------------#For Output Above----------------------------
-
-317--------------------#For Output Above----------------------------
-
-Roll = 1.500385200377468
-Image Skipped
-318--------------------#For Output Above----------------------------
-
-319--------------------#For Output Above----------------------------
-
-320--------------------#For Output Above----------------------------
-
-Roll = 2.533346191461702
-Image Skipped
-321--------------------#For Output Above----------------------------
-
-322--------------------#For Output Above----------------------------
-
-Roll = 1.6822343979957088
-Image Skipped
-323--------------------#For Output Above----------------------------
-
-324--------------------#For Output Above----------------------------
-
-325--------------------#For Output Above----------------------------
-
-Roll = 1.5039667808234936
-DEBUGGING13	0.999886	-0.00872976	0.012329	0.00989291	0.99517	-0.0976716	-0.0114168	0.0977824	0.995142	cam1Tocam2	END
-DEBUGGING12	-0.971602	-0.236539	0.00619836	-0.236592	0.971559	-0.00987441	-0.00368639	-0.0110605	-0.999932	cam1 to cam2	END
-DEBUGGING14	0.999945	0.00831344	0.00638437	-0.00764394	0.995102	-0.0985533	-0.00717242	0.098499	0.995111	cam1 to cam2	END
-DEBUGGING00	23.0131	-144.997	0	0	pixel coordinates	END
-DEBUGGING01	-0.10097	-0.36532	0.92539	-0.133352	-0.248684	0.959361	normalized coordinates	END
-DEBUGGING02	-0.208372	-0.425051	0.880859	-0.19661	-0.217609	0.956029	unscaled nav coordinates	END
-DEBUGGING03	0.493123	0.297649	thetas	END
-DEBUGGING04	147.597	135.992	depth vectors	END
-DEBUGGING05	-14.9029	-53.9202	136.585	-18.1348	-33.819	130.465	camera coordinates	END
-DEBUGGING06	-30.7551	-62.7363	130.012	-26.7373	-29.5931	130.012	scaled NED coordinates	END
-DEBUGGING07	-4.01777	-33.1432	0	translation vector	END
-DEBUGGING08	0.971819	0.234215	-0.026674	-0.235724	0.966285	-0.103577	0.00151545	0.106946	0.994264	first camToNav	END
-DEBUGGING09	0.973542	0.228268	-0.0104439	-0.228339	0.973562	-0.00620161	0.0087522	0.00842229	0.999926	second camToNav	END
-DEBUGGING10	0	362	409	num inliers	END
-DEBUGGING11	-3.92953	-32.5048	1.24037e-07	final translation vector	END
-GrdSpd=11.786954287493794Course_ang_deg=186.8930729221824Image DT= 1.6666650772094727
-
-An Update happened for the VO to
-1.478796908803331E9
-GrdSpeed=13.073151718906493	1.200762357181798
-CourseAng=0.2345162205044999	2.9500725710729943
-
-326--------------------#For Output Above----------------------------
-
-327--------------------#For Output Above----------------------------
-
-Roll = 1.51659142500891
-Image Skipped
-328--------------------#For Output Above----------------------------
-
-329--------------------#For Output Above----------------------------
-
-330--------------------#For Output Above----------------------------
-
-Roll = 2.2731533366812395
-Image Skipped
-331--------------------#For Output Above----------------------------
-
-332--------------------#For Output Above----------------------------
-
-Roll = 3.2552743482870126
-Image Skipped
-333--------------------#For Output Above----------------------------
-
-334--------------------#For Output Above----------------------------
-
-335--------------------#For Output Above----------------------------
-
-Roll = 2.186256468409164
-Image Skipped
-336--------------------#For Output Above----------------------------
-
-337--------------------#For Output Above----------------------------
-
-Roll = 2.5993486572890623
-DEBUGGING13	0.999945	0.00831344	0.00638437	-0.00764394	0.995102	-0.0985533	-0.00717242	0.098499	0.995111	cam1Tocam2	END
-DEBUGGING12	0.998985	0.0445087	0.00691664	-0.0435269	0.993417	-0.105967	-0.0115876	0.105559	0.994346	cam1 to cam2	END
-DEBUGGING14	-0.999705	-0.0228973	-0.00810583	-0.0228679	0.999732	-0.0037084	0.00818857	-0.00352195	-0.99996	cam1 to cam2	END
-DEBUGGING00	-4.99719	-146.037	0	0	pixel coordinates	END
-DEBUGGING01	-0.0732193	-0.26311	0.961983	-0.079665	-0.130475	0.988246	normalized coordinates	END
-DEBUGGING02	-0.162411	-0.335257	0.928022	-0.124067	-0.10873	0.986299	unscaled nav coordinates	END
-DEBUGGING03	0.381728	0.165727	thetas	END
-DEBUGGING04	139.762	131.504	depth vectors	END
-DEBUGGING05	-10.2333	-36.7728	134.449	-10.4763	-17.158	129.958	camera coordinates	END
-DEBUGGING06	-22.6989	-46.8561	129.702	-16.3154	-14.2985	129.702	scaled NED coordinates	END
-DEBUGGING07	-6.38356	-32.5577	0	translation vector	END
-DEBUGGING08	0.975061	0.219216	-0.0346576	-0.221631	0.969982	-0.100077	0.0116788	0.105262	0.994376	first camToNav	END
-DEBUGGING09	0.983588	0.179004	-0.02262	-0.178926	0.983848	0.00544751	0.0232298	-0.0013108	0.999729	second camToNav	END
-DEBUGGING10	1	361	368	num inliers	END
-DEBUGGING11	-6.43122	-31.7943	3.43592e-10	final translation vector	END
-GrdSpd=11.677784027878591Course_ang_deg=191.4352543664503Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796910463027E9
-GrdSpeed=13.03940958725534	1.1520818491377696
-CourseAng=0.23962561324205914	2.949581492618203
-
-338--------------------#For Output Above----------------------------
-
-339--------------------#For Output Above----------------------------
-
-340--------------------#For Output Above----------------------------
-
-Roll = 1.969093805399782
-Image Skipped
-341--------------------#For Output Above----------------------------
-
-342--------------------#For Output Above----------------------------
-
-Roll = 1.8130690194248305
-Image Skipped
-343--------------------#For Output Above----------------------------
-
-344--------------------#For Output Above----------------------------
-
-345--------------------#For Output Above----------------------------
-
-Roll = 1.5826045630068486
-Image Skipped
-346--------------------#For Output Above----------------------------
-
-347--------------------#For Output Above----------------------------
-
-Roll = -0.3081207724341178
-Image Skipped
-348--------------------#For Output Above----------------------------
-
-349--------------------#For Output Above----------------------------
-
-350--------------------#For Output Above----------------------------
-
-Roll = 0.8126990230172528
-DEBUGGING13	0.998985	0.0445087	0.00691664	-0.0435269	0.993417	-0.105967	-0.0115876	0.105559	0.994346	cam1Tocam2	END
-DEBUGGING12	-0.955538	-0.294623	0.012035	-0.294791	0.955428	-0.0160043	-0.00678328	-0.0188405	-0.999799	cam1 to cam2	END
-DEBUGGING14	0.999977	0.00545727	0.00413805	-0.00504828	0.995642	-0.0931188	-0.00462819	0.0930957	0.995646	cam1 to cam2	END
-DEBUGGING00	32.7647	-153.391	0	0	pixel coordinates	END
-DEBUGGING01	-0.0726615	-0.138363	0.987713	-0.107832	0.0181522	0.994003	normalized coordinates	END
-DEBUGGING02	-0.103403	-0.212001	0.971784	-0.0967785	0.0384406	0.994563	unscaled nav coordinates	END
-DEBUGGING03	0.238118	0.104323	thetas	END
-DEBUGGING04	133.12	130.071	depth vectors	END
-DEBUGGING05	-9.6727	-18.4188	131.484	-14.0257	2.36107	129.291	camera coordinates	END
-DEBUGGING06	-13.765	-28.2216	129.364	-12.5881	5.00001	129.364	scaled NED coordinates	END
-DEBUGGING07	-1.1769	-33.2216	0	translation vector	END
-DEBUGGING08	0.982832	0.184385	-0.00655728	-0.184209	0.978656	-0.0910957	-0.0103793	0.0907397	0.995821	first camToNav	END
-DEBUGGING09	0.983788	0.17923	0.00608797	-0.179241	0.983804	0.00126219	-0.00576315	-0.00233294	0.999981	second camToNav	END
-DEBUGGING10	1	359	302	num inliers	END
-DEBUGGING11	-1.26426	-32.4063	-1.2751e-07	final translation vector	END
-GrdSpd=11.6751778857875Course_ang_deg=182.23413875908648Image DT= 1.6666653156280518
-
-An Update happened for the VO to
-1.478796912104699E9
-GrdSpeed=12.99769296525906	1.1164874576227914
-CourseAng=0.24425723962979992	2.9491526746570216
-
-351--------------------#For Output Above----------------------------
-
-352--------------------#For Output Above----------------------------
-
-353--------------------#For Output Above----------------------------
-
-354--------------------#For Output Above----------------------------
-
-Roll = 0.671711538830319
-Image Skipped
-355--------------------#For Output Above----------------------------
-
-356--------------------#For Output Above----------------------------
-
-357--------------------#For Output Above----------------------------
-
-Roll = 1.8131221668343096
-Image Skipped
-358--------------------#For Output Above----------------------------
-
-359--------------------#For Output Above----------------------------
-
-360--------------------#For Output Above----------------------------
-
-Roll = 1.5554069631752694
-Image Skipped
-361--------------------#For Output Above----------------------------
-
-362--------------------#For Output Above----------------------------
-
-363--------------------#For Output Above----------------------------
-
-364--------------------#For Output Above----------------------------
-
-Roll = 0.23183561689386187
-Image Skipped
-365--------------------#For Output Above----------------------------
-
-366--------------------#For Output Above----------------------------
-
-367--------------------#For Output Above----------------------------
-
-Roll = 0.18830847549981022
-DEBUGGING13	0.999977	0.00545727	0.00413805	-0.00504828	0.995642	-0.0931188	-0.00462819	0.0930957	0.995646	cam1Tocam2	END
-DEBUGGING12	-0.974162	-0.225677	0.00883315	-0.22584	0.97374	-0.0287504	-0.00211287	-0.0300024	-0.999548	cam1 to cam2	END
-DEBUGGING14	0.9999	-0.0122532	0.00699262	0.0129038	0.994682	-0.102178	-0.00570343	0.102258	0.994742	cam1 to cam2	END
-DEBUGGING00	21.5453	-137.123	0	0	pixel coordinates	END
-DEBUGGING01	-0.171464	0.00610867	0.985171	-0.190725	0.144239	0.970989	normalized coordinates	END
-DEBUGGING02	-0.165641	-0.072156	0.983543	-0.148237	0.16972	0.97428	unscaled nav coordinates	END
-DEBUGGING03	0.181673	0.227294	thetas	END
-DEBUGGING04	131.476	132.726	depth vectors	END
-DEBUGGING05	-22.5434	0.803142	129.526	-25.3142	19.1443	128.875	camera coordinates	END
-DEBUGGING06	-21.7778	-9.48677	129.312	-19.6749	22.5262	129.312	scaled NED coordinates	END
-DEBUGGING07	-2.10293	-32.013	0	translation vector	END
-DEBUGGING08	0.985832	0.167717	0.00240501	-0.166475	0.980081	-0.108293	-0.0205198	0.106359	0.994116	first camToNav	END
-DEBUGGING09	0.983696	0.179301	0.0139201	-0.179225	0.983786	-0.00655357	-0.0148695	0.00395189	0.999882	second camToNav	END
-DEBUGGING10	0	287	301	num inliers	END
-DEBUGGING11	-2.11889	-31.7751	3.71721e-07	final translation vector	END
-GrdSpd=11.464461771663458Course_ang_deg=183.81506407817645Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796913686188E9
-GrdSpeed=12.949904838732081	1.0921072609147844
-CourseAng=0.2502356758981811	2.9485873046712334
-
-368--------------------#For Output Above----------------------------
-
-369--------------------#For Output Above----------------------------
-
-370--------------------#For Output Above----------------------------
-
-371--------------------#For Output Above----------------------------
-
-Roll = -0.02486570888240806
-Image Skipped
-372--------------------#For Output Above----------------------------
-
-373--------------------#For Output Above----------------------------
-
-374--------------------#For Output Above----------------------------
-
-Roll = 0.4302819607518222
-Image Skipped
-375--------------------#For Output Above----------------------------
-
-376--------------------#For Output Above----------------------------
-
-377--------------------#For Output Above----------------------------
-
-Roll = 0.07858314734010159
-Image Skipped
-378--------------------#For Output Above----------------------------
-
-379--------------------#For Output Above----------------------------
-
-380--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-381--------------------#For Output Above----------------------------
-
-382--------------------#For Output Above----------------------------
-
-383--------------------#For Output Above----------------------------
-
-384--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-385--------------------#For Output Above----------------------------
-
-386--------------------#For Output Above----------------------------
-
-387--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-388--------------------#For Output Above----------------------------
-
-389--------------------#For Output Above----------------------------
-
-390--------------------#For Output Above----------------------------
-
-391--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-392--------------------#For Output Above----------------------------
-
-393--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-394--------------------#For Output Above----------------------------
-
-395--------------------#For Output Above----------------------------
-
-396--------------------#For Output Above----------------------------
-
-397--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-398--------------------#For Output Above----------------------------
-
-399--------------------#For Output Above----------------------------
-
-400--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-401--------------------#For Output Above----------------------------
-
-402--------------------#For Output Above----------------------------
-
-403--------------------#For Output Above----------------------------
-
-404--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-405--------------------#For Output Above----------------------------
-
-406--------------------#For Output Above----------------------------
-
-407--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-408--------------------#For Output Above----------------------------
-
-409--------------------#For Output Above----------------------------
-
-410--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-411--------------------#For Output Above----------------------------
-
-412--------------------#For Output Above----------------------------
-
-413--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-414--------------------#For Output Above----------------------------
-
-415--------------------#For Output Above----------------------------
-
-416--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-417--------------------#For Output Above----------------------------
-
-418--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-419--------------------#For Output Above----------------------------
-
-420--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-421--------------------#For Output Above----------------------------
-
-422--------------------#For Output Above----------------------------
-
-423--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-424--------------------#For Output Above----------------------------
-
-425--------------------#For Output Above----------------------------
-
-426--------------------#For Output Above----------------------------
-
-Roll = 10.876930257951797
-Image Skipped
-427--------------------#For Output Above----------------------------
-
-428--------------------#For Output Above----------------------------
-
-Roll = 8.03815252095911
-DEBUGGING13	0.9999	-0.0122532	0.00699262	0.0129038	0.994682	-0.102178	-0.00570343	0.102258	0.994742	cam1Tocam2	END
-DEBUGGING12	-0.228244	-0.811494	-0.537942	-0.973347	0.177489	0.145237	-0.0223801	0.556754	-0.830376	cam1 to cam2	END
-DEBUGGING14	0.146096	0.964898	0.21824	0.898007	-0.0368021	-0.438438	-0.415017	0.260035	-0.871862	cam1 to cam2	END
-DEBUGGING00	101.388	-156.194	0	0	pixel coordinates	END
-DEBUGGING01	-0.0122674	-0.0842368	0.99637	-0.330986	0.346565	0.877691	normalized coordinates	END
-DEBUGGING02	-0.301105	0.292894	-0.907496	-0.387606	0.335616	0.858559	unscaled nav coordinates	END
-DEBUGGING03	2.70808	0.538344	thetas	END
-DEBUGGING04	-142.494	150.616	depth vectors	END
-DEBUGGING05	1.74803	12.0032	-141.976	-49.8517	52.198	132.194	camera coordinates	END
-DEBUGGING06	42.9055	-41.7355	129.312	-58.3796	50.549	129.312	scaled NED coordinates	END
-DEBUGGING07	101.285	-92.2845	1.52588e-05	translation vector	END
-DEBUGGING08	-0.3915	-0.838975	-0.377952	-0.907933	0.285417	0.306912	-0.149618	0.463311	-0.873474	first camToNav	END
-DEBUGGING09	0.973498	0.177263	-0.144499	-0.189484	0.978967	-0.0756261	0.128054	0.101002	0.986611	second camToNav	END
-DEBUGGING10	0	7	21	num inliers	END
-DEBUGGING11	76.9715	-41.6909	-4.30655e-06	final translation vector	END
-GrdSpd=1.969588415863238Course_ang_deg=478.44180469419985Image DT= 6.6666600704193115
-
-An Update happened for the VO to
-1.478796920429585E9
-GrdSpeed=11.31424536757119	6.260791334085953
-CourseAng=-0.7214678294273376	2.6270063734179696
-
-429--------------------#For Output Above----------------------------
-
-430--------------------#For Output Above----------------------------
-
-Roll = 4.421423067691143
-Image Skipped
-431--------------------#For Output Above----------------------------
-
-432--------------------#For Output Above----------------------------
-
-Roll = 1.9399000827832664
-Image Skipped
-433--------------------#For Output Above----------------------------
-
-434--------------------#For Output Above----------------------------
-
-Roll = -0.36471961523910446
-Image Skipped
-435--------------------#For Output Above----------------------------
-
-436--------------------#For Output Above----------------------------
-
-Roll = -2.664657645472255
-Image Skipped
-437--------------------#For Output Above----------------------------
-
-438--------------------#For Output Above----------------------------
-
-Roll = -4.986461138951026
-DEBUGGING13	-0.228244	-0.811494	-0.537942	-0.973347	0.177489	0.145237	-0.0223801	0.556754	-0.830376	cam1Tocam2	END
-DEBUGGING12	0.993557	0.111577	0.0198658	-0.105459	0.974412	-0.198492	-0.0415047	0.195118	0.979901	cam1 to cam2	END
-DEBUGGING14	-0.386289	-0.919984	0.0664065	-0.91936	0.389845	0.0529001	-0.0745556	-0.0406167	-0.996389	cam1 to cam2	END
-DEBUGGING00	257.391	-209.99	0	0	pixel coordinates	END
-DEBUGGING01	0.362275	-0.2161	0.906674	0.143778	-0.0560138	0.988023	normalized coordinates	END
-DEBUGGING02	0.340851	-0.557802	0.756754	0.215262	-0.170604	0.961539	unscaled nav coordinates	END
-DEBUGGING03	0.712463	0.278246	thetas	END
-DEBUGGING04	172.276	135.586	depth vectors	END
-DEBUGGING05	62.4114	-37.229	156.198	19.4942	-7.59466	133.962	camera coordinates	END
-DEBUGGING06	58.7205	-96.0961	130.371	29.1864	-23.1314	130.371	scaled NED coordinates	END
-DEBUGGING07	29.5341	-72.9647	-1.52588e-05	translation vector	END
-DEBUGGING08	0.951263	0.300888	0.0675589	-0.270092	0.918644	-0.288345	-0.148822	0.256045	0.95514	first camToNav	END
-DEBUGGING09	0.980049	0.17946	0.0854279	-0.171581	0.980856	-0.0920955	-0.10032	0.0756004	0.992079	second camToNav	END
-DEBUGGING10	0	59	153	num inliers	END
-DEBUGGING11	26.3104	-68.9423	-1.10749e-06	final translation vector	END
-VO Skipped due to Grd Speed to high
-439--------------------#For Output Above----------------------------
-
-440--------------------#For Output Above----------------------------
-
-441--------------------#For Output Above----------------------------
-
-Roll = -5.099771415960599
-Image Skipped
-442--------------------#For Output Above----------------------------
-
-443--------------------#For Output Above----------------------------
-
-444--------------------#For Output Above----------------------------
-
-Roll = -6.103896308864391
-Image Skipped
-445--------------------#For Output Above----------------------------
-
-446--------------------#For Output Above----------------------------
-
-447--------------------#For Output Above----------------------------
-
-Roll = -6.860992469395862
-Image Skipped
-448--------------------#For Output Above----------------------------
-
-449--------------------#For Output Above----------------------------
-
-Roll = -7.567870090941638
-Image Skipped
-450--------------------#For Output Above----------------------------
-
-451--------------------#For Output Above----------------------------
-
-452--------------------#For Output Above----------------------------
-
-Roll = -7.183634384087986
-DEBUGGING13	0.993557	0.111577	0.0198658	-0.105459	0.974412	-0.198492	-0.0415047	0.195118	0.979901	cam1Tocam2	END
-DEBUGGING12	-0.702792	-0.710908	0.0263338	-0.710744	0.703251	0.0167923	-0.0304571	-0.0069151	-0.999512	cam1 to cam2	END
-DEBUGGING14	0.997402	-0.0583697	0.0422255	0.0646505	0.98381	-0.167146	-0.0317856	0.169442	0.985028	cam1 to cam2	END
-DEBUGGING00	110.563	-186.75	0	0	pixel coordinates	END
-DEBUGGING01	-0.281242	-0.378819	0.881702	-0.385349	-0.237062	0.8918	normalized coordinates	END
-DEBUGGING02	-0.215325	-0.542765	0.811814	-0.311973	-0.223349	0.923465	unscaled nav coordinates	END
-DEBUGGING03	0.623545	0.39378	thetas	END
-DEBUGGING04	161.164	141.679	depth vectors	END
-DEBUGGING05	-45.3261	-61.0522	142.099	-54.5957	-33.5867	126.349	camera coordinates	END
-DEBUGGING06	-34.7027	-87.4744	130.835	-44.2	-31.6438	130.835	scaled NED coordinates	END
-DEBUGGING07	9.4973	-55.8306	0	translation vector	END
-DEBUGGING08	0.981615	0.140458	0.129244	-0.107334	0.966115	-0.234738	-0.157835	0.21655	0.963428	first camToNav	END
-DEBUGGING09	0.976323	0.180044	0.119907	-0.173359	0.98277	-0.0641116	-0.129384	0.0418067	0.990713	second camToNav	END
-DEBUGGING10	0	433	930	num inliers	END
-DEBUGGING11	12.0842	-57.4761	-4.25434e-07	final translation vector	END
-VO Skipped due to Grd Speed to high
-453--------------------#For Output Above----------------------------
-
-454--------------------#For Output Above----------------------------
-
-Roll = -9.938993313200013
-Image Skipped
-455--------------------#For Output Above----------------------------
-
-456--------------------#For Output Above----------------------------
-
-457--------------------#For Output Above----------------------------
-
-Roll = -11.085962221084513
-Image Skipped
-458--------------------#For Output Above----------------------------
-
-459--------------------#For Output Above----------------------------
-
-Roll = -13.049376083859196
-Image Skipped
-460--------------------#For Output Above----------------------------
-
-461--------------------#For Output Above----------------------------
-
-462--------------------#For Output Above----------------------------
-
-Roll = -7.483435292421941
-Image Skipped
-463--------------------#For Output Above----------------------------
-
-464--------------------#For Output Above----------------------------
-
-Roll = -7.718194016837156
-DEBUGGING13	0.997402	-0.0583697	0.0422255	0.0646505	0.98381	-0.167146	-0.0317856	0.169442	0.985028	cam1Tocam2	END
-DEBUGGING12	-0.938025	-0.346561	-0.00220028	-0.346233	0.93682	0.0499131	-0.0152367	0.0475816	-0.998751	cam1 to cam2	END
-DEBUGGING14	0.999631	-0.00771345	0.0260547	0.0122623	0.983731	-0.17923	-0.0242483	0.179483	0.983462	cam1 to cam2	END
-DEBUGGING00	42.5531	-205.389	0	0	pixel coordinates	END
-DEBUGGING01	0.0787604	-0.388227	0.918192	0.0480687	-0.230758	0.971823	normalized coordinates	END
-DEBUGGING02	0.124034	-0.584533	0.801833	0.144968	-0.269699	0.95197	unscaled nav coordinates	END
-DEBUGGING03	0.64044	0.31119	thetas	END
-DEBUGGING04	164.444	138.509	depth vectors	END
-DEBUGGING05	12.9517	-63.8417	150.991	6.65797	-31.9622	134.607	camera coordinates	END
-DEBUGGING06	20.3966	-96.1231	131.857	20.0794	-37.3559	131.857	scaled NED coordinates	END
-DEBUGGING07	0.317192	-58.7672	0	translation vector	END
-DEBUGGING08	0.971391	0.19572	0.134515	-0.164105	0.962609	-0.215529	-0.171668	0.187289	0.967188	first camToNav	END
-DEBUGGING09	0.973027	0.180338	0.143864	-0.177085	0.983565	-0.0352136	-0.14785	0.00878772	0.988971	second camToNav	END
-DEBUGGING10	1	1440	2146	num inliers	END
-DEBUGGING11	-0.230314	-55.1025	1.48054e-07	final translation vector	END
-GrdSpd=19.83711376547037Course_ang_deg=180.2394802464972Image DT= 1.6666648387908936
-
-An Update happened for the VO to
-1.478796925425734E9
-GrdSpeed=12.701036640990457	6.179345099219074
-CourseAng=-0.09402729476481553	2.3965101464763876
-
-465--------------------#For Output Above----------------------------
-
-466--------------------#For Output Above----------------------------
-
-Roll = -5.433425303142076
-Image Skipped
-467--------------------#For Output Above----------------------------
-
-468--------------------#For Output Above----------------------------
-
-469--------------------#For Output Above----------------------------
-
-Roll = -5.239353161838979
-Image Skipped
-470--------------------#For Output Above----------------------------
-
-471--------------------#For Output Above----------------------------
-
-472--------------------#For Output Above----------------------------
-
-473--------------------#For Output Above----------------------------
-
-Roll = -5.976185004876669
-Image Skipped
-474--------------------#For Output Above----------------------------
-
-475--------------------#For Output Above----------------------------
-
-476--------------------#For Output Above----------------------------
-
-Roll = 12.516782691817342
-Image Skipped
-477--------------------#For Output Above----------------------------
-
-478--------------------#For Output Above----------------------------
-
-479--------------------#For Output Above----------------------------
-
-480--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-481--------------------#For Output Above----------------------------
-
-482--------------------#For Output Above----------------------------
-
-483--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-484--------------------#For Output Above----------------------------
-
-485--------------------#For Output Above----------------------------
-
-486--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-487--------------------#For Output Above----------------------------
-
-488--------------------#For Output Above----------------------------
-
-489--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-490--------------------#For Output Above----------------------------
-
-491--------------------#For Output Above----------------------------
-
-492--------------------#For Output Above----------------------------
-
-493--------------------#For Output Above----------------------------
-
-494--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-495--------------------#For Output Above----------------------------
-
-496--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-497--------------------#For Output Above----------------------------
-
-498--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-499--------------------#For Output Above----------------------------
-
-500--------------------#For Output Above----------------------------
-
-VO Skipped due to Roll
-501--------------------#For Output Above----------------------------
-
 Writing results to binary file...
 ...results written
 Writing results to binary file...
 ...results written
-DEBUGGING13	0.999631	-0.00771345	0.0260547	0.0122623	0.983731	-0.17923	-0.0242483	0.179483	0.983462	cam1Tocam2	END
+DEBUGGING13	0.999965	-0.0081677	-0.00181392	0.0079497	0.99512	-0.0983555	0.00260841	0.0983376	0.99515	cam1Tocam2	END
 Process finished with exit code 0
 
